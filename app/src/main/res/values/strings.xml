@@ -2,4 +2,9 @@
     <string name="app_name">Exclusive</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="women">Women</string>
+    <string name="men">Men</string>
+    <string name="kids">Kids</string>
+    <string name="all">All</string>
+    <string name="brands">Brands</string>
 </resources>

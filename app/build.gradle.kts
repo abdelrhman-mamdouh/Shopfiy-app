@@ -51,7 +51,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.4.2")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.4.2")
     // SDP (ScalableDP) and SSP (ScalableSP) libraries for handling scalable dimensions and spacing
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.0.6")
@@ -84,6 +85,9 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
+    //Picasso
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
     // CircleImageView library for displaying circular images
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
@@ -101,4 +105,14 @@ dependencies {
     //Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:4.0.0-beta.6")
 
+}
+apollo {
+    service("service") {
+        packageName.set("com.example.exclusive")
+        introspection {
+            endpointUrl.set("https://mad44-android-sv-2.myshopify.com/api/2024-04/graphql.json")
+            headers.put("api-key", "4bfbd5eac5ef87c5b2099fa60d740487")
+            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+        }
+    }
 }

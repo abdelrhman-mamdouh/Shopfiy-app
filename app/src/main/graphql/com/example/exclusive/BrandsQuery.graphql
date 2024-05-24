@@ -1,0 +1,14 @@
+query BrandsQuery {
+    collections(first: 20) {
+        edges {
+            node {
+                id
+                title
+                image {
+                    originalSrc
+                }
+            }
+        }
+    }
+}
+
