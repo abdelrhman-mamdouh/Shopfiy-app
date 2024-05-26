@@ -13,8 +13,8 @@ import com.example.exclusive.R
 import com.example.exclusive.databinding.GoToLoginDialogBinding
 
 object Constants {
-    const val BASE_URL: String = "https://mad44-android-sv-2.myshopify.com/api/2024-04/"
-    const val API_KEY: String = "4bfbd5eac5ef87c5b2099fa60d740487"
+    const val BASE_URL: String = "https://mad44-android-sv-2.myshopify.com/api/2024-04/graphql.json"
+    const val API_KEY: String = "43f6205d2d0b257b652e16f5f7663414"
 
     fun showAlert(context: Context, title: Int, message: String, icon: Int) {
         AlertDialog.Builder(context)

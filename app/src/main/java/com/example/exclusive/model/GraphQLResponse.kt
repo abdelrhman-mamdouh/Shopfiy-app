@@ -1,7 +1,3 @@
 package com.example.exclusive.model
 
-data class Product(
-    val id: String,
-    val title: String,
-    val description: String
-)
+data class Brand(val name: String, val imageUrl: String)

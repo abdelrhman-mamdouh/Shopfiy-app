@@ -1,4 +1,4 @@
-package com.example.exclusive.screens.category
+package com.example.exclusive.screens.category.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
