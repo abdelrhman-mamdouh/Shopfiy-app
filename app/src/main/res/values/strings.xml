@@ -8,6 +8,7 @@
     <string name="kids">Kids</string>
     <string name="all">All</string>
     <string name="brands">Brands</string>
+    <string name="logout">Logout</string>
 
     <string name="google_login">login with google</string>
     <string name="loginTitle">Login</string>
