@@ -2,10 +2,27 @@
     <string name="app_name">Exclusive</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="women">Women</string>
     <string name="men">Men</string>
     <string name="kids">Kids</string>
     <string name="all">All</string>
     <string name="brands">Brands</string>
     <string name="logout">Logout</string>
+
+    <string name="google_login">login with google</string>
+    <string name="loginTitle">Login</string>
+    <string name="inputName">Name</string>
+    <string name="inputEmail">Email</string>
+    <string name="inputPassword">Password</string>
+    <string name="forgotPassword">Forgot your password?</string>
+    <string name="login">Login</string>
+    <string name="orLoginWithSocialAccount">Or login with social account</string>
+    <string name="googleLogin">login with google</string>
+    <string name="signUp">Sign Up</string>
+    <string name="alreadyHaveAnAccount">Already have an account?</string>
+    <string name="forgetPasswordTitle">Forget Password</string>
+    <string name="send">send</string>
+    <string name="pleaseEnterEmail">Please, enter your email address. You will receive a link to create a new password via email.</string>
+
 </resources>
