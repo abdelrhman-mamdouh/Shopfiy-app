@@ -7,4 +7,5 @@
     <string name="kids">Kids</string>
     <string name="all">All</string>
     <string name="brands">Brands</string>
+    <string name="logout">Logout</string>
 </resources>
