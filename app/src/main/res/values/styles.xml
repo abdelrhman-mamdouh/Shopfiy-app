@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="TextViewStyle">
+        <item name="android:textSize">@dimen/_10ssp</item> <!-- Text size -->
+        <item name="android:textColor">@color/black</item> <!-- Text color -->
+        <item name="android:fontFamily">@font/muli_black</item> <!-- Font family -->
+    </style>
+    <style name="TextViewStyleHeader">
+        <item name="android:textSize">@dimen/_18ssp</item> <!-- Text size -->
+        <item name="android:textColor">@color/black</item> <!-- Text color -->
+        <item name="android:fontFamily">@font/muli_black</item> <!-- Font family -->
+    </style>
+
+    <style name="TextViewStyleLight">
+        <item name="android:textSize">@dimen/_8ssp</item> <!-- Text size -->
+        <item name="android:fontFamily">@font/muli_extralight</item> <!-- Font family -->
+    </style>
+
 </resources>

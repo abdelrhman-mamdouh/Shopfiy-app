@@ -2,7 +2,7 @@ package com.example.exclusive.screens.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.exclusive.screens.home.repo.HomeRepository
+import com.example.exclusive.screens.home.repository.HomeRepository
 
 class HomeViewModelFactory(private val brandRepository: HomeRepository) : ViewModelProvider.Factory {
 

@@ -1,0 +1,13 @@
+query CategoriesQuery {
+    collections(first: 10, query: "title:men OR title:women OR title:kid OR title:sale") {
+        edges {
+            node {
+                id
+                title
+                image {
+                    originalSrc
+                }
+            }
+        }
+    }
+}

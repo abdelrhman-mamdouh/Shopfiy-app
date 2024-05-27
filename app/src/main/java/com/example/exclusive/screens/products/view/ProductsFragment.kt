@@ -1,60 +1,101 @@
 package com.example.exclusive.screens.products.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RadioGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
+import com.example.exclusive.data.remote.ShopifyRemoteDataSourceImpl
+import com.example.exclusive.model.MyProduct
+import com.example.exclusive.screens.products.repository.ProductsRepositoryImpl
+import com.example.exclusive.screens.products.viewmodel.ProductsViewModel
+import com.example.exclusive.screens.products.viewmodel.ProductsViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProductsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProductsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+import com.google.android.material.slider.RangeSlider
+
+class ProductsFragment : Fragment(), OnProductClickListener {
+
+
+    private lateinit var viewModel: ProductsViewModel
+    private lateinit var adapter: ProductsAdapter
+    private lateinit var radioGroup: RadioGroup
+    private lateinit var minValueTextView: TextView
+    private lateinit var maxValueTextView: TextView
+    private lateinit var rangeSlider: RangeSlider
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_products, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_products, container, false)
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.rv_products)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        adapter = ProductsAdapter(emptyList(), this)
+
+        viewModel = ViewModelProvider(
+            this, ProductsViewModelFactory(
+                ProductsRepositoryImpl(
+                    ShopifyRemoteDataSourceImpl
+                )
+            )
+        ).get(ProductsViewModel::class.java)
+
+        recyclerView.adapter = adapter
+
+        val backButton: ImageView = rootView.findViewById(R.id.ic_back)
+        backButton.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        radioGroup = rootView.findViewById(R.id.subCategoryRadioGroup)
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            val selectedCategory = when (checkedId) {
+                R.id.radioBtnAccessories -> getString(R.string.accessories)
+                R.id.radioBtnTShirts -> getString(R.string.t_shirts)
+                R.id.radioBtnShoes -> getString(R.string.shoes)
+                else -> getString(R.string.all)
+            }
+            adapter.filterProducts(selectedCategory)
+        }
+
+        minValueTextView = rootView.findViewById(R.id.minValue)
+        maxValueTextView = rootView.findViewById(R.id.maxValue)
+        rangeSlider = rootView.findViewById(R.id.brandProductsRangedSeekbar)
+        rangeSlider.addOnChangeListener { slider, _, _ ->
+            val values = slider.values
+            val minValue = values[0].toInt()
+            val maxValue = values[1].toInt()
+            minValueTextView.text = "$minValue EGP"
+            maxValueTextView.text = "$maxValue EGP"
+            adapter.filterByPrice(minValue, maxValue)
+            adapter.notifyDataSetChanged()
+        }
+        adapter.notifyDataSetChanged()
+        return rootView
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProductsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProductsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val intent = activity?.intent
+        val brandName = intent?.getStringExtra("brand_name")
+        brandName?.let { viewModel.fetchProducts(it) }
+        viewModel.products.observe(viewLifecycleOwner, { products ->
+            adapter.updateProducts(products)
+        })
+    }
+
+    override fun onProductClick(product: MyProduct) {
+        // Handle product click event
+        // For example, navigate to product details screen
     }
 }

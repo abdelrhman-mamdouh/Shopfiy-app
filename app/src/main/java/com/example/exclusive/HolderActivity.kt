@@ -1,16 +1,20 @@
-package com.example.exclusive.screens.products.view
+package com.example.exclusive
 
+import android.R
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.exclusive.R
+import com.example.exclusive.databinding.ActivityHolderBinding
 
-class Products : AppCompatActivity() {
+
+class HolderActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHolderBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_products)
+
+        binding = ActivityHolderBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
     }
 }

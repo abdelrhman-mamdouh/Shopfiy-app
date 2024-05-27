@@ -7,10 +7,10 @@ import com.example.exclusive.model.Brand
 import com.example.exclusive.screens.home.view.OnBrandClickListener
 import com.squareup.picasso.Picasso
 
-class BrandsAdapter(
+class HomeBrandsAdapter(
     private var brands: List<Brand>,
     private val listener: OnBrandClickListener
-) : RecyclerView.Adapter<BrandsAdapter.BrandViewHolder>() {
+) : RecyclerView.Adapter<HomeBrandsAdapter.BrandViewHolder>() {
 
     inner class BrandViewHolder(private val binding: RowBrandBinding) :
         RecyclerView.ViewHolder(binding.root) {

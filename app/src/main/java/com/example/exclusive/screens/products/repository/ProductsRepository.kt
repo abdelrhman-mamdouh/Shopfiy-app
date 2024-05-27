@@ -1,4 +1,9 @@
 package com.example.exclusive.screens.products.repository
 
-class ProductsRepository {
+
+import com.example.exclusive.model.MyProduct
+
+
+interface ProductsRepository {
+    suspend fun getProducts(vendor: String): List<MyProduct>
 }

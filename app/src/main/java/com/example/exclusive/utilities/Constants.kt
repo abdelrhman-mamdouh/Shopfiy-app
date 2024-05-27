@@ -15,7 +15,8 @@ import com.example.exclusive.databinding.GoToLoginDialogBinding
 object Constants {
     const val BASE_URL: String = "https://mad44-android-sv-2.myshopify.com/api/2024-04/graphql.json"
     const val API_KEY: String = "43f6205d2d0b257b652e16f5f7663414"
-
+    const val MIN = 0
+    const val MAX = 5
     fun showAlert(context: Context, title: Int, message: String, icon: Int) {
         AlertDialog.Builder(context)
             .setTitle(title)

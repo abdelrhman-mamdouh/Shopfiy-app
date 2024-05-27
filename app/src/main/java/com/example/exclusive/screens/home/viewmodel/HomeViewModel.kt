@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exclusive.data.remote.ApolloService
 import com.example.exclusive.model.Brand
-import com.example.exclusive.screens.home.repo.HomeRepository
+import com.example.exclusive.screens.home.repository.HomeRepository
 import kotlinx.coroutines.launch
 
 
