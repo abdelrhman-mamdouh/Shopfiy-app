@@ -15,8 +15,9 @@ import com.example.exclusive.screens.home.repo.HomeRepositoryImpl
 import com.example.exclusive.screens.home.view.BrandsAdapter
 import com.example.exclusive.screens.home.viewmodel.BrandsViewModel
 import com.example.exclusive.screens.home.viewmodel.HomeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
