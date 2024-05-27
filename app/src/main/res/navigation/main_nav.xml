@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/currenciesFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -20,4 +20,9 @@
         android:name="com.example.exclusive.screens.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/currenciesFragment"
+        android:name="com.example.exclusive.screens.settings.currency.CurrenciesFragment"
+        android:label="fragment_currencies"
+        tools:layout="@layout/fragment_currencies" />
 </navigation>
