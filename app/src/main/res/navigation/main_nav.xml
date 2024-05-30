@@ -25,4 +25,6 @@
         android:name="com.example.exclusive.screens.settings.currency.CurrenciesFragment"
         android:label="fragment_currencies"
         tools:layout="@layout/fragment_currencies" />
+
+
 </navigation>

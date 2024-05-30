@@ -24,5 +24,20 @@
     <string name="forgetPasswordTitle">Forget Password</string>
     <string name="send">send</string>
     <string name="pleaseEnterEmail">Please, enter your email address. You will receive a link to create a new password via email.</string>
+    <string name="product_image">Product Image</string>
+    <string name="add_address">Add Address</string>
+    <string name="orderNumber">Order Number: </string>
+    <string name="price">Price:</string>
+    <string name="address">Add Address</string>
+    <string name="total">Total</string>
+    <string name="for_more">For More</string>
+    <string name="check_out">Check Out</string>
+    <string name="title">Name\n</string>
+    <string name="save">Save</string>
+    <string name="enter_your_phone">Enter Your Phone</string>
+    <string name="city">City</string>
+    <string name="enter_address_details">Enter Address Details</string>
+    <string name="country">Country</string>
+    <string name="default_address">Default Address</string>
 
 </resources>

@@ -10,8 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCurrenciesBinding
+import com.example.exclusive.utilities.currencies
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -20,29 +22,36 @@ class CurrenciesFragment : Fragment() {
 
     private var _binding: FragmentCurrenciesBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: CurrenciesAdapter
 
     private val viewModel: CurrenciesViewModel by viewModels()
 
     companion object {
         private const val TAG = "CurrenciesFragment"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCurrenciesBinding.inflate(inflater, container, false)
+        setupAdapter()
         return binding.root
+    }
+
+    private fun setupAdapter() {
+        Log.d(TAG, "setupAdapter")
+        binding.rvCurrency.layoutManager = LinearLayoutManager(requireContext())
+        adapter = CurrenciesAdapter(currencies, CurrenciesAdapter.ClickListener(viewModel::fetchCurrencies))
+        binding.rvCurrency.setHasFixedSize(true)
+        binding.rvCurrency.adapter = adapter
+        adapter.updateCurrencies(currencies)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeCurrencies()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observeCurrencies() {
@@ -67,5 +76,10 @@ class CurrenciesFragment : Fragment() {
                     }
                 }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

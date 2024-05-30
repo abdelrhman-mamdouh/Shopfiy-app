@@ -1,6 +1,5 @@
 package com.example.exclusive.screens.settings.currency
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.model.Currencies
@@ -21,10 +20,7 @@ class CurrenciesViewModel @Inject constructor(
     private val _currenciesStateFlow = MutableStateFlow<UiState<Currencies>>(UiState.Idle)
     val currenciesStateFlow: StateFlow<UiState<Currencies>> get() = _currenciesStateFlow
 
-    init {
-        fetchCurrencies()
-    }
-    private fun fetchCurrencies() {
+    fun fetchCurrencies(currencyCode: String) {
         viewModelScope.launch {
             currencyRepository.getCurrencies()
                 .catch { e -> _currenciesStateFlow.value = UiState.Error(e) }
