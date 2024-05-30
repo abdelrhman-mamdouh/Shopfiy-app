@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            tools:text="16, Street Name, Cairo, Egypt"
+            tools:text="16, Ibn Hamedo, Cairo, Egypt"
             android:textColor="@color/black"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,10 +38,10 @@
             />
 
         <TextView
-            android:id="@+id/tv_phone"
+            android:id="@+id/et_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="phone number"
+            tools:text="+20 115 371 6828"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="@dimen/_16sdp"

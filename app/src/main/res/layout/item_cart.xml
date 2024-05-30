@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="16dp"
+    app:strokeColor="@color/primary_color"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/cartProductImageView"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_quantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_title"
+            app:srcCompat="@drawable/product" />
+
+        <TextView
+            android:id="@+id/et_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            tools:text="High Quality Camera"
+            android:textColor="@color/primary_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cartProductImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="11520 EGP"
+            android:textColor="@color/primary_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_quantity"
+            app:layout_constraintStart_toStartOf="@+id/et_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_variant" />
+
+        <TextView
+            android:id="@+id/tv_variant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="5 Items"
+            android:textColor="@color/primary_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/et_title"
+            app:layout_constraintTop_toBottomOf="@+id/et_title" />
+
+        <ImageButton
+            android:id="@+id/btn_increase"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_add"
+            android:background="@color/primary_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_quantity" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            tools:text="10"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            android:textColor="@color/primary_color"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_increase"
+            app:layout_constraintEnd_toStartOf="@+id/btn_increase"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_decrease"
+            app:layout_constraintTop_toTopOf="@+id/btn_increase" />
+
+        <ImageButton
+            android:id="@+id/btn_decrease"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_remove"
+            android:background="@color/primary_color"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_quantity"
+            app:layout_constraintEnd_toStartOf="@+id/tv_quantity"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/cartProductImageView"
+            app:layout_constraintTop_toTopOf="@+id/tv_quantity" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
