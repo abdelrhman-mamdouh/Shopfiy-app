@@ -1,12 +1,11 @@
 package com.example.exclusive
 
-import android.R
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.exclusive.databinding.ActivityHolderBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HolderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHolderBinding
     override fun onCreate(savedInstanceState: Bundle?) {

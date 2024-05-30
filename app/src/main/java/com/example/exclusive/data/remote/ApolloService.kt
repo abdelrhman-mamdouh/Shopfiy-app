@@ -10,13 +10,9 @@ import com.example.exclusive.model.Brand
 import com.example.exclusive.model.MyProduct
 import com.example.exclusive.utilities.Constants.API_KEY
 import com.example.exclusive.utilities.Constants.BASE_URL
+import javax.inject.Inject
 
-object ApolloService {
-
-    private val apolloClient = ApolloClient.Builder()
-        .serverUrl(BASE_URL)
-        .addHttpHeader("X-Shopify-Storefront-Access-Token", API_KEY)
-        .build()
+class ApolloService @Inject constructor(private val apolloClient: ApolloClient) {
 
     suspend fun getBrands(): List<Brand> {
         val brands = mutableListOf<Brand>()
@@ -27,8 +23,8 @@ object ApolloService {
 
             response.data?.collections?.edges?.forEach { brand ->
                 val id = brand.node.id
-                val name = brand.node.title?: ""
-                val imageUrl = brand.node.image?.originalSrc?: ""
+                val name = brand.node.title ?: ""
+                val imageUrl = brand.node.image?.originalSrc ?: ""
                 brands.add(Brand(id = id, name = name, imageUrl = imageUrl.toString()))
             }
         } catch (e: ApolloException) {
@@ -51,15 +47,17 @@ object ApolloService {
                 val productPrice = node.priceRange?.minVariantPrice?.amount
                 val priceString = productPrice.toString() ?: "0.0"
                 val price = priceString.toDoubleOrNull() ?: 0.0
-                products.add(MyProduct(
-                    id = node.id,
-                    title = node.title,
-                    vendor = node.vendor,
-                    productType = node.productType,
-                    imageUrl = node.images.edges.firstOrNull()?.node?.src.toString(),
-                    price = price,
-                    currencyCode = node.priceRange.minVariantPrice.currencyCode.toString()
-                ))
+                products.add(
+                    MyProduct(
+                        id = node.id,
+                        title = node.title,
+                        vendor = node.vendor,
+                        productType = node.productType,
+                        imageUrl = node.images.edges.firstOrNull()?.node?.src.toString(),
+                        price = price,
+                        currencyCode = node.priceRange.minVariantPrice.currencyCode.toString()
+                    )
+                )
             }
         } catch (e: ApolloException) {
             println("ApolloException: ${e.message}")
@@ -77,8 +75,8 @@ object ApolloService {
 
             response.data?.collections?.edges?.forEach { brand ->
                 val id = brand.node.id
-                val name = brand.node.title?: ""
-                val imageUrl = brand.node.image?.originalSrc?: ""
+                val name = brand.node.title ?: ""
+                val imageUrl = brand.node.image?.originalSrc ?: ""
                 brands.add(Brand(id = id, name = name, imageUrl = imageUrl.toString()))
             }
         } catch (e: ApolloException) {

@@ -1,13 +1,12 @@
 package com.example.exclusive.data.remote
 
+import com.example.exclusive.data.network.CurrencyApi
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.MyProduct
+import javax.inject.Inject
 
 
-object ShopifyRemoteDataSourceImpl : ShopifyRemoteDataSource {
-    private val apolloService: ApolloService by lazy {
-        ApolloService
-    }
+class ShopifyRemoteDataSourceImpl @Inject constructor(private val apolloService: ApolloService): ShopifyRemoteDataSource {
 
     override suspend fun getBrands(): List<Brand> {
         return apolloService.getBrands()

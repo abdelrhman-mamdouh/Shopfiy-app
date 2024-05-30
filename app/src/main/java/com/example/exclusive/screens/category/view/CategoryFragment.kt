@@ -6,53 +6,65 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.HolderActivity
-import com.example.exclusive.R
-import com.example.exclusive.data.remote.ShopifyRemoteDataSourceImpl
+import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.databinding.FragmentCategoryBinding
 import com.example.exclusive.model.Brand
-import com.example.exclusive.screens.category.repository.CategoriesRepositoryImpl
 import com.example.exclusive.screens.category.viewmodel.CategoryViewModel
-import com.example.exclusive.screens.category.viewmodel.CategoryViewModelFactory
-import com.example.exclusive.screens.home.viewmodel.BrandsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment(), OnCategoryClickListener {
 
-    private lateinit var viewModel: CategoryViewModel
+    private val viewModel: CategoryViewModel by viewModels()
+    private var _binding: FragmentCategoryBinding? = null
+    private val binding get() = _binding!!
     private lateinit var adapter: CategoryAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_category, container, false)
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager =
-            GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
-        adapter = CategoryAdapter(emptyList(), this)
-
-        viewModel = ViewModelProvider(
-            this, CategoryViewModelFactory(
-                CategoriesRepositoryImpl(
-                    ShopifyRemoteDataSourceImpl
-                )
-            )
-        ).get(CategoryViewModel::class.java)
-
-        recyclerView.adapter = adapter
-
-        return rootView
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.categories.observe(viewLifecycleOwner, { brands ->
-            adapter.updateCategory(brands)
-        })
-        viewModel.fetchCategories()
+
+        val recyclerView = binding.recyclerView
+        recyclerView.layoutManager =
+            GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
+        adapter = CategoryAdapter(emptyList(), this)
+        recyclerView.adapter = adapter
+
+        lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                when (uiState) {
+                    is UiState.Success -> adapter.updateCategory(uiState.data)
+                    is UiState.Error -> {
+
+                    }
+
+                    UiState.Loading -> {
+
+                    }
+
+                    UiState.Idle -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCategoryClick(brand: Brand) {
@@ -61,4 +73,3 @@ class CategoryFragment : Fragment(), OnCategoryClickListener {
         startActivity(intent)
     }
 }
-

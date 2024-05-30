@@ -1,30 +1,34 @@
 package com.example.exclusive.screens.products.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.MyProduct
-import com.example.exclusive.screens.products.repository.ProductsRepository
+import com.example.exclusive.screens.products.repository.ProductsRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductsViewModel(private val productRepository: ProductsRepository) : ViewModel() {
-    private val _products = MutableLiveData<List<MyProduct>>()
-    val products: LiveData<List<MyProduct>> get() = _products
+
+@HiltViewModel
+class ProductsViewModel @Inject constructor(
+    private val productRepository: ProductsRepositoryImpl
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<UiState<List<MyProduct>>>(UiState.Idle)
+    val uiState: StateFlow<UiState<List<MyProduct>>> get() = _uiState
+
     fun fetchProducts(vendor: String) {
+        _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                val brandsList = productRepository.getProducts(vendor)
-                _products.postValue(brandsList)
+                val products = productRepository.getProducts(vendor)
+                _uiState.value = UiState.Success(products)
             } catch (e: Exception) {
-
+                _uiState.value = UiState.Error(e)
             }
         }
-    }
-
-    fun filterProductsByType(productType: String) {
-        val currentProducts = _products.value ?: return
-        val filteredProducts = currentProducts.filter { it.productType == productType }
-        _products.value = filteredProducts
     }
 }

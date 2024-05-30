@@ -1,6 +1,5 @@
 package com.example.exclusive.screens.settings.currency
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.model.Currencies
@@ -24,6 +23,7 @@ class CurrenciesViewModel @Inject constructor(
     init {
         fetchCurrencies()
     }
+
     private fun fetchCurrencies() {
         viewModelScope.launch {
             currencyRepository.getCurrencies()
