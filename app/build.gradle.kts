@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.apollographql.apollo3") version "4.0.0-beta.6"
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -95,10 +96,13 @@ dependencies {
     // Gson
     implementation ("com.google.code.gson:gson:2.9.0")
 
-    // okHTTP
+    // Retrofit And OkHttp
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // RoundedImageView
     implementation ("com.makeramen:roundedimageview:2.3.0")
@@ -106,6 +110,14 @@ dependencies {
     //Apollo
     implementation("com.apollographql.apollo3:apollo-runtime:4.0.0-beta.6")
 
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+}
+kapt {
+    correctErrorTypes = true
 }
 apollo {
     service("service") {
