@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/currenciesFragment">
+    app:startDestination="@id/signUpFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -25,4 +25,30 @@
         android:name="com.example.exclusive.screens.settings.currency.CurrenciesFragment"
         android:label="fragment_currencies"
         tools:layout="@layout/fragment_currencies" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.exclusive.screens.auth.signup.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.exclusive.screens.auth.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPasswordFragment"
+        android:name="com.example.exclusive.screens.auth.ForgetPasswordFragment"
+        android:label="ForgetPasswordFragment" />
 </navigation>

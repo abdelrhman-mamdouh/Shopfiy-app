@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/inputEmail"
         android:inputType="textEmailAddress"
-        android:drawableEnd="@drawable/ic_check"
+
         android:padding="@dimen/_12sdp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -37,7 +37,7 @@
         android:layout_marginTop="@dimen/_32sdp"
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_16sdp"/>
-
+<!--    android:drawableEnd="@drawable/ic_check"-->
     <!-- Password Field -->
     <EditText
         android:id="@+id/et_password"
@@ -82,32 +82,25 @@
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_16sdp"/>
 
-    <!-- Or login with social account -->
     <TextView
-        android:id="@+id/tv_or"
+        android:id="@+id/tv_dont_have_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/orLoginWithSocialAccount"
-        app:layout_constraintBottom_toTopOf="@+id/btn_google_login"
+        android:text="@string/dontHaveAnAccount"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="parent"
+  />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dont_have_account"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/_24sdp"/>
-
-    <!-- Google Login Button -->
-    <ImageButton
-        android:id="@+id/btn_google_login"
-        android:layout_width="@dimen/_48sdp"
-        android:layout_height="@dimen/_48sdp"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/google_login"
-        android:src="@drawable/ic_google"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- Facebook Login Button -->
-
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_width="wrap_content"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

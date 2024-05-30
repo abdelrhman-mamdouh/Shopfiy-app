@@ -57,6 +57,9 @@ dependencies {
     // SDP (ScalableDP) and SSP (ScalableSP) libraries for handling scalable dimensions and spacing
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.0.6")
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     // Lifecycle components for managing Android lifecycle-aware components
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
@@ -114,6 +117,10 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+
+    //datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 }
 kapt {
     correctErrorTypes = true

@@ -28,8 +28,8 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
         adapter = BrandsAdapter(emptyList())
 
-        viewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepositoryImpl(ShopifyRemoteDataSourceImpl)))
-            .get(BrandsViewModel::class.java)
+       // viewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepositoryImpl(ShopifyRemoteDataSourceImpl)))
+       //     .get(BrandsViewModel::class.java)
 
         recyclerView.adapter = adapter
 

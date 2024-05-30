@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/inputName"
         android:inputType="textPersonName"
-        android:drawableEnd="@drawable/ic_check"
+
         android:padding="@dimen/_12sdp"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -36,9 +36,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_32sdp"
         android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+        android:layout_marginEnd="@dimen/_16sdp"
+        />
+    <!--        android:drawableEnd="@drawable/ic_check"-->
 
-    <!-- Email Field -->
     <EditText
         android:id="@+id/et_email"
         android:layout_width="0dp"
@@ -97,5 +98,13 @@
         android:layout_marginTop="@dimen/_24sdp"
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_16sdp"/>
-
+<ProgressBar
+    android:id="@+id/progressBar"
+    app:layout_constraintTop_toBottomOf="@+id/btn_sign_up"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="@dimen/_30sdp"
+    android:layout_width="wrap_content"
+    android:visibility="invisible"
+    android:layout_height="wrap_content"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
