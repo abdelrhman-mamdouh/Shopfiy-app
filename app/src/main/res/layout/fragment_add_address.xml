@@ -2,7 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".screens.settings.address.addAddress.AddAddressFragment">
 
     <TextView
         android:id="@+id/tv_address_title"
@@ -17,20 +19,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <fragment
+        android:id="@+id/f_auto_complete"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/et_title"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_address_title"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/title"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/et_details"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address_title" />
+        app:layout_constraintEnd_toEndOf="@id/f_auto_complete"
+        app:layout_constraintStart_toStartOf="@id/f_auto_complete"
+        app:layout_constraintTop_toBottomOf="@+id/f_auto_complete" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_details"
@@ -40,13 +53,13 @@
         android:ems="10"
         android:hint="@string/enter_address_details"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/et_phone"
+        app:layout_constraintBottom_toTopOf="@+id/tv_phone"
         app:layout_constraintEnd_toEndOf="@+id/et_title"
         app:layout_constraintStart_toStartOf="@+id/et_title"
         app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_phone"
+        android:id="@+id/tv_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -69,7 +82,8 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/et_details"
-        app:layout_constraintTop_toBottomOf="@+id/et_phone" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
     <TextView
         android:id="@+id/tv_country"
         android:layout_width="0dp"

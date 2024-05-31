@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/currenciesFragment">
-
+    app:startDestination="@id/addAddressFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.exclusive.screens.home.view.HomeFragment"
@@ -25,6 +24,10 @@
         android:name="com.example.exclusive.screens.settings.currency.CurrenciesFragment"
         android:label="fragment_currencies"
         tools:layout="@layout/fragment_currencies" />
-
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.example.exclusive.screens.settings.address.addAddress.AddAddressFragment"
+        android:label="fragment_add_address"
+        tools:layout="@layout/fragment_add_address" />
 
 </navigation>

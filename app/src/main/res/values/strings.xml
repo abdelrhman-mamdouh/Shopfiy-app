@@ -39,5 +39,11 @@
     <string name="enter_address_details">Enter Address Details</string>
     <string name="country">Country</string>
     <string name="default_address">Default Address</string>
-
+    <string name="use_as_the_shipping_address">Use as the Shipping Address</string>
+    <string name="phone">Phone:</string>
+    <string name="change">Change</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="visa_mastercard">Visa / MasterCard</string>
+    <string name="submit_order">Submit Order</string>
+    <string name="google_maps_key" translatable="false">AIzaSyCzL-KKINpE6at4j4zH8qNXAB6eMn8Y0L0</string>
 </resources>

@@ -79,7 +79,6 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.0")
     implementation ("com.google.android.gms:play-services-maps:18.0.2")
     implementation ("com.google.android.libraries.places:places:3.3.0")
-
     // lottie
     implementation("com.airbnb.android:lottie:6.3.0")
 
@@ -115,6 +114,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+
 }
 kapt {
     correctErrorTypes = true

@@ -13,6 +13,7 @@ import com.example.exclusive.R
 import com.example.exclusive.databinding.GoToLoginDialogBinding
 
 object Constants {
+    const val GOOGLE_KEY: String = "AIzaSyCzL-KKINpE6at4j4zH8qNXAB6eMn8Y0L0"
     const val BASE_URL: String = "https://mad44-android-sv-2.myshopify.com/api/2024-04/graphql.json"
     const val CURRENCY_BASE_URL: String = "https://api.fastforex.io/"
     const val API_KEY: String = "43f6205d2d0b257b652e16f5f7663414"
