@@ -20,6 +20,9 @@ class CurrenciesViewModel @Inject constructor(
     private val _currenciesStateFlow = MutableStateFlow<UiState<Currencies>>(UiState.Idle)
     val currenciesStateFlow: StateFlow<UiState<Currencies>> get() = _currenciesStateFlow
 
+    init {
+        fetchCurrencies("USD")
+    }
     fun fetchCurrencies(currencyCode: String) {
         viewModelScope.launch {
             currencyRepository.getCurrencies()

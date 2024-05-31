@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
 
-    app:startDestination="@id/signUpFragment">
+    app:startDestination="@id/homeFragment">
 
 
     <fragment
@@ -33,31 +33,19 @@
         android:label="fragment_add_address"
         tools:layout="@layout/fragment_add_address" />
 
-<fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.example.exclusive.ui.auth.signup.SignUpFragment"
-        android:label="SignUpFragment" >
-        <action
-            android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.exclusive.ui.auth.login.LoginFragment"
-        android:label="LoginFragment" >
-        <action
-            android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
-            app:destination="@id/forgetPasswordFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
         android:name="com.example.exclusive.ui.auth.ForgetPasswordFragment"
-        android:label="ForgetPasswordFragment" />
+        android:label="ForgetPasswordFragment"
+        tools:layout="@layout/fragment_forget_password"
+        />
+
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.exclusive.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings"
+        />
 
 </navigation>

@@ -19,5 +19,4 @@ abstract class RepositoryModule {
         shopifyRemoteDataSourceImpl: ShopifyRemoteDataSourceImpl
     ): ShopifyRemoteDataSource
 
-
 }

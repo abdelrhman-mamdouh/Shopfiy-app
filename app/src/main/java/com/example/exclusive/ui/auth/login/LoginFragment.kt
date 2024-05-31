@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.auth.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
+import com.example.exclusive.HolderActivity
+import com.example.exclusive.MainActivity
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentLoginBinding
 import com.example.exclusive.databinding.FragmentSignUpBinding
@@ -83,15 +86,12 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             binding.progressBar.visibility = View.INVISIBLE
-                         //   NavHostFragment.findNavController(this@LoginFragment)
-                            //    .navigate(R.id.action_loginFragment_to_homeFragment)
+                            val intent = Intent(context, MainActivity::class.java)
+                            startActivity(intent)
                         }
-
-
                     }
                 }
             }
         }
     }
-
 }

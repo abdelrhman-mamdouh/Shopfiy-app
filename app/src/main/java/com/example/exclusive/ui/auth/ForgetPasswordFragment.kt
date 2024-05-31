@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentForgetPasswordBinding
 import com.example.exclusive.databinding.FragmentSignUpBinding
+import com.example.exclusive.screens.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,12 +27,10 @@ class ForgetPasswordFragment : Fragment() {
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentForgetPasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,7 +46,5 @@ class ForgetPasswordFragment : Fragment() {
             }
         }
     }
-
-
 
 }
