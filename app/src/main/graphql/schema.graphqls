@@ -6134,38 +6134,12 @@ type CustomerAddressUpdatePayload {
 The input fields to create a new customer.
 """
 input CustomerCreateInput {
-  """
-  The customer’s first name.
-  """
-  firstName: String
-
-  """
-  The customer’s last name.
-  """
-  lastName: String
-
-  """
-  The customer’s email.
-  """
   email: String!
-
-  """
-  A unique phone number for the customer.
-
-  Formatted using E.164 standard. For example, _+16135551111_.
-  """
-  phone: String
-
-  """
-  The login password used by the customer.
-  """
   password: String!
-
-  """
-  Indicates whether the customer has consented to be sent marketing material via email.
-  """
-  acceptsMarketing: Boolean
+  firstName: String
+  lastName: String
 }
+
 
 """
 Return type for `customerCreate` mutation.

@@ -16,6 +16,7 @@
     <string name="inputEmail">Email</string>
     <string name="inputPassword">Password</string>
     <string name="forgotPassword">Forgot your password?</string>
+    <string name="dontHaveAnAccount">Don\'t have an account?</string>
     <string name="login">Login</string>
     <string name="orLoginWithSocialAccount">Or login with social account</string>
     <string name="googleLogin">login with google</string>
