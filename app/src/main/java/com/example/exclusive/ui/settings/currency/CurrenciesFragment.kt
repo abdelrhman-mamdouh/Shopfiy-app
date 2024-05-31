@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCurrenciesBinding
+import com.example.exclusive.ui.settings.currency.CurrenciesAdapter
 import com.example.exclusive.utilities.currencies
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

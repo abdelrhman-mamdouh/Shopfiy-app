@@ -1,4 +1,4 @@
-package com.example.exclusive.screens.settings.address.addAddress
+package com.example.exclusive.ui.settings.address.addAddress
 
 import android.os.Bundle
 import android.util.Log

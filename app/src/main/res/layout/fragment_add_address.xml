@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.settings.address.addAddress.AddAddressFragment">
+    tools:context=".ui.settings.address.addAddress.AddAddressFragment">
 
     <TextView
         android:id="@+id/tv_address_title"

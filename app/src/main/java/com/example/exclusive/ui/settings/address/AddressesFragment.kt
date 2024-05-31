@@ -1,4 +1,4 @@
-package com.example.exclusive.screens.settings.address
+package com.example.exclusive.ui.settings.address
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

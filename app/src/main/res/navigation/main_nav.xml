@@ -27,7 +27,7 @@
         tools:layout="@layout/fragment_currencies" />
     <fragment
         android:id="@+id/addAddressFragment"
-        android:name="com.example.exclusive.screens.settings.address.addAddress.AddAddressFragment"
+        android:name="com.example.exclusive.ui.settings.address.addAddress.AddAddressFragment"
         android:label="fragment_add_address"
         tools:layout="@layout/fragment_add_address" />
 
