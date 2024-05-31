@@ -14,6 +14,5 @@ class HolderActivity : AppCompatActivity() {
         binding = ActivityHolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
     }
 }

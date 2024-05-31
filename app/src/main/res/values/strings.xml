@@ -25,5 +25,23 @@
     <string name="send">send</string>
     <string name="pleaseEnterEmail">Please, enter your email address. You will receive a link to create a new password via email.</string>
     <string name="products">Products</string>
-
+    <string name="orderDetails">Order Details</string>
+    <string name="order_number">Order Number:</string>
+    <string name="date">Date:</string>
+    <string name="tracking_number">Tracking Number:</string>
+    <string name="quantity">Quantity:</string>
+    <string name="total_amount">Total Amount:</string>
+    <string name="status">Status:</string>
+    <string name="status_delivered">Delivered</string>
+    <string name="canceled">Canceled</string>
+    <string name="processing">Processing</string>
+    <string name="delivered">Delivered</string>
+    <string name="orders">Orders</string>
+    <string name="product_image">Product Image</string>
+    <string name="product_title">Pullover</string>
+    <string name="product_brand">Mango</string>
+    <string name="product_color">Color: Gray</string>
+    <string name="product_size">Size: L</string>
+    <string name="product_units">Units: 1</string>
+    <string name="product_price">$51</string>
 </resources>

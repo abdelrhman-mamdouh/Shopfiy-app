@@ -5,8 +5,11 @@
         <item name="colorPrimaryVariant">@color/secondary_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/primary_color</item>
+        <item name="android:itemBackground">@color/primary_color</item>
 
-        <item name="android:navigationBarColor">@color/white</item>
+
+        <item name="itemIconTint">@color/medium_gray</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="Theme.Exclusive" parent="Base.Theme.Exclusive" />

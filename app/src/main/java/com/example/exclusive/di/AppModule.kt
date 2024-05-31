@@ -3,14 +3,10 @@ package com.example.exclusive.di
 import com.apollographql.apollo3.ApolloClient
 import com.example.exclusive.data.network.CurrencyApi
 import com.example.exclusive.data.remote.ApolloService
-import com.example.exclusive.screens.home.repository.HomeRepositoryImpl
-import com.example.exclusive.screens.home.viewmodel.HomeViewModel
 import com.example.exclusive.utilities.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
