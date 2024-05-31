@@ -38,22 +38,16 @@
 
 
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/_8sdp"
-        android:elevation="@dimen/_20sdp"
-        app:menu = "@menu/item_menu"
-        android:background="@drawable/round_corner"
-        app:itemIconSize="@dimen/_25sdp"
-
-        app:itemRippleColor="@color/light_white"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/item_selector"
-        ></com.google.android.material.bottomnavigation.BottomNavigationView>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/item_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

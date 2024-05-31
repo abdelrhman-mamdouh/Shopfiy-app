@@ -5,6 +5,8 @@ plugins {
     id("kotlin-parcelize")
     id("com.apollographql.apollo3") version "4.0.0-beta.6"
     id("com.google.dagger.hilt.android")
+
+
 }
 
 android {
@@ -40,6 +42,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
