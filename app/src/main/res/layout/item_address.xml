@@ -38,17 +38,26 @@
             />
 
         <TextView
-            android:id="@+id/et_phone"
+            android:id="@+id/tv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="+20 115 371 6828"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cb_default_address"
             android:layout_marginTop="@dimen/_16sdp"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="@dimen/_14ssp"
             android:layout_marginBottom="@dimen/_16sdp"
             app:layout_constraintTop_toBottomOf="@+id/tv_street_name" />
 
+        <CheckBox
+            android:id="@+id/cb_default_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:text="@string/use_as_the_shipping_address"
+            app:layout_constraintStart_toStartOf="@+id/tv_phone"
+            app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckoutFragment">
+
+    <!-- Checkout Title -->
+    <TextView
+        android:id="@+id/tv_checkout_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/check_out"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Shipping Address Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_shipping_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/primary_color"
+        app:strokeWidth="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_checkout_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_checkout_title">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Shipping Address Details -->
+            <TextView
+                android:id="@+id/tv_shipping_address_details"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                tools:text="16, Ibn Hamedo, Cairo, Egypt"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Phone Label -->
+            <TextView
+                android:id="@+id/tv_phone_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/phone"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_shipping_address_details"
+                app:layout_constraintTop_toBottomOf="@+id/tv_shipping_address_details" />
+
+            <!-- Phone Number -->
+            <TextView
+                android:id="@+id/tv_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                tools:text="+20 115 371 6828"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_phone_label"
+                app:layout_constraintStart_toEndOf="@+id/tv_phone_label"
+                app:layout_constraintTop_toTopOf="@+id/tv_phone_label" />
+
+            <!-- Change Address -->
+            <TextView
+                android:id="@+id/tv_change_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/change"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Payment Method Radio Group -->
+    <RadioGroup
+        android:id="@+id/rg_payment_methods"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/card_shipping_address"
+        app:layout_constraintStart_toStartOf="@+id/card_shipping_address"
+        app:layout_constraintTop_toBottomOf="@+id/card_shipping_address">
+
+        <!-- Cash on Delivery -->
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_cod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary_color"
+            android:text="@string/cash_on_delivery" />
+
+        <!-- Visa/Mastercard -->
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_visa_mastercard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary_color"
+            android:checked="true"
+            android:text="@string/visa_mastercard" />
+
+        <!-- PayPal -->
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb_paypal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/primary_color"
+            android:text="Paypal" />
+    </RadioGroup>
+
+    <!-- Order Details -->
+    <TextView
+        android:id="@+id/tv_order_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Order:"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/rg_payment_methods"
+        app:layout_constraintTop_toBottomOf="@+id/rg_payment_methods"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- Order Price -->
+    <TextView
+        android:id="@+id/tv_order_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="100 $"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_order_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_order_label"
+        app:layout_constraintTop_toTopOf="@+id/tv_order_label" />
+
+    <!-- Discount Label -->
+    <TextView
+        android:id="@+id/tv_discount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Discount:"
+        app:layout_constraintBottom_toTopOf="@+id/tv_summary_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_label" />
+
+    <!-- Discount Price -->
+    <TextView
+        android:id="@+id/tv_discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-20 $"
+        android:textColor="#B22222"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_discount_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_price"
+        app:layout_constraintTop_toTopOf="@+id/tv_discount_label" />
+
+    <!-- Summary Label -->
+    <TextView
+        android:id="@+id/tv_summary_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Summary:"
+        app:layout_constraintStart_toStartOf="@+id/tv_discount_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_discount_label" />
+
+    <!-- Summary Price -->
+    <TextView
+        android:id="@+id/tv_summary_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="80 $"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_summary_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_discount_price"
+        app:layout_constraintTop_toTopOf="@+id/tv_summary_label" />
+
+    <!-- Submit Order Button -->
+    <Button
+        android:id="@+id/btn_submit_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/submit_order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_summary_price"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="@+id/tv_summary_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_summary_label" />
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:indeterminateTint="@color/primary_color"
+        android:indeterminateTintMode="src_atop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

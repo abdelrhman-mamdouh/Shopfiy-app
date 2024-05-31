@@ -20,16 +20,16 @@
         tools:listitem="@layout/item_address"
         tools:itemCount="10" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_16sdp"
-        android:text="@string/add_address"
-        android:textAllCaps="false"
-        app:cornerRadius="16dp"
+        android:contentDescription="@string/add_address"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
