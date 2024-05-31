@@ -13,17 +13,22 @@ query ProductsQuery($vendor: String!) {
                         }
                     }
                 }
-                priceRange {
-                    minVariantPrice {
-                        amount
-                        currencyCode
-                    }
-                    maxVariantPrice {
-                        amount
-                        currencyCode
+                variants(first: 5) {
+                    edges {
+                        node {
+                            id
+                            title
+                            sku
+                            priceV2 {
+                                amount
+                                currencyCode
+                            }
+                            quantityAvailable
+                        }
                     }
                 }
             }
         }
     }
 }
+

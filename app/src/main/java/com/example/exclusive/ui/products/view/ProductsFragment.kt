@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductsBinding
-import com.example.exclusive.model.MyProduct
+import com.example.exclusive.model.ProductNode
 import com.example.exclusive.ui.products.viewmodel.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,9 +75,11 @@ class ProductsFragment : Fragment(), OnProductClickListener {
                     is UiState.Error -> {
 
                     }
+
                     UiState.Loading -> {
 
                     }
+
                     UiState.Idle -> {
 
                     }
@@ -87,7 +88,7 @@ class ProductsFragment : Fragment(), OnProductClickListener {
         }
     }
 
-    override fun onProductClick(product: MyProduct) {
+    override fun onProductClick(product: ProductNode) {
         val bundle = Bundle()
         bundle.putParcelable("product", product)
 

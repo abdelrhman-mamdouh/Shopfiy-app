@@ -2,7 +2,7 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.model.Brand
-import com.example.exclusive.model.MyProduct
+import com.example.exclusive.model.ProductNode
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +22,7 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         return apolloService.getCategories()
     }
 
-    override suspend fun getProducts(vendor: String): List<MyProduct> {
+    override suspend fun getProducts(vendor: String): List<ProductNode> {
         return apolloService.getProducts(vendor)
     }
 

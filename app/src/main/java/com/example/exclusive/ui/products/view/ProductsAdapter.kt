@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.RowProductBinding
-import com.example.exclusive.model.MyProduct
+import com.example.exclusive.model.ProductNode
 import com.squareup.picasso.Picasso
 
 
 class ProductsAdapter(
-    private var allProducts: List<MyProduct>,
+    private var allProducts: List<ProductNode>,
     private val listener: OnProductClickListener
 ) : RecyclerView.Adapter<ProductsAdapter.BrandViewHolder>() {
 
-    private var filteredProducts: List<MyProduct> = allProducts
+    private var filteredProducts: List<ProductNode> = allProducts
 
     inner class BrandViewHolder(private val binding: RowProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -27,12 +27,13 @@ class ProductsAdapter(
             }
         }
 
-        fun bind(myProduct: MyProduct) {
+        fun bind(myProduct: ProductNode) {
             binding.tvProductName.text = myProduct.title
             binding.tvProductType.text = myProduct.productType
-            binding.tvProductPrice.text = myProduct.price.toString() +" "+ myProduct.currencyCode.toString()
-            if (!myProduct.imageUrl.isNullOrEmpty()) {
-                Picasso.get().load(myProduct.imageUrl).into(binding.ivProductImage)
+            binding.tvProductPrice.text =
+                myProduct.variants.edges[0].node.priceV2.amount + " " + myProduct.variants.edges[0].node.priceV2.currencyCode
+            if (!myProduct.images.edges[0].node.src.isNullOrEmpty()) {
+                Picasso.get().load(myProduct.images.edges[0].node.src).into(binding.ivProductImage)
             }
         }
     }
@@ -57,13 +58,15 @@ class ProductsAdapter(
         }
         notifyDataSetChanged()
     }
+
     fun filterByPrice(minPrice: Int, maxPrice: Int) {
         filteredProducts = allProducts.filter {
-            it.price.toInt() in minPrice..maxPrice
+            it.variants.edges[0].node.priceV2.amount.toInt() in minPrice..maxPrice
         }
         notifyDataSetChanged()
     }
-    fun updateProducts(newProducts: List<MyProduct>) {
+
+    fun updateProducts(newProducts: List<ProductNode>) {
         allProducts = newProducts
         filterProducts("All")
     }

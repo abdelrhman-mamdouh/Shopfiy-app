@@ -8,17 +8,17 @@ import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
-import com.example.exclusive.ProductsQuery
-import com.example.exclusive.model.Brand
-import com.example.exclusive.model.MyProduct
-import javax.inject.Inject
-
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
+import com.example.exclusive.ProductsQuery
 import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
+import com.example.exclusive.model.Brand
+import com.example.exclusive.model.ProductNode
+
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
@@ -46,29 +46,24 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     }
 
 
-    suspend fun getProducts(vendor: String): List<MyProduct> {
-        val products = mutableListOf<MyProduct>()
+    suspend fun getProducts(vendor: String): List<ProductNode> {
+        val products = mutableListOf<ProductNode>()
 
         try {
-            val response: ApolloResponse<ProductsQuery.Data> =
-                apolloClient.query(ProductsQuery(vendor = vendor)).execute()
+            val response = apolloClient.query(ProductsQuery(vendor = vendor)).execute()
+            val data = response.data
 
-            response.data?.products?.edges?.forEach { edge ->
+            data?.products?.edges?.forEach { edge ->
                 val node = edge.node
-                val productPrice = node.priceRange?.minVariantPrice?.amount
-                val priceString = productPrice.toString() ?: "0.0"
-                val price = priceString.toDoubleOrNull() ?: 0.0
-                products.add(
-                    MyProduct(
-                        id = node.id,
-                        title = node.title,
-                        vendor = node.vendor,
-                        productType = node.productType,
-                        imageUrl = node.images.edges.firstOrNull()?.node?.src.toString(),
-                        price = price,
-                        currencyCode = node.priceRange.minVariantPrice.currencyCode.toString()
-                    )
+                val productNode = ProductNode(
+                    node.id,
+                    node.title,
+                    node.vendor,
+                    node.productType,
+                    mapImages(node.images),
+                    mapVariants(node.variants)
                 )
+                products.add(productNode)
             }
         } catch (e: ApolloException) {
             println("ApolloException: ${e.message}")
@@ -76,6 +71,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
 
         return products
     }
+
 
     suspend fun getCategories(): List<Brand> {
         val brands = mutableListOf<Brand>()
@@ -209,4 +205,28 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         }
         return false
     }
+}
+fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
+    val imageEdges = productsQueryImages.edges.map { imageEdge ->
+        com.example.exclusive.model.ImageEdge(
+            com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
+        )
+    }
+    return com.example.exclusive.model.Images(imageEdges)
+}
+fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.exclusive.model.Variants {
+    val variantEdges = productsQueryVariants.edges.map { variantEdge ->
+        com.example.exclusive.model.VariantEdge(
+            com.example.exclusive.model.VariantNode(
+                variantEdge.node.id,
+                variantEdge.node.title,
+                variantEdge.node.sku!!,
+                com.example.exclusive.model.PriceV2(
+                    variantEdge.node.priceV2.amount.toString(),
+                    variantEdge.node.priceV2.currencyCode.toString()
+                )
+            )
+        )
+    }
+    return com.example.exclusive.model.Variants(variantEdges)
 }
