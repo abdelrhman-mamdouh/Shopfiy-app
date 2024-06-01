@@ -120,3 +120,20 @@ data class CartProduct(
     val variantTitle: String,
     val variantPrice: String
 )
+data class MyCreateCartResponse(
+    val cartCreate: MyCartCreate?
+)
+
+data class MyCartCreate(
+    val cart: MyCart?,
+    val userErrors: List<MyUserError>?
+)
+
+data class MyCart(
+    val id: String
+)
+
+data class MyUserError(
+    val field: List<String>?,
+    val message: String
+)

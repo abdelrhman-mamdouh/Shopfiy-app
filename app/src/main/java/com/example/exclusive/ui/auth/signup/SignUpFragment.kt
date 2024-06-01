@@ -13,7 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentSignUpBinding
-import com.example.exclusive.screens.auth.AuthViewModel
+import com.example.exclusive.ui.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

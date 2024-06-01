@@ -25,5 +25,6 @@ interface ShopifyRemoteDataSource {
     suspend fun resetPasswordByUrl(resetUrl: String, newPassword: String): Boolean
 
     suspend fun createCart(token: String): CreateCartResponse?
+
     suspend fun getProductsInCart(cartId: String): List<CartProduct>
 }
