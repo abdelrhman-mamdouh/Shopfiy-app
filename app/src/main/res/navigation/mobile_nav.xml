@@ -36,9 +36,9 @@
         android:name="com.example.exclusive.ui.cart.CartFragment"
         android:label="CartFragment"
         tools:layout="@layout/fragment_cart"/>
-        <action
-            android:id="@+id/action_productsFragment_to_cartFragment"
-            app:destination="@id/cartFragment"
-            app:enterAnim="@anim/row_slide_in"/>
+    <action
+        android:id="@+id/action_productsFragment_to_cartFragment"
+        app:destination="@id/cartFragment"
+        app:enterAnim="@anim/row_slide_in"/>
 
 </navigation>

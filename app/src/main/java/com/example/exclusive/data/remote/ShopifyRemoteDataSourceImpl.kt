@@ -56,7 +56,7 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun createCart(token: String): CreateCartResponse? {
-        return apolloService.createCard(token = token)
+        return apolloService.createCart(token = token)
     }
 
     override suspend fun getProductsInCart(cartId: String): List<CartProduct> {

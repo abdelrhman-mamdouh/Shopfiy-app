@@ -8,6 +8,7 @@ import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
+import com.example.exclusive.CreateCartMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
 import com.example.exclusive.GetProductsInCartQuery
@@ -15,9 +16,12 @@ import com.example.exclusive.ProductsQuery
 import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
 import com.example.exclusive.model.Brand
+import com.example.exclusive.model.Cart
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.model.UserError
+import com.example.exclusive.type.CartBuyerIdentityInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
 import javax.inject.Inject
@@ -207,14 +211,15 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         return false
     }
 
-    suspend fun createCard(token: String): CreateCartResponse? {
+    suspend fun createCart(token: String): CreateCartResponse? {
         val mutation = CreateCartMutation(
-            buyerIdentity = Optional.Present(CartBuyerIdentityInput(Optional.Present(token)))
-        )
-
+            buyerIdentity = Optional.present(CartBuyerIdentityInput(
+                customerAccessToken = Optional.present(token)
+            )
+        ))
         try {
-            val response = apolloClient.mutation(mutation).execute()
-            val cartCreate = response.data?.cartCreate
+            val response = apolloClient.mutation(mutation)
+            val cartCreate = response.execute().data?.cartCreate
             val cart = cartCreate?.cart?.let { Cart(it.id) }
             val userErrors = cartCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
 
