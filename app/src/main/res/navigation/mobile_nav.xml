@@ -9,7 +9,12 @@
         android:id="@+id/productsFragment"
         android:name="com.example.exclusive.ui.products.view.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products" >
+
+        <action
+            android:id="@+id/action_productsFragment_to_productInfoFragment"
+            app:destination="@id/productInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/orderFragment"
         android:name="com.example.exclusive.ui.orders.view.OrderFragment"
@@ -30,4 +35,12 @@
         android:id="@+id/action_orderFragment_to_orderDetailsFragment"
         app:destination="@id/orderDetailsFragment"
         app:enterAnim="@anim/row_slide_in"/>
+    <fragment
+        android:id="@+id/productInfoFragment"
+        android:name="com.example.exclusive.ui.productinfo.ProductInfoFragment"
+        android:label="ProductInfoFragment" >
+        <argument
+            android:name="product"
+            app:argType="com.example.exclusive.model.ProductNode" />
+    </fragment>
 </navigation>

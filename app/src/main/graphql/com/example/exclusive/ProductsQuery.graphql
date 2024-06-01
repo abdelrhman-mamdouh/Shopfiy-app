@@ -5,15 +5,16 @@ query ProductsQuery($vendor: String!) {
                 id
                 title
                 vendor
+                description
                 productType
-                images(first: 1) {
+                images(first: 5) {
                     edges {
                         node {
                             src
                         }
                     }
                 }
-                variants(first: 5) {
+                variants(first: 15) {
                     edges {
                         node {
                             id

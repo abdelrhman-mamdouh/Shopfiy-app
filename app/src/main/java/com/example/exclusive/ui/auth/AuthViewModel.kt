@@ -21,6 +21,15 @@ class AuthViewModel @Inject constructor(private val remoteDataSource: ShopifyRem
     val sendPasswordState : StateFlow<Boolean> = _sendPasswordState
     val _resetPasswordState = MutableStateFlow<Boolean>(false)
     val resetPasswordState : StateFlow<Boolean> = _resetPasswordState
+    val _tokenState = MutableStateFlow<String?>("")
+    val tokenState : StateFlow<String?> = _tokenState
+    fun getToken(){
+        viewModelScope.launch {
+            localDataSource.token.collect{
+                _tokenState.value = it
+            }
+        }
+    }
     fun signUp(name: String, email: String, password: String) {
 
         viewModelScope.launch {

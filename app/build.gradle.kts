@@ -140,3 +140,5 @@ apollo {
         }
     }
 }
+//safe args
+apply(plugin = "androidx.navigation.safeargs.kotlin")

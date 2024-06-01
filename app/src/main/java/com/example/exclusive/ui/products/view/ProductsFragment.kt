@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
@@ -89,10 +90,9 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     }
 
     override fun onProductClick(product: ProductNode) {
-        val bundle = Bundle()
-        bundle.putParcelable("product", product)
 
-        findNavController().navigate(R.id.action_productsFragment_to_orderFragment, bundle)
+
+        NavHostFragment.findNavController(this@ProductsFragment).navigate(ProductsFragmentDirections.actionProductsFragmentToProductInfoFragment(product))
     }
 
 

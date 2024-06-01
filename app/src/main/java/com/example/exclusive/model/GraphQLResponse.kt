@@ -25,9 +25,11 @@ data class ProductNode(
     val id: String,
     val title: String,
     val vendor: String,
+    val description: String,
     val productType: String,
     val images: Images,
     val variants: Variants
+
 ) : Parcelable
 
 @Parcelize

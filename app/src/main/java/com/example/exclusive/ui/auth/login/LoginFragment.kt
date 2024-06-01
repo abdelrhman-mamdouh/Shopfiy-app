@@ -44,6 +44,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
@@ -51,6 +52,26 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getToken()
+        lifecycleScope.launch {
+
+            viewModel.tokenState
+
+                .collect {
+
+                    if (it != null&&it.isNotEmpty()) {
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                    else if(it==null){
+                        binding.loading.visibility = View.GONE
+                        binding.clLogin.visibility = View.VISIBLE
+                    }
+                }
+
+        }
         binding.tvDontHaveAccount.setOnClickListener {
             NavHostFragment.findNavController(this@LoginFragment)
                 .navigate(R.id.action_loginFragment_to_signUpFragment)
@@ -80,6 +101,7 @@ class LoginFragment : Fragment() {
                         }
                         .collect { success ->
                         if (success) {
+                            binding.progressBar.visibility = View.INVISIBLE
                             Toast.makeText(
                                 requireContext(),
                                 "Login successful",
@@ -89,6 +111,14 @@ class LoginFragment : Fragment() {
                             val intent = Intent(context, MainActivity::class.java)
                             startActivity(intent)
                         }
+                            else{
+                                binding.progressBar.visibility = View.INVISIBLE
+                                Toast.makeText(
+                                    requireContext(),
+                                    "process failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                     }
                 }
             }

@@ -22,11 +22,16 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
-            app:destination="@id/forgetPasswordFragment" />
+
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/forgetPasswordFragment2"
+        android:name="com.example.exclusive.ui.auth.ForgetPasswordFragment"
+        android:label="ForgetPasswordFragment" />
 </navigation>

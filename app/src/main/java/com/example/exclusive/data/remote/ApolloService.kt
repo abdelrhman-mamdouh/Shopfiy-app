@@ -59,6 +59,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                     node.id,
                     node.title,
                     node.vendor,
+                    node.description,
                     node.productType,
                     mapImages(node.images),
                     mapVariants(node.variants)

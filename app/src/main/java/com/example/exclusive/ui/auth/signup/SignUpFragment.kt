@@ -53,6 +53,7 @@ class SignUpFragment : Fragment() {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.signUpState.collect { success ->
                         if (success) {
+                            binding.progressBar.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
                                 "Sign up successful",
@@ -61,6 +62,7 @@ class SignUpFragment : Fragment() {
                             NavHostFragment.findNavController(this@SignUpFragment)
                                 .navigate(R.id.action_signUpFragment_to_loginFragment)
                         } else {
+                            binding.progressBar.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
                                 "process failed",
