@@ -89,10 +89,11 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     }
 
     override fun onProductClick(product: ProductNode) {
-        val bundle = Bundle()
-        bundle.putParcelable("product", product)
-
-        findNavController().navigate(R.id.action_productsFragment_to_cartFragment, bundle)
+        viewModel.addToCart("gid://shopify/ProductVariant/45323456577790")
+//        val bundle = Bundle()
+//        bundle.putParcelable("product", product)
+//
+//        findNavController().navigate(R.id.action_productsFragment_to_cartFragment, bundle)
     }
 
 

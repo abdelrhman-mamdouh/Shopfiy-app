@@ -137,3 +137,8 @@ data class MyUserError(
     val field: List<String>?,
     val message: String
 )
+
+data class AddToCartResponse(
+    val cart: Cart?,
+    val userErrors: List<UserError>
+)

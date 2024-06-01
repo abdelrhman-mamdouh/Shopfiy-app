@@ -1,10 +1,12 @@
 package com.example.exclusive.data.remote
 
+import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CartProductResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.type.CartLineInput
 
 
 interface ShopifyRemoteDataSource {
@@ -27,4 +29,5 @@ interface ShopifyRemoteDataSource {
     suspend fun createCart(token: String): CreateCartResponse?
 
     suspend fun getProductsInCart(cartId: String): List<CartProduct>
+    suspend fun addProductToCart(cartId: String, lines: List<CartLineInput>): AddToCartResponse?
 }

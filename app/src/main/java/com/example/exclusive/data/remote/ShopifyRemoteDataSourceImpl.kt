@@ -1,11 +1,13 @@
 // ShopifyRemoteDataSourceImpl.kt
 package com.example.exclusive.data.remote
 
+import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CartProductResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.type.CartLineInput
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -57,6 +59,13 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun createCart(token: String): CreateCartResponse? {
         return apolloService.createCart(token = token)
+    }
+
+    override suspend fun addProductToCart(
+        cartId: String,
+        lines: List<CartLineInput>
+    ): AddToCartResponse? {
+        return apolloService.addToCartById(cartId,lines)
     }
 
     override suspend fun getProductsInCart(cartId: String): List<CartProduct> {
