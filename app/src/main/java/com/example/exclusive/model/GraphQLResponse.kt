@@ -142,3 +142,26 @@ data class AddToCartResponse(
     val cart: Cart?,
     val userErrors: List<UserError>
 )
+
+data class CheckoutResponse(
+    val checkout: Checkout?,
+    val userErrors: List<UserError>
+)
+
+data class Checkout(
+    val id: String,
+    val webUrl: String,
+    val lineItems: List<LineItem>
+)
+
+data class LineItem(
+    val title: String,
+    val quantity: Int,
+    val variant: Variant
+)
+
+data class Variant(
+    val id: String,
+    val title: String,
+    val price: String
+)

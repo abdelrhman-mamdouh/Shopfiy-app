@@ -10,6 +10,7 @@ import com.example.exclusive.AddToCartMutation
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
 import com.example.exclusive.CreateCartMutation
+import com.example.exclusive.CreateCheckoutMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
 import com.example.exclusive.GetProductsInCartQuery
@@ -20,11 +21,16 @@ import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.Cart
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.Checkout
+import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
+import com.example.exclusive.model.LineItem
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.UserError
+import com.example.exclusive.model.Variant
 import com.example.exclusive.type.CartBuyerIdentityInput
 import com.example.exclusive.type.CartLineInput
+import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
 import javax.inject.Inject
@@ -305,6 +311,41 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             Log.e("GraphQL", "ApolloException: ${e.message}", e)
         }
         return null
+    }
+
+    suspend fun createCheckout(lineItems: List<CheckoutLineItemInput>, email: String?): CheckoutResponse? {
+        val mutation = CreateCheckoutMutation(
+            lineItems = lineItems,
+            email = Optional.Present(email)
+        )
+
+        return try {
+            val response = apolloClient.mutation(mutation).execute()
+            val checkoutCreate = response.data?.checkoutCreate
+            val checkout = checkoutCreate?.checkout?.let {
+                Checkout(
+                    id = it.id,
+                    webUrl = it.webUrl.toString(),
+                    lineItems = it.lineItems.edges.map { edge ->
+                        LineItem(
+                            title = edge.node.title,
+                            quantity = edge.node.quantity,
+                            variant = Variant(
+                                id = edge.node.variant!!.id,
+                                title = edge.node.variant.title,
+                                price = edge.node.variant.price.amount.toString()
+                            )
+                        )
+                    }
+                )
+            }
+            val userErrors = checkoutCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+
+            CheckoutResponse(checkout, userErrors)
+        } catch (e: ApolloException) {
+            Log.e("GraphQL", "ApolloException: ${e.message}", e)
+            null
+        }
     }
 }
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {

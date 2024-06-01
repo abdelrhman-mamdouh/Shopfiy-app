@@ -26,6 +26,13 @@
         android:name="com.example.exclusive.ui.orderdetails.view.OrderDetailsFragment"
         android:label="fragment_order_details"
         tools:layout="@layout/fragment_order_details" />
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.exclusive.ui.checkout.CheckoutFragment"
+        android:label="CheckoutFragment"
+        tools:layout="@layout/fragment_check_out"/>
+
     <action
         android:id="@+id/action_orderFragment_to_orderDetailsFragment"
         app:destination="@id/orderDetailsFragment"
@@ -39,6 +46,11 @@
     <action
         android:id="@+id/action_productsFragment_to_cartFragment"
         app:destination="@id/cartFragment"
+        app:enterAnim="@anim/row_slide_in"/>
+
+    <action
+        android:id="@+id/action_cartFragment_to_checkoutFragment"
+        app:destination="@id/checkoutFragment"
         app:enterAnim="@anim/row_slide_in"/>
 
 </navigation>
