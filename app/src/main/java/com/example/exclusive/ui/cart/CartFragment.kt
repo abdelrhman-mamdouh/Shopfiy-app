@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentCartBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -32,6 +33,10 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.titleBar.tvTitle.text = getString(R.string.cart)
+        binding.titleBar.icBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         cartProductAdapter = CartProductAdapter()
 

@@ -26,6 +26,7 @@
     <string name="send">send</string>
     <string name="pleaseEnterEmail">Please, enter your email address. You will receive a link to create a new password via email.</string>
     <string name="products">Products</string>
+    <string name="cart">My Bag</string>
 
 
     <string name="add_address">Add Address</string>

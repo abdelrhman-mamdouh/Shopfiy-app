@@ -2,7 +2,7 @@ mutation AddToCart($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
         cart {
             id
-            lines {
+            lines(first: 10) {
                 edges {
                     node {
                         id

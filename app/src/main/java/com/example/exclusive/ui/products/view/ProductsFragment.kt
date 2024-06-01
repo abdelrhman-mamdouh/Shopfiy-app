@@ -1,6 +1,7 @@
 package com.example.exclusive.ui.products.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,11 +90,16 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     }
 
     override fun onProductClick(product: ProductNode) {
-        viewModel.addToCart("gid://shopify/ProductVariant/45323456577790")
-//        val bundle = Bundle()
-//        bundle.putParcelable("product", product)
-//
-//        findNavController().navigate(R.id.action_productsFragment_to_cartFragment, bundle)
+
+        val bundle = Bundle()
+        bundle.putParcelable("product", product)
+
+        findNavController().navigate(R.id.action_productsFragment_to_cartFragment, bundle)
+    }
+
+    override fun onFavClick(product: ProductNode) {
+        Log.i("TAG", "onFavClick: ${product.variants.edges[0].node.id} ")
+        viewModel.addToCart(product.variants.edges[0].node.id)
     }
 
 
