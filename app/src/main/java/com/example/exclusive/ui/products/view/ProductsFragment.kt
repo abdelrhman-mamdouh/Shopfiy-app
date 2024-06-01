@@ -92,7 +92,7 @@ class ProductsFragment : Fragment(), OnProductClickListener {
         val bundle = Bundle()
         bundle.putParcelable("product", product)
 
-        findNavController().navigate(R.id.action_productsFragment_to_orderFragment, bundle)
+        findNavController().navigate(R.id.action_productsFragment_to_cartFragment, bundle)
     }
 
 

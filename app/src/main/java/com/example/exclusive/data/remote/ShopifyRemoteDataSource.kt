@@ -1,6 +1,9 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.model.Brand
+import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CartProductResponse
+import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 
 
@@ -21,4 +24,6 @@ interface ShopifyRemoteDataSource {
     suspend fun sendPasswordRecoveryEmail(email: String): Boolean
     suspend fun resetPasswordByUrl(resetUrl: String, newPassword: String): Boolean
 
+    suspend fun createCart(token: String): CreateCartResponse?
+    suspend fun getProductsInCart(cartId: String): List<CartProduct>
 }

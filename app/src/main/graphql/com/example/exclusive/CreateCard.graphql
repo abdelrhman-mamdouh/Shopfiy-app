@@ -1,0 +1,11 @@
+mutation CreateCart($buyerIdentity: CartBuyerIdentityInput) {
+    cartCreate(input: { buyerIdentity: $buyerIdentity }) {
+        cart {
+            id
+        }
+        userErrors {
+            field
+            message
+        }
+    }
+}

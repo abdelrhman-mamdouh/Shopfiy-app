@@ -1,6 +1,7 @@
 package com.example.exclusive.model
 
 import android.os.Parcelable
+import com.example.exclusive.exception.MyException
 import com.example.exclusive.type.CurrencyCode
 import kotlinx.android.parcel.Parcelize
 
@@ -87,4 +88,35 @@ data class ProductItem(
     val units: String,
     val price: String,
     val imageUrl: String
+)
+
+// Data classes for the createCard mutation
+data class CreateCartResponse(
+    val cart: Cart?,
+    val userErrors: List<UserError>
+)
+
+data class Cart(
+    val id: String
+)
+
+data class CartProductResponse(
+    val products: List<CartProduct>,
+    val userErrors: List<UserError>
+)
+
+data class UserError(
+    val field: List<String>?,
+    val message: String
+)
+
+data class CartProduct(
+    val id: String,
+    val quantity: Int,
+    val productId: String,
+    val productTitle: String,
+    val productImageUrl: String,
+    val variantId: String,
+    val variantTitle: String,
+    val variantPrice: String
 )

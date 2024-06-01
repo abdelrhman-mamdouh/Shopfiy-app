@@ -2,6 +2,9 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.model.Brand
+import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CartProductResponse
+import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -50,6 +53,13 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun resetPasswordByUrl(resetUrl: String, newPassword: String): Boolean {
         return apolloService.resetPasswordByUrl(resetUrl, newPassword)
+    }
 
+    override suspend fun createCart(token: String): CreateCartResponse? {
+        return apolloService.createCard(token = token)
+    }
+
+    override suspend fun getProductsInCart(cartId: String): List<CartProduct> {
+        return apolloService.getProductsInCart(cartId)
     }
 }
