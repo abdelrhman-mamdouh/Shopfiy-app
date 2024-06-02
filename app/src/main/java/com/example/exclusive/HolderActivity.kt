@@ -20,6 +20,8 @@ class HolderActivity : AppCompatActivity() {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.cartFragment)
         } else if(intent.getStringExtra(GO_TO).equals("ADDRESS")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.addressesFragment)
+        } else if (intent.getStringExtra(GO_TO).equals("CURRENCY")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.currenciesFragment)
         }
     }
 

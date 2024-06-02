@@ -2,8 +2,10 @@ package com.example.exclusive.data.local
 
 
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private const val TAG = "LocalDataSource"
 @Singleton
 class LocalDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>
@@ -19,6 +22,8 @@ class LocalDataSource @Inject constructor(
     companion object {
         val TOKEN_KEY = stringPreferencesKey("user_token")
         val USER_CART = stringPreferencesKey("user_cart")
+        val USER_CURRENCY = stringPreferencesKey("user_currency")
+        val USER_CURRENCY_VALUE = doublePreferencesKey("user_currency_value")
     }
 
     val token: Flow<String?> = dataStore.data
@@ -54,6 +59,15 @@ class LocalDataSource @Inject constructor(
             preferences[USER_CART] = cartId
         }
     }
+
+    override suspend fun saveCurrency(currency: String, currencyValue: Double) {
+        dataStore.edit { preferences ->
+            preferences[USER_CURRENCY] = currency
+            preferences[USER_CURRENCY_VALUE] = currencyValue
+        }
+        Log.d(TAG, "saveCurrency: $currency $currencyValue")
+    }
+
     override suspend fun getUserCartId(): String? {
         return dataStore.data
             .map { preferences ->

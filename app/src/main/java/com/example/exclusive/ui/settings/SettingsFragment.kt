@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import com.example.exclusive.HolderActivity
 import com.example.exclusive.databinding.FragmentSettingsBinding
 
-
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
@@ -29,6 +28,13 @@ class SettingsFragment : Fragment() {
         binding.tvAddress.setOnClickListener {
             val intent = Intent(requireContext(), HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "ADDRESS")
+            }
+            startActivity(intent)
+        }
+
+        binding.cvCurrency.setOnClickListener {
+            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "CURRENCY")
             }
             startActivity(intent)
         }

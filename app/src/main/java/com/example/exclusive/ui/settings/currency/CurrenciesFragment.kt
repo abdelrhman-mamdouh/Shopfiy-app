@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -43,11 +44,9 @@ class CurrenciesFragment : Fragment() {
 
     private fun setupAdapter() {
         Log.d(TAG, "setupAdapter")
-        binding.rvCurrency.layoutManager = LinearLayoutManager(requireContext())
         adapter = CurrenciesAdapter(currencies, CurrenciesAdapter.ClickListener(viewModel::fetchCurrencies))
         binding.rvCurrency.setHasFixedSize(true)
         binding.rvCurrency.adapter = adapter
-        adapter.updateCurrencies(currencies)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,6 +62,8 @@ class CurrenciesFragment : Fragment() {
                     when (uiState) {
                         is UiState.Success -> {
                             val currencies = uiState.data
+                            viewModel.saveCurrency(Pair(currencies.base, currencies.results["EGP"]!!))
+                            Log.d(TAG, "${currencies.base} ${currencies.results["EGP"]}")
                             Log.d("CurrenciesFragment", "Currencies: $currencies")
                         }
                         is UiState.Error -> {

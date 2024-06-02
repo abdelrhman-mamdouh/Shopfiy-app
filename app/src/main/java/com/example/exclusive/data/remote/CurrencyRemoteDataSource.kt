@@ -10,10 +10,10 @@ import javax.inject.Inject
 
 class CurrencyRemoteDataSource @Inject constructor(private val currencyApiInterface: CurrencyApi) {
 
-    fun getCurrencies(): Flow<UiState<Currencies>> = flow {
+    fun getCurrencies(currencyCode: String): Flow<UiState<Currencies>> = flow {
         emit(UiState.Loading)
         try {
-            val response = currencyApiInterface.getCurrencies()
+            val response = currencyApiInterface.getCurrencies(currencyCode)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(UiState.Success(it))

@@ -86,4 +86,15 @@
         android:name="com.example.exclusive.ui.settings.address.AddressesFragment"
         android:label="AddressesFragment"
         tools:layout="@layout/fragment_addresses"/>
+    <fragment
+        android:id="@+id/currenciesFragment"
+        android:name="com.example.exclusive.ui.settings.currency.CurrenciesFragment"
+        android:label="CurrenciesFragment"
+        tools:layout="fragment_currencies"/>
+
+    <action
+        android:id="@+id/action_settingsFragment_to_currenciesFragment"
+        app:destination="@id/currenciesFragment"
+        app:enterAnim="@anim/row_slide_in"/>
+
 </navigation>
