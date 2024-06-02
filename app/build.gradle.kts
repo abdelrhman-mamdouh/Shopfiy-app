@@ -5,7 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.apollographql.apollo3") version "4.0.0-beta.6"
     id("com.google.dagger.hilt.android")
-
+    id("com.google.gms.google-services")
 
 }
 
@@ -121,7 +121,9 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
 
-
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("com.google.firebase:firebase-database")
     //datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")

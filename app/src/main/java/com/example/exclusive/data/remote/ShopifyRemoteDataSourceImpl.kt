@@ -10,6 +10,7 @@ import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
+import com.google.firebase.database.FirebaseDatabase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,7 +63,11 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     override suspend fun createCart(token: String): CreateCartResponse? {
         return apolloService.createCart(token = token)
     }
-
+    override fun addProductToRealtimeDatabase(product:ProductNode){
+        val database = FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
+        val myRef = database.getReference("products")
+        myRef.child(product.id.toString()).setValue(product)
+    }
     override suspend fun addProductToCart(
         cartId: String,
         lines: List<CartLineInput>
