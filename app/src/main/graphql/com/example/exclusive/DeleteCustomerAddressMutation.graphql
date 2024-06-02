@@ -1,0 +1,8 @@
+mutation deleteCustomerAddressMutation($customerAccessToken: String!, $id: ID!) {
+    customerAddressDelete(customerAccessToken: $customerAccessToken, id: $id) {
+        customerUserErrors {
+            field
+            message
+        }
+    }
+}

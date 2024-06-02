@@ -15,6 +15,10 @@ import com.example.exclusive.databinding.FragmentAddressesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+
 @AndroidEntryPoint
 class AddressesFragment : Fragment() {
 
@@ -38,6 +42,7 @@ class AddressesFragment : Fragment() {
 
         setListeners()
         observeViewModel()
+        setupSwipeToDelete()
 
         addressesViewModel.fetchCustomerAddresses()
     }
@@ -68,6 +73,43 @@ class AddressesFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setupSwipeToDelete() {
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val removedAddress = addressesAdapter.removeItem(position)
+
+                Snackbar.make(binding.root, "Address deleted", Snackbar.LENGTH_LONG).apply {
+                    setAction("UNDO") {
+                        removedAddress?.let {
+                            addressesAdapter.addItem(position, it)
+                        }
+                    }
+                    addCallback(object : Snackbar.Callback() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            if (event != DISMISS_EVENT_ACTION) {
+                                removedAddress?.let {
+                                    addressesViewModel.deleteAddress(it.id!!)
+                                }
+                            }
+                        }
+                    })
+                    show()
+                }
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.rvAddresses)
     }
 
     override fun onDestroyView() {

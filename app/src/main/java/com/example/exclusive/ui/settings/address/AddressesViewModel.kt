@@ -32,4 +32,14 @@ class AddressesViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteAddress(addressId: String) {
+        viewModelScope.launch {
+            try {
+                remoteDataSource.deleteCustomerAddress(localDataSource.readToken()!!, addressId)
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
 }

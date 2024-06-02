@@ -5,12 +5,12 @@ import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CartProductResponse
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.type.CustomerUserError
 import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -90,5 +90,9 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput> {
         return apolloService.getCustomerAddresses(customerAccessToken)
+    }
+
+    override suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean {
+        return apolloService.deleteCustomerAddress(customerAccessToken, addressId)
     }
 }

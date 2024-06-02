@@ -10,6 +10,7 @@ import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.type.CustomerUserError
 import com.example.exclusive.type.MailingAddressInput
 
 
@@ -44,4 +45,5 @@ interface ShopifyRemoteDataSource {
     suspend fun addAddress(addressInput: MailingAddressInput, customerAccessToken: String): Boolean
 
     suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput>
+    suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean
 }

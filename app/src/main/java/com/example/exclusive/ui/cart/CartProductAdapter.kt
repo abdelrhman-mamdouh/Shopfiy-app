@@ -37,6 +37,7 @@ class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProdu
             }
         }
     }
+
     fun removeItem(position: Int): CartProduct? {
         val currentList = currentList.toMutableList()
         val removedItem = currentList.removeAt(position)

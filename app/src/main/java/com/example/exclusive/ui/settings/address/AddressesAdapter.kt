@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.ItemAddressBinding
 import com.example.exclusive.model.AddressInput
+import com.example.exclusive.model.CartProduct
 
 class AddressesAdapter : ListAdapter<AddressInput, AddressesAdapter.AddressViewHolder>(AddressDiffCallback()) {
 
@@ -26,8 +27,19 @@ class AddressesAdapter : ListAdapter<AddressInput, AddressesAdapter.AddressViewH
             binding.tvName.text = address.firstName
             binding.tvStreetName.text = "${address.address1}, ${address.city}, ${address.country}"
             binding.tvPhone.text = address.phone
-            // Set other fields if necessary
         }
+    }
+    fun removeItem(position: Int): AddressInput? {
+        val currentList = currentList.toMutableList()
+        val removedItem = currentList.removeAt(position)
+        submitList(currentList)
+        return removedItem
+    }
+
+    fun addItem(position: Int, address: AddressInput) {
+        val currentList = currentList.toMutableList()
+        currentList.add(position, address)
+        submitList(currentList)
     }
 
     class AddressDiffCallback : DiffUtil.ItemCallback<AddressInput>() {

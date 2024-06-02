@@ -14,6 +14,7 @@ import com.example.exclusive.CreateCartMutation
 import com.example.exclusive.CreateCheckoutMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
+import com.example.exclusive.DeleteCustomerAddressMutation
 import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
@@ -422,6 +423,28 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         } ?: emptyList()
 
         return addresses
+    }
+
+    suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean {
+        val mutation = DeleteCustomerAddressMutation(
+            customerAccessToken = customerAccessToken,
+            id = addressId
+        )
+
+        try {
+            val response = apolloClient.mutation(mutation).execute()
+            val userErrors = response.data?.customerAddressDelete?.customerUserErrors
+            if (userErrors != null && userErrors.isNotEmpty()) {
+                for (error in userErrors) {
+                    println("Error: ${error.field}, ${error.message}")
+                }
+                return false
+            }
+            return true
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+            return false
+        }
     }
 }
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
