@@ -6,6 +6,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
+import com.example.exclusive.AddAddressToCustomerMutation
 import com.example.exclusive.AddToCartMutation
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
@@ -19,6 +20,7 @@ import com.example.exclusive.RemoveProductFromCartMutation
 import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
 import com.example.exclusive.model.AddToCartResponse
+import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.Cart
 import com.example.exclusive.model.CartProduct
@@ -34,6 +36,7 @@ import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
+import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -374,6 +377,28 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             Log.e("GraphQL", "ApolloException: ${e.message}", e)
         }
         return null
+    }
+
+    suspend fun addAddressToCustomer(addressInput: MailingAddressInput, customerAccessToken: String): Boolean {
+        val mutation = AddAddressToCustomerMutation(
+            addressInput = addressInput,
+            customerAccessToken = customerAccessToken
+        )
+
+        try {
+            val response = apolloClient.mutation(mutation)
+            val userErrors = response.execute().data?.customerAddressCreate?.customerUserErrors
+            if (userErrors != null && userErrors.isNotEmpty()) {
+                for (error in userErrors) {
+                    println("Error: ${error.field}, ${error.message}")
+                }
+                return false
+            }
+            return true
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+            return false
+        }
     }
 }
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {

@@ -1,8 +1,9 @@
 package com.example.exclusive.model
 
 import android.os.Parcelable
-import com.example.exclusive.exception.MyException
-import com.example.exclusive.type.CurrencyCode
+import com.apollographql.apollo3.api.Optional
+import com.example.exclusive.AddAddressToCustomerMutation
+import com.example.exclusive.type.MailingAddressInput
 import kotlinx.android.parcel.Parcelize
 
 data class Brand(val id: String, val name: String, val imageUrl: String)
@@ -167,3 +168,23 @@ data class Variant(
     val title: String,
     val price: String
 )
+
+data class AddressInput(
+    val firstName: String,
+    val phone: String,
+    val address1: String,
+    val city: String,
+    val country: String,
+    val zip: String
+) {
+    fun toInput(): MailingAddressInput {
+        return MailingAddressInput(
+            firstName = Optional.present(firstName),
+            phone = Optional.present(phone),
+            address1 = Optional.present(address1),
+            city = Optional.present(city),
+            country = Optional.present(country),
+            zip = Optional.present(zip)
+        )
+    }
+}

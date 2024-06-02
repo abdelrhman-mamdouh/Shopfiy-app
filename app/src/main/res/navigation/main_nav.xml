@@ -26,11 +26,7 @@
         android:name="com.example.exclusive.ui.settings.currency.CurrenciesFragment"
         android:label="fragment_currencies"
         tools:layout="@layout/fragment_currencies" />
-    <fragment
-        android:id="@+id/addAddressFragment"
-        android:name="com.example.exclusive.ui.settings.address.addAddress.AddAddressFragment"
-        android:label="fragment_add_address"
-        tools:layout="@layout/fragment_add_address" />
+
 
     <fragment
         android:id="@+id/forgetPasswordFragment"
@@ -46,10 +42,5 @@
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings"
         />
-    <activity
-        android:id="@+id/holderActivity"
-        android:name="com.example.exclusive.HolderActivity"
-        android:label="activity_holder"
-        tools:layout="@layout/activity_holder" />
 
 </navigation>

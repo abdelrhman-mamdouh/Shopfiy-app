@@ -16,12 +16,14 @@ class HolderActivity : AppCompatActivity() {
         binding = ActivityHolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (intent.getBooleanExtra(OPEN_CART, false)) {
+        if (intent.getStringExtra(GO_TO).equals("CART")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.cartFragment)
+        } else if(intent.getStringExtra(GO_TO).equals("ADDRESS")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.addAddressFragment)
         }
     }
 
     companion object {
-        const val OPEN_CART = "open_cart"
+        const val GO_TO = "go_to"
     }
 }

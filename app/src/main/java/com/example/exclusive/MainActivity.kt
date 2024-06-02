@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         // Handle shopping cart click
         binding.appBarHome.cardViewShoppingCart.setOnClickListener {
             val intent = Intent(this, HolderActivity::class.java).apply {
-                putExtra(HolderActivity.OPEN_CART, true)
+                putExtra(HolderActivity.GO_TO, "CART")
             }
             startActivity(intent)
         }

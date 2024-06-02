@@ -83,6 +83,19 @@
         app:layout_constraintEnd_toEndOf="@+id/et_city"
         app:layout_constraintStart_toStartOf="@+id/et_city"
         app:layout_constraintTop_toBottomOf="@+id/et_city"
+        app:layout_constraintBottom_toTopOf="@id/et_zip"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_zip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="@string/enter_your_zip_code"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/et_city"
+        app:layout_constraintStart_toStartOf="@+id/et_city"
+        app:layout_constraintTop_toBottomOf="@+id/et_country"
         app:layout_constraintBottom_toTopOf="@id/cb_default_address"/>
 
     <CheckBox
@@ -93,7 +106,7 @@
         android:padding="8dp"
         android:text="@string/default_address"
         app:layout_constraintStart_toStartOf="@+id/et_country"
-        app:layout_constraintTop_toBottomOf="@+id/et_country" />
+        app:layout_constraintTop_toBottomOf="@+id/et_zip" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button"

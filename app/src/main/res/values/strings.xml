@@ -115,5 +115,6 @@
     <string name="product_info">Product info</string>
     <string name="enter_your_city">Enter Your City</string>
     <string name="enter_your_country">Enter Your Country</string>
+    <string name="enter_your_zip_code">Enter Your Zip Code</string>
 
 </resources>

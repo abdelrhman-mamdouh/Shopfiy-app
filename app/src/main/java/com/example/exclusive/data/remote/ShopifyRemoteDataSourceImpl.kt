@@ -2,6 +2,7 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.model.AddToCartResponse
+import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CartProductResponse
@@ -10,6 +11,7 @@ import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -80,5 +82,9 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse? {
         return apolloService.removeFromCartById(cartId,lineIds)
+    }
+
+    override suspend fun addAddress(addressInput: MailingAddressInput, customerAccessToken: String): Boolean {
+        return apolloService.addAddressToCustomer(addressInput, customerAccessToken)
     }
 }
