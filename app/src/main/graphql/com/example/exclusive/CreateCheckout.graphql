@@ -1,0 +1,27 @@
+mutation CreateCheckout($lineItems: [CheckoutLineItemInput!]!, $email: String) {
+    checkoutCreate(input: { lineItems: $lineItems, email: $email }) {
+        checkout {
+            id
+            webUrl
+            lineItems(first: 10) {
+                edges {
+                    node {
+                        title
+                        quantity
+                        variant {
+                            id
+                            title
+                            price {
+                                amount
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        userErrors {
+            field
+            message
+        }
+    }
+}

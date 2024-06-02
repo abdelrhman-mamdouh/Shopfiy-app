@@ -36,7 +36,7 @@ class CategoryFragment : Fragment(), OnCategoryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = binding.recyclerView
+        val recyclerView = binding.recyclerview
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
         adapter = CategoryAdapter(emptyList(), this)

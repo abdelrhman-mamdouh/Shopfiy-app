@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentForgetPasswordBinding
-import com.example.exclusive.databinding.FragmentSignUpBinding
-import com.example.exclusive.screens.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

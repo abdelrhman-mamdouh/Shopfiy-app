@@ -5,4 +5,5 @@ import com.example.exclusive.model.ProductNode
 
 interface OnProductClickListener {
     fun onProductClick(product: ProductNode)
+    fun onFavClick(product: ProductNode)
 }

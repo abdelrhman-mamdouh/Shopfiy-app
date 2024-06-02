@@ -18,11 +18,17 @@ class LocalDataSource @Inject constructor(
 ) : ILocalDataSource {
     companion object {
         val TOKEN_KEY = stringPreferencesKey("user_token")
+        val USER_CART = stringPreferencesKey("user_cart")
     }
 
     val token: Flow<String?> = dataStore.data
         .map { preferences ->
             preferences[TOKEN_KEY]
+        }
+
+    val userCart: Flow<String?> = dataStore.data
+        .map { preferences ->
+            preferences[USER_CART]
         }
 
    override suspend fun saveToken(token: String) {
@@ -36,9 +42,22 @@ class LocalDataSource @Inject constructor(
                 preferences[TOKEN_KEY]
             }.first()
     }
+
     override suspend fun clearToken() {
         dataStore.edit { preferences ->
             preferences.remove(TOKEN_KEY)
         }
+    }
+
+    override suspend fun saveUserCartId(cartId: String) {
+        dataStore.edit { preferences ->
+            preferences[USER_CART] = cartId
+        }
+    }
+    override suspend fun getUserCartId(): String? {
+        return dataStore.data
+            .map { preferences ->
+                preferences[USER_CART]
+            }.first()
     }
 }

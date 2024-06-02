@@ -1,6 +1,7 @@
 package com.example.exclusive.ui.products.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,9 +91,14 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     }
 
     override fun onProductClick(product: ProductNode) {
+        NavHostFragment.findNavController(this@ProductsFragment)
+            .navigate(ProductsFragmentDirections.
+            actionProductsFragmentToProductInfoFragment(product))
+    }
 
-
-        NavHostFragment.findNavController(this@ProductsFragment).navigate(ProductsFragmentDirections.actionProductsFragmentToProductInfoFragment(product))
+    override fun onFavClick(product: ProductNode) {
+        Log.i("TAG", "onFavClick: ${product.variants.edges[0].node.id} ")
+        viewModel.addToCart(product.variants.edges[0].node.id)
     }
 
 

@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CheckoutFragment">
+    android:layout_height="match_parent">
 
     <!-- Checkout Title -->
     <TextView
@@ -123,7 +122,7 @@
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_paypal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:buttonTint="@color/primary_color"
             android:text="Paypal" />
     </RadioGroup>
