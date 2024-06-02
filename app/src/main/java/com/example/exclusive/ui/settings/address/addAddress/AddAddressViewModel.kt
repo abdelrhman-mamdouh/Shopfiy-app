@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.settings.address.addAddress
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.local.LocalDataSource
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "AddAddressViewModel"
 @HiltViewModel
 class AddAddressViewModel @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
@@ -27,6 +29,7 @@ class AddAddressViewModel @Inject constructor(
             _addAddressResult.value = UiState.Loading
             try {
                 val customerAccessToken = localDataSource.readToken()!!
+                Log.d(TAG, "addAddress: $customerAccessToken")
                 val success = remoteDataSource.addAddress(address, customerAccessToken)
                 _addAddressResult.value = UiState.Success(success)
             } catch (e: Exception) {

@@ -14,6 +14,7 @@ import com.example.exclusive.CreateCartMutation
 import com.example.exclusive.CreateCheckoutMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
+import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
 import com.example.exclusive.RemoveProductFromCartMutation
@@ -31,6 +32,7 @@ import com.example.exclusive.model.LineItem
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.UserError
 import com.example.exclusive.model.Variant
+import com.example.exclusive.model.Variants
 import com.example.exclusive.type.CartBuyerIdentityInput
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
@@ -400,6 +402,27 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             return false
         }
     }
+
+    suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput> {
+        val query = GetCustomerAddressesQuery(customerAccessToken)
+        val response = apolloClient.query(query).execute()
+
+        val addresses = response.data?.customer?.addresses?.edges?.map {
+            it.node.let { node ->
+                AddressInput(
+                    id = node.id,
+                    firstName = node.firstName ?: "",
+                    address1 = node.address1 ?: "",
+                    city = node.city ?: "",
+                    country = node.country ?: "",
+                    zip = node.zip ?: "",
+                    phone = node.phone ?: ""
+                )
+            }
+        } ?: emptyList()
+
+        return addresses
+    }
 }
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
     val imageEdges = productsQueryImages.edges.map { imageEdge ->
@@ -423,6 +446,5 @@ fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.excl
             )
         )
     }
-    return com.example.exclusive.model.Variants(variantEdges)
+    return Variants(variantEdges)
 }
-

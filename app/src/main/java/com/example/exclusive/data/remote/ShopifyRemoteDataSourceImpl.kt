@@ -87,4 +87,8 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     override suspend fun addAddress(addressInput: MailingAddressInput, customerAccessToken: String): Boolean {
         return apolloService.addAddressToCustomer(addressInput, customerAccessToken)
     }
+
+    override suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput> {
+        return apolloService.getCustomerAddresses(customerAccessToken)
+    }
 }

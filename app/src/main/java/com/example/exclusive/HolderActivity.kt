@@ -19,7 +19,7 @@ class HolderActivity : AppCompatActivity() {
         if (intent.getStringExtra(GO_TO).equals("CART")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.cartFragment)
         } else if(intent.getStringExtra(GO_TO).equals("ADDRESS")) {
-            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.addAddressFragment)
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.addressesFragment)
         }
     }
 

@@ -65,6 +65,7 @@ class AddAddressFragment : Fragment() {
                     }
                     is UiState.Success -> {
                         // Hide loading indicator
+                        Toast.makeText(requireContext(), "Here ${uiState.data}", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = View.GONE
                         if (uiState.data) {
                             // Address added successfully, navigate back or show a success message

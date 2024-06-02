@@ -77,4 +77,13 @@
         app:destination="@id/addAddressFragment"
         app:enterAnim="@anim/row_slide_in"/>
 
+    <action
+        android:id="@+id/action_addressesFragment_to_addAddressFragment"
+        app:destination="@id/addAddressFragment"
+        app:enterAnim="@anim/row_slide_in"/>
+    <fragment
+        android:id="@+id/addressesFragment"
+        android:name="com.example.exclusive.ui.settings.address.AddressesFragment"
+        android:label="AddressesFragment"
+        tools:layout="@layout/fragment_addresses"/>
 </navigation>

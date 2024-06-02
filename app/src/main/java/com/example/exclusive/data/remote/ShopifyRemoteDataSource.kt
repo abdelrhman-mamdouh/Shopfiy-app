@@ -42,4 +42,6 @@ interface ShopifyRemoteDataSource {
     suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse?
 
     suspend fun addAddress(addressInput: MailingAddressInput, customerAccessToken: String): Boolean
+
+    suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput>
 }
