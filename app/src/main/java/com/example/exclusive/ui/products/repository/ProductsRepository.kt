@@ -9,4 +9,5 @@ interface ProductsRepository {
     suspend fun getProducts(vendor: String): List<ProductNode>
     suspend fun getCartId(): String
     suspend fun addProductToCart(cartId: String, lines: List<CartLineInput>): AddToCartResponse?
+    suspend fun getCurrentCurrency(): Pair<String, Double>
 }

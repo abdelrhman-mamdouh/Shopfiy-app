@@ -64,14 +64,14 @@ data class VariantNode(
     val id: String,
     val title: String,
     val sku: String,
-    val priceV2: PriceV2
+    var priceV2: PriceV2
 ) : Parcelable
 
 
 @Parcelize
 data class PriceV2(
     val amount: String,
-    val currencyCode: String
+    var currencyCode: String
 ) : Parcelable
 
 

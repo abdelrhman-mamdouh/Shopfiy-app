@@ -9,6 +9,6 @@ import retrofit2.http.Query
 interface CurrencyApi {
     @GET("fetch-all")
     suspend fun getCurrencies(
-        @Query("base") base : String = "EGP", @Query("api_key") apiKey : String = Constants.CURRENCY_API_KEY
+        @Query("from") base : String = "EGP", @Query("api_key") apiKey : String = Constants.CURRENCY_API_KEY
     ): Response<Currencies>
 }

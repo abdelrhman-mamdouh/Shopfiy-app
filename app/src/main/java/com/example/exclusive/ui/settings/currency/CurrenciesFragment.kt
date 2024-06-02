@@ -47,6 +47,9 @@ class CurrenciesFragment : Fragment() {
         adapter = CurrenciesAdapter(currencies, CurrenciesAdapter.ClickListener(viewModel::fetchCurrencies))
         binding.rvCurrency.setHasFixedSize(true)
         binding.rvCurrency.adapter = adapter
+        binding.titleBar.icBack.setOnClickListener{
+            requireActivity().finish()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -73,7 +73,10 @@ class ProductsFragment : Fragment(), OnProductClickListener {
         lifecycleScope.launchWhenStarted {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
-                    is UiState.Success -> adapter.updateProducts(uiState.data)
+                    is UiState.Success -> {
+                        // map price
+                        adapter.updateProducts(uiState.data)
+                    }
                     is UiState.Error -> {
 
                     }

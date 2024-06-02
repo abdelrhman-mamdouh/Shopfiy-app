@@ -23,4 +23,7 @@ class ProductsRepositoryImpl @Inject constructor(
     override suspend fun getCartId(): String {
         return localDataSource.getUserCartId()!!
     }
+    override suspend fun getCurrentCurrency(): Pair<String,Double> {
+        return localDataSource.getCurrency()!!
+    }
 }

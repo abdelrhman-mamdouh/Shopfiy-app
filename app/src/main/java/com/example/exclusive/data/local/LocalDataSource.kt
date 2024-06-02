@@ -67,7 +67,14 @@ class LocalDataSource @Inject constructor(
         }
         Log.d(TAG, "saveCurrency: $currency $currencyValue")
     }
-
+    override suspend fun getCurrency(): Pair<String, Double> {
+        return dataStore.data
+            .map { preferences ->
+                val currency = preferences[USER_CURRENCY] ?: "USD"
+                val value = preferences[USER_CURRENCY_VALUE] ?: 1.0
+                Pair(currency, value)
+            }.first()
+    }
     override suspend fun getUserCartId(): String? {
         return dataStore.data
             .map { preferences ->
