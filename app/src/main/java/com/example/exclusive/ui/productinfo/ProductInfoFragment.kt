@@ -6,17 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentProductInfoBinding
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.getRandomNineReviews
+import com.example.exclusive.ui.products.viewmodel.ProductInfoViewModel
+import com.example.exclusive.ui.products.viewmodel.ProductsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ProductInfoFragment : Fragment() {
     lateinit var binding: FragmentProductInfoBinding
     lateinit var product: ProductNode
     lateinit var  varientAdapter: VarientAdapter
+    private val viewModel: ProductInfoViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,7 +30,7 @@ class ProductInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         product = arguments?.getParcelable("product")!!
         Log.d("product info", product.toString())
@@ -67,6 +72,11 @@ class ProductInfoFragment : Fragment() {
         binding.tvVariants.adapter = varientAdapter
         imageAdapter.submitList(imageList)
         varientAdapter.submitList(product.variants.edges.map{ it.node.title })
+
+        binding.btnAddToCart.setOnClickListener{
+            Log.i("TAG", "onFavClick: ${product.variants.edges[0].node.id} ")
+            viewModel.addToCart(product.variants.edges[0].node.id)
+        }
     }
     fun onSelectListner(item:String,index:Int){
         varientAdapter.index = index

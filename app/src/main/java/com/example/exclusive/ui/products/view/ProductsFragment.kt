@@ -97,8 +97,7 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     }
 
     override fun onFavClick(product: ProductNode) {
-        Log.i("TAG", "onFavClick: ${product.variants.edges[0].node.id} ")
-        viewModel.addToCart(product.variants.edges[0].node.id)
+
     }
 
 

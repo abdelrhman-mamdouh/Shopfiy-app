@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-
     app:startDestination="@id/homeFragment">
 
 
@@ -47,5 +46,10 @@
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings"
         />
+    <activity
+        android:id="@+id/holderActivity"
+        android:name="com.example.exclusive.HolderActivity"
+        android:label="activity_holder"
+        tools:layout="@layout/activity_holder" />
 
 </navigation>

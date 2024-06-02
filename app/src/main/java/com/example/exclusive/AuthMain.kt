@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.exclusive.databinding.ActivityAuthMainBinding
-import com.example.exclusive.screens.auth.AuthViewModel
+import com.example.exclusive.ui.auth.AuthViewModel
+
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,6 @@ class AuthMain : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewModel: AuthViewModel by viewModels()
-
 
         binding = ActivityAuthMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
