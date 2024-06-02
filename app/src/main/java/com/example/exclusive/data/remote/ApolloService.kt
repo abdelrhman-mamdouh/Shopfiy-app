@@ -15,6 +15,7 @@ import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
+import com.example.exclusive.RemoveProductFromCartMutation
 import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
 import com.example.exclusive.model.AddToCartResponse
@@ -347,6 +348,32 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             Log.e("GraphQL", "ApolloException: ${e.message}", e)
             null
         }
+    }
+
+    suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse? {
+        val mutation = RemoveProductFromCartMutation(
+            cartId = cartId,
+            lineIds = lineIds
+        )
+        try {
+            val response = apolloClient.mutation(mutation)
+            val cartLinesRemove = response.execute().data?.cartLinesRemove
+            val cart = cartLinesRemove?.cart?.let { Cart(it.id) }
+            val userErrors = cartLinesRemove?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+
+            if (userErrors.isNotEmpty()) {
+                for (error in userErrors) {
+                    Log.e("GraphQL", "Error: ${error.message}")
+                }
+            } else if (cart != null) {
+                Log.d("GraphQL", "Products removed from cart successfully. Cart ID: ${cart.id}")
+            }
+
+            return AddToCartResponse(cart, userErrors)
+        } catch (e: ApolloException) {
+            Log.e("GraphQL", "ApolloException: ${e.message}", e)
+        }
+        return null
     }
 }
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {

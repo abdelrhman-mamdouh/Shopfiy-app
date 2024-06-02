@@ -36,4 +36,6 @@ interface ShopifyRemoteDataSource {
         lineItems: List<CheckoutLineItemInput>,
         email: String?
     ): CheckoutResponse?
+
+    suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse?
 }

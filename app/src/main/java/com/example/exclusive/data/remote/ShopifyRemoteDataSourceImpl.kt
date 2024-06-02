@@ -77,4 +77,8 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     override suspend fun createCheckout(lineItems: List<CheckoutLineItemInput>, email: String?): CheckoutResponse? {
         return apolloService.createCheckout(lineItems, email)
     }
+
+    override suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse? {
+        return apolloService.removeFromCartById(cartId,lineIds)
+    }
 }
