@@ -61,7 +61,7 @@ class ProductsFragment : Fragment(), OnProductClickListener {
             val maxValue = values[1].toInt()
             binding.minValue.text = "$minValue EGP"
             binding.maxValue.text = "$maxValue EGP"
-            adapter.filterByPrice(minValue, maxValue)
+            adapter.filterByPrice(minValue.toDouble(), maxValue.toDouble())
             adapter.notifyDataSetChanged()
         }
         adapter.notifyDataSetChanged()
@@ -74,19 +74,17 @@ class ProductsFragment : Fragment(), OnProductClickListener {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        // map price
+                        binding.progressBar.visibility = View.GONE
                         adapter.updateProducts(uiState.data)
                     }
                     is UiState.Error -> {
 
                     }
-
                     UiState.Loading -> {
-
+                        binding.progressBar.visibility = View.VISIBLE
                     }
-
                     UiState.Idle -> {
-
+                        binding.progressBar.visibility = View.GONE
                     }
                 }
             }

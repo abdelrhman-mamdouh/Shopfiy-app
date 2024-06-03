@@ -65,12 +65,14 @@ class ProductsAdapter(
         notifyDataSetChanged()
     }
 
-    fun filterByPrice(minPrice: Int, maxPrice: Int) {
+    fun filterByPrice(minPrice: Double, maxPrice: Double) {
         filteredProducts = allProducts.filter {
-            it.variants.edges[0].node.priceV2.amount.toInt() in minPrice..maxPrice
+            val price = it.variants.edges.firstOrNull()?.node?.priceV2?.amount?.toDoubleOrNull()
+            price != null && price in minPrice..maxPrice
         }
         notifyDataSetChanged()
     }
+
 
     fun updateProducts(newProducts: List<ProductNode>) {
         allProducts = newProducts

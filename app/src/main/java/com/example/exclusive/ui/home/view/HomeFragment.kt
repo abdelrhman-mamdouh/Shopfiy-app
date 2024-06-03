@@ -17,6 +17,7 @@ import com.example.exclusive.model.Brand
 import com.example.exclusive.ui.home.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnBrandClickListener {
 
@@ -30,9 +31,6 @@ class HomeFragment : Fragment(), OnBrandClickListener {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = binding.rvCart
@@ -44,26 +42,36 @@ class HomeFragment : Fragment(), OnBrandClickListener {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
-                    is UiState.Success -> adapter.updateBrands(uiState.data)
+                    is UiState.Success -> {
+                        adapter.updateBrands(uiState.data)
+
+                        binding.progressBar.visibility = View.GONE
+                    }
+
                     is UiState.Error -> {
 
+                        binding.progressBar.visibility = View.GONE
                     }
 
                     UiState.Loading -> {
 
+                        binding.progressBar.visibility = View.VISIBLE
                     }
 
                     UiState.Idle -> {
 
+                        binding.progressBar.visibility = View.GONE
                     }
                 }
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onBrandClick(brand: Brand) {
         val intent = Intent(context, HolderActivity::class.java)
         intent.putExtra("brand_name", brand.name)

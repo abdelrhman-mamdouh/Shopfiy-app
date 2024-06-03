@@ -45,17 +45,18 @@ class CategoryFragment : Fragment(), OnCategoryClickListener {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
-                    is UiState.Success -> adapter.updateCategory(uiState.data)
+                    is UiState.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        adapter.updateCategory(uiState.data)
+                    }
                     is UiState.Error -> {
 
                     }
-
                     UiState.Loading -> {
-
+                        binding.progressBar.visibility = View.VISIBLE
                     }
-
                     UiState.Idle -> {
-
+                        binding.progressBar.visibility = View.GONE
                     }
                 }
             }

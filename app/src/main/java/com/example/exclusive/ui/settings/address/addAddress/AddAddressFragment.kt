@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.exclusive.AddAddressToCustomerMutation
+import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentAddAddressBinding
 import com.example.exclusive.model.AddressInput
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -34,7 +37,15 @@ class AddAddressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.titleBar.tvTitle.text = getString(R.string.add_address)
+        binding.titleBar.icBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
         binding.button.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val details = binding.etDetails.text.toString()
@@ -60,23 +71,21 @@ class AddAddressFragment : Fragment() {
             addAddressViewModel.addAddressResult.collect { uiState ->
                 when (uiState) {
                     is UiState.Loading -> {
-                        // Show loading indicator
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is UiState.Success -> {
-                        // Hide loading indicator
+
                         Toast.makeText(requireContext(), "Here ${uiState.data}", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = View.GONE
                         if (uiState.data) {
-                            // Address added successfully, navigate back or show a success message
-                            Toast.makeText(requireContext(), "Address added successfully", Toast.LENGTH_SHORT).show()
+                            SnackbarUtils.showSnackbar(requireContext(),view,"Address added successfully")
                             findNavController().navigateUp()
                         }
                     }
                     is UiState.Error -> {
-                        // Hide loading indicator and show error message
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Error adding address: ${uiState.exception.message}", Toast.LENGTH_LONG).show()
+                        SnackbarUtils.showSnackbar(requireContext(),view,"Error adding address: ${uiState.exception.message}")
+
                     }
                     is UiState.Idle -> {
                         // Initial idle state, do nothing

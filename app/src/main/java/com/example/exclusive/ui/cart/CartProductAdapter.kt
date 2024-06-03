@@ -19,6 +19,11 @@ class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProdu
     override fun onBindViewHolder(holder: CartProductViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+    fun addItem(position: Int, item: CartProduct) {
+        val currentList = currentList.toMutableList()
+        currentList.add(position, item)
+        submitList(currentList)
+    }
 
     class CartProductViewHolder(private val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: CartProduct) {
@@ -29,8 +34,7 @@ class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProdu
             Picasso.get().load(product.productImageUrl).into(binding.cartProductImageView)
 
             binding.btnIncrease.setOnClickListener {
-                // Handle increase quantity button click
-                // You may want to notify the listener about the quantity change
+
             }
             binding.btnDecrease.setOnClickListener {
 

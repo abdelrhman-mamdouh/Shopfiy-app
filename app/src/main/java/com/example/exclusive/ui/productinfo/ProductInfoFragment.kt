@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
+import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.getRandomNineReviews
 import com.example.exclusive.ui.products.viewmodel.ProductInfoViewModel
 import com.example.exclusive.ui.products.viewmodel.ProductsViewModel
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -73,10 +76,25 @@ class ProductInfoFragment : Fragment() {
         imageAdapter.submitList(imageList)
         varientAdapter.submitList(product.variants.edges.map{ it.node.title })
 
-        binding.btnAddToCart.setOnClickListener{
-            Log.i("TAG", "onFavClick: ${product.variants.edges[0].node.id} ")
+        binding.btnAddToCart.setOnClickListener {
             viewModel.addToCart(product.variants.edges[0].node.id)
         }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.addToCartState.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Success -> {
+                            SnackbarUtils.showSnackbar(requireContext(),view,"Product added to cart")
+                        }
+                        is UiState.Error -> {
+                            SnackbarUtils.showSnackbar(requireContext(), binding.root, "Failed to add to cart")
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+            }
     }
     fun onSelectListner(item:String,index:Int){
         varientAdapter.index = index

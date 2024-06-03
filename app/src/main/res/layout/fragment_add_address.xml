@@ -1,102 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/light_white"
     tools:context=".ui.settings.address.addAddress.AddAddressFragment">
 
-    <TextView
-        android:id="@+id/tv_address_title"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/top_border_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/add_address"
-        android:textColor="@color/primary_color"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_title"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/title"
-        android:inputType="text"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@color/white"
+        android:hint="@string/inputName"
+        android:inputType="textPersonName"
+        android:padding="@dimen/_12sdp"
         app:layout_constraintBottom_toTopOf="@+id/et_details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address_title"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp" />
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_details"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ems="10"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@color/white"
         android:hint="@string/enter_address_details"
-        android:textColor="@color/black"
+        android:inputType="textPersonName"
+        android:padding="@dimen/_12sdp"
         app:layout_constraintBottom_toTopOf="@+id/tv_phone"
-        app:layout_constraintEnd_toEndOf="@+id/et_title"
-        app:layout_constraintStart_toStartOf="@+id/et_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/tv_phone"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@color/white"
         android:hint="@string/enter_your_phone"
-        android:inputType="phone"
+        android:inputType="textPersonName"
+        android:padding="@dimen/_12sdp"
         app:layout_constraintBottom_toTopOf="@+id/et_city"
-        app:layout_constraintEnd_toEndOf="@+id/et_details"
-        app:layout_constraintStart_toStartOf="@+id/et_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_details" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_city"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@color/white"
         android:hint="@string/enter_your_city"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/et_details"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone"
-        app:layout_constraintEnd_toEndOf="@id/et_details"
-        app:layout_constraintBottom_toTopOf="@id/et_country"/>
-
-    <com.google.android.material.textfield.TextInputEditText
+        android:inputType="textPersonName"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/et_country"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+    <EditText
         android:id="@+id/et_country"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@color/white"
         android:hint="@string/enter_your_country"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/et_city"
-        app:layout_constraintStart_toStartOf="@+id/et_city"
-        app:layout_constraintTop_toBottomOf="@+id/et_city"
-        app:layout_constraintBottom_toTopOf="@id/et_zip"/>
+        android:inputType="textPersonName"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/et_zip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_city" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_zip"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@color/white"
         android:hint="@string/enter_your_zip_code"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/et_city"
-        app:layout_constraintStart_toStartOf="@+id/et_city"
-        app:layout_constraintTop_toBottomOf="@+id/et_country"
-        app:layout_constraintBottom_toTopOf="@id/cb_default_address"/>
+        android:inputType="textPersonName"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/cb_default_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_country" />
+
 
     <CheckBox
         android:id="@+id/cb_default_address"
@@ -104,6 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="8dp"
+        style="@style/TextViewStyle"
         android:text="@string/default_address"
         app:layout_constraintStart_toStartOf="@+id/et_country"
         app:layout_constraintTop_toBottomOf="@+id/et_zip" />
@@ -114,7 +133,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="24dp"
+        style="@style/TextViewStyle"
+        android:textColor="@color/white"
         android:text="@string/save"
+        android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_default_address" />

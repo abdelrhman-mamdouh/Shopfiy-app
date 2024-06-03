@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="16dp"
-    app:strokeColor="@color/primary_color"
+    android:elevation="@dimen/_8sdp"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,10 +31,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            tools:text="High Quality Camera"
+            style="@style/TextViewStyle"
             android:textColor="@color/primary_color"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
+            tools:text="High Quality Camera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cartProductImageView"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +47,7 @@
             tools:text="11520 EGP"
             android:textColor="@color/primary_color"
             android:textSize="16sp"
+            style="@style/TextViewStyle"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_quantity"
             app:layout_constraintStart_toStartOf="@+id/et_title"
@@ -59,8 +60,7 @@
             android:layout_marginTop="8dp"
             tools:text="5 Items"
             android:textColor="@color/primary_color"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            style="@style/TextViewStyle"
             app:layout_constraintStart_toStartOf="@+id/et_title"
             app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
@@ -84,6 +84,7 @@
             tools:text="10"
             android:paddingHorizontal="16dp"
             android:gravity="center"
+            style="@style/TextViewStyle"
             android:textColor="@color/primary_color"
             app:layout_constraintBottom_toBottomOf="@+id/btn_increase"
             app:layout_constraintEnd_toStartOf="@+id/btn_increase"

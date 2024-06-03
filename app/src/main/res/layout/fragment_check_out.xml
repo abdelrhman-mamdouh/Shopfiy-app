@@ -10,6 +10,7 @@
     <TextView
         android:id="@+id/tv_checkout_title"
         android:layout_width="wrap_content"
+        style="@style/TextViewStyle"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -106,6 +107,7 @@
             android:id="@+id/rb_cod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/TextViewStyle"
             android:buttonTint="@color/primary_color"
             android:text="@string/cash_on_delivery" />
 
@@ -114,6 +116,7 @@
             android:id="@+id/rb_visa_mastercard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/TextViewStyle"
             android:buttonTint="@color/primary_color"
             android:checked="true"
             android:text="@string/visa_mastercard" />
@@ -124,6 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:buttonTint="@color/primary_color"
+            style="@style/TextViewStyle"
             android:text="Paypal" />
     </RadioGroup>
 
@@ -135,6 +139,7 @@
         android:layout_marginStart="8dp"
         android:text="Order:"
         android:layout_marginTop="@dimen/_16sdp"
+        style="@style/TextViewStyle"
         app:layout_constraintEnd_toStartOf="@+id/tv_order_price"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@+id/rg_payment_methods"
@@ -164,6 +169,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Discount:"
+        style="@style/TextViewStyle"
         app:layout_constraintBottom_toTopOf="@+id/tv_summary_label"
         app:layout_constraintStart_toStartOf="@+id/tv_order_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_order_label" />
@@ -188,6 +194,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Summary:"
+        style="@style/TextViewStyle"
         app:layout_constraintStart_toStartOf="@+id/tv_discount_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_discount_label" />
 
@@ -214,6 +221,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_summary_price"
         app:layout_constraintHorizontal_bias="0.505"
+        style="@style/TextViewStyle"
+        android:textColor="@color/white"
+        android:background="@drawable/round_corner"
         app:layout_constraintStart_toStartOf="@+id/tv_summary_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_summary_label" />
 

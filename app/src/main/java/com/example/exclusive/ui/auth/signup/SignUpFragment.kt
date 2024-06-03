@@ -36,6 +36,12 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.titleBar.tvTitle.text = getString(R.string.signUp)
+        binding.titleBar.icBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         binding.tvAlreadyHaveAccount.setOnClickListener {
             NavHostFragment.findNavController(this@SignUpFragment)
                 .navigate(R.id.action_signUpFragment_to_loginFragment)

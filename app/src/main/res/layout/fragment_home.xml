@@ -6,13 +6,15 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".ui.home.view.HomeFragment">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerAdsSlider"
         android:layout_width="match_parent"
@@ -61,5 +63,18 @@ tools:context=".ui.home.view.HomeFragment">
             tools:listitem="@layout/row_brand"
             tools:itemCount="1"/>
     </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:visibility="visible"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="animation.json"
+        app:lottie_loop="true" />
+</FrameLayout>
 </ScrollView>

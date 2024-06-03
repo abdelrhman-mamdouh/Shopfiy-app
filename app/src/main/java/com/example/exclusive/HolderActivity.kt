@@ -22,6 +22,8 @@ class HolderActivity : AppCompatActivity() {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.addressesFragment)
         } else if (intent.getStringExtra(GO_TO).equals("CURRENCY")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.currenciesFragment)
+        }else if (intent.getStringExtra(GO_TO).equals("SETTINGS")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.settingsFragment)
         }
     }
 

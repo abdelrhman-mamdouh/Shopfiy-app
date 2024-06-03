@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/light_white"
     android:layout_height="match_parent">
 
     <include
@@ -15,6 +16,8 @@
         android:id="@+id/rv_currency"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:layout_constraintStart_toStartOf="parent"

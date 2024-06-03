@@ -27,12 +27,14 @@
     <string name="pleaseEnterEmail">Please, enter your email address. You will receive a link to create a new password via email.</string>
     <string name="products">Products</string>
     <string name="cart">My Bag</string>
+    <string name="settings">Settings</string>
+    <string name="currency">Currencies</string>
 
 
     <string name="add_address">Add Address</string>
     <string name="orderNumber">Order Number: </string>
     <string name="price">Price:</string>
-    <string name="address">Add Address</string>
+    <string name="address">Addresses</string>
     <string name="total">Total</string>
     <string name="for_more">For More</string>
     <string name="check_out">Check Out</string>

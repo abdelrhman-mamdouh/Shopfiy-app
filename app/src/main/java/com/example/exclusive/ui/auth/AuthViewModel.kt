@@ -66,6 +66,9 @@ class AuthViewModel @Inject constructor(
                 _loginState.value = true
                 localDataSource.saveToken(result)
                 localDataSource.token.collect { token ->
+                    val createResponse = remoteDataSource.createCart(token = token!!)
+                    Log.d(TAG, "login: ${createResponse?.cart?.id?: "Not Found"}")
+                    createResponse?.cart?.let { localDataSource.saveUserCartId(cartId = it.id) }
                     Log.d(TAG, "login: $token")
                 }
             } else {

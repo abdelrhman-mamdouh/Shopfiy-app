@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_white"
     tools:context=".ui.settings.currency.SettingsFragment"
     android:layout_marginBottom="20dp">
 
@@ -12,6 +13,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_guideline"
             android:layout_width="wrap_content"
@@ -24,38 +26,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp" />
-
-        <ImageView
-            android:id="@+id/ic_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/left_arrow"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
+        <include
+            android:id="@+id/title_bar"
+            layout="@layout/top_border_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_search"
-            app:layout_constraintEnd_toEndOf="@id/right_guideline"
-            app:layout_constraintTop_toTopOf="@id/ic_back" />
+        <!-- Various UI components -->
 
-        <TextView
-            android:id="@+id/tv_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:text="Setting"
-            android:textColor="#000000"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/ic_back" />
 
         <TextView
             android:id="@+id/tv_welcome"
@@ -64,11 +43,9 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Welcome, Client"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/TextViewStyleHeader"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/tv_setting" />
+            app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
         <TextView
             android:id="@+id/tv_orders"
@@ -77,9 +54,8 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Orders"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/TextViewStyle"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
             app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
 
@@ -113,9 +89,8 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Wish List"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/TextViewStyle"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
             app:layout_constraintTop_toBottomOf="@id/rv_orders" />
 
@@ -153,80 +128,81 @@
             app:layout_constraintStart_toStartOf="@id/left_guideline"
             app:layout_constraintTop_toBottomOf="@id/rv_wishlist">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Currency"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_code"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/tv_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Currency"
+                        style="@style/TextViewStyle"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_code"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:paddingHorizontal="4dp"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_currency"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_currency"
-                    app:layout_constraintTop_toTopOf="@+id/tv_currency"
-                    tools:text="Dollar" />
+                    <TextView
+                        android:id="@+id/tv_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:paddingHorizontal="4dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_currency"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_currency"
+                        app:layout_constraintTop_toTopOf="@+id/tv_currency"
+                        tools:text="Dollar" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/address"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/iv_address"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/cv_currency" />
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/address"
+                style="@style/TextViewStyle"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toStartOf="@id/iv_address"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/cv_currency" />
 
-        <ImageView
-            android:id="@+id/iv_address"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_read_more"
-            android:contentDescription="@string/for_more"
-            app:layout_constraintBottom_toBottomOf="@id/tv_address"
-            app:layout_constraintEnd_toEndOf="@id/right_guideline"
-            app:layout_constraintTop_toTopOf="@id/tv_address" />
+            <ImageView
+                android:id="@+id/iv_address"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_read_more"
+                android:contentDescription="@string/for_more"
+                app:layout_constraintBottom_toBottomOf="@id/tv_address"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintTop_toTopOf="@id/tv_address" />
 
-        <Button
-            android:id="@+id/outlinedButton"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp"
-            android:contentDescription="@string/logout"
-            android:text="@string/logout"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="@id/right_guideline"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/tv_address"
-            android:layout_marginBottom="10dp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/outlinedButton"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:contentDescription="@string/logout"
+                android:text="@string/logout"
+                android:backgroundTint="@color/primary_color"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/tv_address"
+                android:layout_marginBottom="10dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
