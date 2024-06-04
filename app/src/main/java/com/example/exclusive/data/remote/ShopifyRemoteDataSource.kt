@@ -23,11 +23,12 @@ interface ShopifyRemoteDataSource {
         firstName: String,
         secondName: String
     ): Boolean
-
+    suspend fun fetchWatchlistProducts(accessToken:String): List<ProductNode>
+    suspend fun deleteProduct(productId: String,accessToken:String): Boolean
     suspend fun createCustomerAccessToken(email: String, password: String): String?
     suspend fun sendPasswordRecoveryEmail(email: String): Boolean
     suspend fun resetPasswordByUrl(resetUrl: String, newPassword: String): Boolean
-    fun addProductToRealtimeDatabase(product:ProductNode)
+    fun addProductToRealtimeDatabase(product:ProductNode,accessToken:String)
     suspend fun createCart(token: String): CreateCartResponse?
 
     suspend fun getProductsInCart(cartId: String): List<CartProduct>

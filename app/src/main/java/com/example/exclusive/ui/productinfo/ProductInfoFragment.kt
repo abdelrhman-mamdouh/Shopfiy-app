@@ -7,12 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentProductInfoBinding
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.getRandomNineReviews
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductInfoFragment : Fragment() {
@@ -38,6 +43,19 @@ class ProductInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.isInWatchList(product)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isWatchList.collect {
+                    if(it){
+                        binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
+                    }
+                    else{
+                        binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
+                    }
+                }
+            }
+        }
         binding.titleBar.tvTitle.text = getString(R.string.product_info)
         binding.titleBar.icBack.setOnClickListener {
             this.requireActivity().onBackPressed()
@@ -71,7 +89,25 @@ class ProductInfoFragment : Fragment() {
         imageAdapter.submitList(imageList)
         varientAdapter.submitList(product.variants.edges.map{ it.node.title })
         binding.addToFavourateIcon.setOnClickListener {
-            viewModel.addProductToRealtimeDatabase(product)
+            if (!viewModel.isWatchList.value) {
+                binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
+                viewModel.addProductToRealtimeDatabase(product)
+            } else {
+               val onClickOk ={
+                   binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
+                   Log.d("idddddd", product.id)
+                   viewModel.removeProductFromWatchList(product.id.substring(22))
+
+               }
+                val onClickCancel={}
+                val dialog = DailogFramgent(onClickOk,onClickCancel)
+                dialog.show(requireActivity().supportFragmentManager, "dialog")
+            }
+
+
+        }
+        binding.btnAddToCart.setOnClickListener {
+            findNavController().navigate(R.id.action_productInfoFragment_to_watchlistFragment)
         }
     }
     fun onSelectListner(item:String,index:Int){
