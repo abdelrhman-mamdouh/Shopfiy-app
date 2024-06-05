@@ -18,7 +18,6 @@ class AuthMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val viewModel: AuthViewModel by viewModels()
 
-
         binding = ActivityAuthMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

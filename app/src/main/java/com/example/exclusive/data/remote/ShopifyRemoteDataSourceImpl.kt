@@ -3,14 +3,15 @@ package com.example.exclusive.data.remote
 
 import android.util.Log
 import com.example.exclusive.model.AddToCartResponse
+import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CartProductResponse
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.type.MailingAddressInput
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -73,68 +74,108 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     override suspend fun createCart(token: String): CreateCartResponse? {
         return apolloService.createCart(token = token)
     }
-    override fun addProductToRealtimeDatabase(product:ProductNode,accessToken:String) {
-        val database = FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
+
+    override fun addProductToRealtimeDatabase(product: ProductNode, accessToken: String) {
+        val database =
+            FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
 
         val myRef = database.getReference(accessToken)
         myRef.child("products").child(product.id.substring(22)).setValue(product)
     }
+
     override suspend fun addProductToCart(
         cartId: String,
         lines: List<CartLineInput>
     ): AddToCartResponse? {
-        return apolloService.addToCartById(cartId,lines)
+        return apolloService.addToCartById(cartId, lines)
     }
-   override suspend fun fetchWatchlistProducts(accessToken:String): List<ProductNode> = withContext(Dispatchers.IO) {
-       val database = FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/").getReference(accessToken)
-        val productsRef = database.child("products")
 
-        val deferred = CompletableDeferred<List<ProductNode>>()
+    override suspend fun fetchWatchlistProducts(accessToken: String): List<ProductNode> =
+        withContext(Dispatchers.IO) {
+            val database =
+                FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
+                    .getReference(accessToken)
+            val productsRef = database.child("products")
 
-        productsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val products = mutableListOf<ProductNode>()
-                Log.d("watch",dataSnapshot.value.toString())
-                for (productSnapshot in dataSnapshot.children) {
-                    Log.d("wathclist item","I'm here")
-                    val gson = Gson()
-                    val productType = object : TypeToken<ProductNode>() {}.type
-                    val productsJson = productSnapshot.value?.let { gson.toJson(it) }
-                    val product = gson.fromJson<ProductNode>(productsJson, productType)
+            val deferred = CompletableDeferred<List<ProductNode>>()
 
-                    if (product != null) {
-                        products.add(product)
-                        Log.d("wathclist item", product.toString())
+            productsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val products = mutableListOf<ProductNode>()
+                    Log.d("watch", dataSnapshot.value.toString())
+                    for (productSnapshot in dataSnapshot.children) {
+                        Log.d("wathclist item", "I'm here")
+                        val gson = Gson()
+                        val productType = object : TypeToken<ProductNode>() {}.type
+                        val productsJson = productSnapshot.value?.let { gson.toJson(it) }
+                        val product = gson.fromJson<ProductNode>(productsJson, productType)
+
+                        if (product != null) {
+                            products.add(product)
+                            Log.d("wathclist item", product.toString())
+                        }
                     }
+                    deferred.complete(products)
                 }
-                deferred.complete(products)
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                deferred.completeExceptionally(databaseError.toException())
-            }
-        })
-        val list = deferred.await()
-       Log.d("watchlist form remote", list.toString())
-        return@withContext list
-    }
-    override suspend fun deleteProduct(productId: String,accessToken:String): Boolean = withContext(Dispatchers.IO) {
-        return@withContext try {
-            val database = FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/").getReference(accessToken)
-            Log.d("access token", accessToken)
-            val productRef = database.child("products").child(productId)
-            productRef.removeValue().await()
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
+                override fun onCancelled(databaseError: DatabaseError) {
+                    deferred.completeExceptionally(databaseError.toException())
+                }
+            })
+            val list = deferred.await()
+            Log.d("watchlist form remote", list.toString())
+            return@withContext list
         }
-    }
+
+    override suspend fun deleteProduct(productId: String, accessToken: String): Boolean =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                val database =
+                    FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
+                        .getReference(accessToken)
+                Log.d("access token", accessToken)
+                val productRef = database.child("products").child(productId)
+                productRef.removeValue().await()
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+        }
+
     override suspend fun getProductsInCart(cartId: String): List<CartProduct> {
         return apolloService.getProductsInCart(cartId)
     }
 
-    override suspend fun createCheckout(lineItems: List<CheckoutLineItemInput>, email: String?): CheckoutResponse? {
+    override suspend fun createCheckout(
+        lineItems: List<CheckoutLineItemInput>,
+        email: String?
+    ): CheckoutResponse? {
         return apolloService.createCheckout(lineItems, email)
+    }
+
+    override suspend fun removeFromCartById(
+        cartId: String,
+        lineIds: List<String>
+    ): AddToCartResponse? {
+        return apolloService.removeFromCartById(cartId, lineIds)
+    }
+
+    override suspend fun addAddress(
+        addressInput: MailingAddressInput,
+        customerAccessToken: String
+    ): Boolean {
+        return apolloService.addAddressToCustomer(addressInput, customerAccessToken)
+    }
+
+    override suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput> {
+        return apolloService.getCustomerAddresses(customerAccessToken)
+    }
+
+    override suspend fun deleteCustomerAddress(
+        customerAccessToken: String,
+        addressId: String
+    ): Boolean {
+        return apolloService.deleteCustomerAddress(customerAccessToken, addressId)
     }
 }

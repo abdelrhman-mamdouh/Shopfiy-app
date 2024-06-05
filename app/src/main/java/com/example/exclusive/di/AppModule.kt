@@ -1,7 +1,8 @@
 package com.example.exclusive.di
 
 import com.apollographql.apollo3.ApolloClient
-import com.example.exclusive.data.network.CurrencyApi
+import com.example.exclusive.data.network.ApiService
+import com.example.exclusive.data.network.DiscountApi
 import com.example.exclusive.data.remote.ApolloService
 import com.example.exclusive.utilities.Constants
 import dagger.Module
@@ -12,8 +13,15 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BaseUrl1
 
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BaseUrl2
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -35,21 +43,38 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitInstance(
+    @BaseUrl1
+    fun provideRetrofitInstanceForBaseUrl1(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Constants.CURRENCY_BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
 
+
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): CurrencyApi {
-        return retrofit.create(CurrencyApi::class.java)
+    fun provideApiService(@BaseUrl1 retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
+
+
+    @Provides
+    @BaseUrl2
+    fun provideMyRetrofitInstance(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://mad44-android-sv-2.myshopify.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    fun provideDiscountApi(@BaseUrl2 retrofit: Retrofit): DiscountApi {
+        return retrofit.create(DiscountApi::class.java)
     }
     @Singleton
     @Provides
@@ -59,11 +84,10 @@ object AppModule {
             .addHttpHeader("X-Shopify-Storefront-Access-Token", Constants.API_KEY)
             .build()
     }
+
     @Singleton
     @Provides
     fun provideApolloService(apolloClient: ApolloClient): ApolloService {
         return ApolloService(apolloClient)
     }
-
-
 }

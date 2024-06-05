@@ -1,115 +1,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_white"
     android:gravity="center"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/_16sdp">
-<ProgressBar
-    android:id="@+id/loading"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"/>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/cl_login"
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/et_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:textSize="@dimen/_24ssp"
-        android:textStyle="bold"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_16sdp"/>
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="loader.json"
+        app:lottie_loop="true" />
 
-    <!-- Email Field -->
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/inputEmail"
-        android:inputType="textEmailAddress"
+    <FrameLayout
+        android:id="@+id/cl_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        android:padding="@dimen/_12sdp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/et_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_32sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
-<!--    android:drawableEnd="@drawable/ic_check"-->
-    <!-- Password Field -->
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/inputPassword"
-        android:inputType="textPassword"
-        android:padding="@dimen/_12sdp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/et_email"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
 
-    <!-- Forgot Password -->
-    <TextView
-        android:id="@+id/tv_forgot_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/forgotPassword"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <!-- Login Button -->
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:textAllCaps="true"
-        android:backgroundTint="@color/primary_color"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/tv_forgot_password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_24sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
 
-    <TextView
-        android:id="@+id/tv_dont_have_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dontHaveAnAccount"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login"
-        android:layout_marginTop="@dimen/_8sdp"
-        app:layout_constraintStart_toStartOf="parent"
-  />
-    <ProgressBar
-        android:id="@+id/progressBar"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dont_have_account"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_width="wrap_content"
-        android:visibility="invisible"
-        android:layout_height="wrap_content"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/title_bar"
+                layout="@layout/top_border_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!-- Email Field -->
+            <EditText
+                android:id="@+id/et_email"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@color/white"
+                android:hint="@string/inputEmail"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_bar" />
+            <!--    android:drawableEnd="@drawable/ic_check"-->
+            <!-- Password Field -->
+            <EditText
+                android:id="@+id/et_password"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@color/white"
+                android:hint="@string/inputPassword"
+                android:inputType="textPassword"
+                android:padding="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_email" />
+
+            <!-- Forgot Password -->
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:text="@string/forgotPassword"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+            <!-- Login Button -->
+            <Button
+                android:id="@+id/btn_login"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/primary_color"
+                android:text="@string/login"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_forgot_password" />
+
+            <TextView
+                android:id="@+id/tv_dont_have_account"
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/dontHaveAnAccount"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loader.json"
+            app:lottie_loop="true" />
+    </FrameLayout>
 </LinearLayout>

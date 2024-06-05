@@ -31,6 +31,25 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    suspend fun deleteProductFromCart(product: CartProduct) {
+        try {
+            val cartId = localDataSource.getUserCartId()
+            val response = remoteDataSource.removeFromCartById(cartId!!, listOf(product.id))
+
+            response?.let {
+                if (it.userErrors.isEmpty()) {
+                    val updatedList = _cartProductsResponse.value?.toMutableList()
+                    updatedList?.remove(product)
+                    _cartProductsResponse.value = updatedList
+                } else {
+                    _error.value = it.userErrors.joinToString { error -> error.message }
+                }
+            }
+        } catch (e: Exception) {
+            _error.value = e.message
+        }
+    }
+
     private suspend fun getProductsInCart(cartId: String) {
         try {
             val response = remoteDataSource.getProductsInCart(cartId)

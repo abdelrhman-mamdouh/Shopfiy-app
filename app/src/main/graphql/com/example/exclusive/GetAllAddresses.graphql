@@ -1,0 +1,17 @@
+query GetCustomerAddresses($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+        addresses(first: 100) {
+            edges {
+                node {
+                    id
+                    firstName
+                    address1
+                    city
+                    country
+                    zip
+                    phone
+                }
+            }
+        }
+    }
+}

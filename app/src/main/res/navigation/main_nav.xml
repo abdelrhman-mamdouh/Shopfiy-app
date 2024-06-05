@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-
     app:startDestination="@id/homeFragment">
 
 
@@ -27,11 +26,7 @@
         android:name="com.example.exclusive.ui.settings.currency.CurrenciesFragment"
         android:label="fragment_currencies"
         tools:layout="@layout/fragment_currencies" />
-    <fragment
-        android:id="@+id/addAddressFragment"
-        android:name="com.example.exclusive.ui.settings.address.addAddress.AddAddressFragment"
-        android:label="fragment_add_address"
-        tools:layout="@layout/fragment_add_address" />
+
 
     <fragment
         android:id="@+id/forgetPasswordFragment"
@@ -40,12 +35,5 @@
         tools:layout="@layout/fragment_forget_password"
         />
 
-
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.exclusive.ui.settings.SettingsFragment"
-        android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings"
-        />
 
 </navigation>

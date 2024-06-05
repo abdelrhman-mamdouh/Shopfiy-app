@@ -44,6 +44,11 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getToken()
+        binding.titleBar.tvTitle.text = getString(R.string.login)
+        binding.titleBar.icBack.apply {
+            visibility = View.GONE
+        }
+
         lifecycleScope.launch {
 
             viewModel.tokenState

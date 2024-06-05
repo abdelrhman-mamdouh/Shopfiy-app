@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_150sdp"
+    android:layout_width="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/primary_light_color"
     app:cardCornerRadius="@dimen/_24sdp"
+    android:layout_marginStart="@dimen/_8sdp"
     android:layout_marginEnd="@dimen/_8sdp"
     android:layout_height="@dimen/_35sdp">
 <TextView
     android:id="@+id/tv_varient"
-    android:layout_width="@dimen/_140sdp"
+    android:layout_width="wrap_content"
     android:layout_height="@dimen/_30sdp"
     android:gravity="center"
+    android:paddingHorizontal="@dimen/_40sdp"
     android:layout_gravity="center"
     android:text="black"
+    style="@style/TextViewStyle"
     android:textColor="@color/white"
-    android:textSize="@dimen/_16sdp"
+
     android:textStyle="bold"
 
     />

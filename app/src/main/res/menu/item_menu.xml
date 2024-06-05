@@ -10,10 +10,6 @@
         android:id="@+id/categoryFragment"
         android:title="Category"
         android:icon="@drawable/ic_category" />
-    <item
-        android:id="@+id/settingsFragment"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings" />
 
     <item
         android:id="@+id/profileFragment"

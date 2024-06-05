@@ -40,6 +40,7 @@ class CurrenciesAdapter(private var currencies: List<Pair<String, String>>, priv
     }
 
     class ClickListener(private val clickListener: (String) -> Unit) {
+
         fun onClick(currencyCode: String) = clickListener(currencyCode)
     }
 }

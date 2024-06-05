@@ -2,10 +2,10 @@ package com.example.exclusive.ui.productinfo
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,17 +13,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
+import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.getRandomNineReviews
+import com.example.exclusive.ui.products.viewmodel.ProductInfoViewModel
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class ProductInfoFragment : Fragment() {
     lateinit var binding: FragmentProductInfoBinding
     lateinit var product: ProductNode
-    lateinit var  varientAdapter: VarientAdapter
+    lateinit var varientAdapter: VarientAdapter
     private val viewModel: ProductInfoViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +35,8 @@ class ProductInfoFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         product = arguments?.getParcelable("product")!!
         Log.d("product info", product.toString())
@@ -47,10 +50,9 @@ class ProductInfoFragment : Fragment() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isWatchList.collect {
-                    if(it){
+                    if (it) {
                         binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
-                    }
-                    else{
+                    } else {
                         binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
                     }
                 }
@@ -66,7 +68,8 @@ class ProductInfoFragment : Fragment() {
         val reviews = getRandomNineReviews()
         val rating = reviews.map { it.rating }.average()
         binding.tvProductRating.rating = rating.toFloat()
-        binding.tvPrice.text = "${product.variants.edges[0].node.priceV2.amount} ${product.variants.edges[0].node.priceV2.currencyCode}"
+        binding.tvPrice.text =
+            "${product.variants.edges[0].node.priceV2.amount} ${product.variants.edges[0].node.priceV2.currencyCode}"
         binding.tvReviewerName1.text = reviews[0].name
         binding.rbReviewerRating1.rating = reviews[0].rating.toFloat()
         binding.tvReviewerComment1.text = reviews[0].comment
@@ -81,26 +84,30 @@ class ProductInfoFragment : Fragment() {
         val imageList = product.images.edges.map { it.node.src }
 
         val imageAdapter = ImageAdapter(imageList)
-        binding.rvImages.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvImages.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvImages.adapter = imageAdapter
-        varientAdapter  = VarientAdapter(::onSelectListner, product.variants.edges.map{ it.node.title },0)
-        binding.tvVariants.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        varientAdapter =
+            VarientAdapter(::onSelectListner, product.variants.edges.map { it.node.title }, 0)
+        binding.tvVariants.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.tvVariants.adapter = varientAdapter
         imageAdapter.submitList(imageList)
-        varientAdapter.submitList(product.variants.edges.map{ it.node.title })
+        varientAdapter.submitList(product.variants.edges.map { it.node.title })
+
         binding.addToFavourateIcon.setOnClickListener {
             if (!viewModel.isWatchList.value) {
                 binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
                 viewModel.addProductToRealtimeDatabase(product)
             } else {
-               val onClickOk ={
-                   binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
-                   Log.d("idddddd", product.id)
-                   viewModel.removeProductFromWatchList(product.id.substring(22))
+                val onClickOk = {
+                    binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
+                    Log.d("idddddd", product.id)
+                    viewModel.removeProductFromWatchList(product.id.substring(22))
 
-               }
-                val onClickCancel={}
-                val dialog = DailogFramgent(onClickOk,onClickCancel)
+                }
+                val onClickCancel = {}
+                val dialog = DailogFramgent(onClickOk, onClickCancel)
                 dialog.show(requireActivity().supportFragmentManager, "dialog")
             }
 
@@ -109,12 +116,39 @@ class ProductInfoFragment : Fragment() {
         binding.btnAddToCart.setOnClickListener {
             findNavController().navigate(R.id.action_productInfoFragment_to_watchlistFragment)
         }
+
+
+        binding.btnAddToCart.setOnClickListener {
+            viewModel.addToCart(product.variants.edges[0].node.id)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.addToCartState.collect { uiState ->
+                when (uiState) {
+                    is UiState.Success -> {
+                        SnackbarUtils.showSnackbar(requireContext(), view, "Product added to cart")
+                    }
+
+                    is UiState.Error -> {
+                        SnackbarUtils.showSnackbar(
+                            requireContext(), binding.root, "Failed to add to cart"
+                        )
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
     }
-    fun onSelectListner(item:String,index:Int){
+
+    fun onSelectListner(item: String, index: Int) {
         varientAdapter.index = index
 //        val varientAdapter = VarientAdapter(::onSelectListner, product.variants.edges.map{ it.node.title },index)
 //        binding.tvVariants.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 //        binding.tvVariants.adapter = varientAdapter
 //        varientAdapter.submitList(product.variants.edges.map{ it.node.title })
     }
-    }
+}

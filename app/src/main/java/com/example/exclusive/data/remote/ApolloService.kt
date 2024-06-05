@@ -6,6 +6,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
+import com.example.exclusive.AddAddressToCustomerMutation
 import com.example.exclusive.AddToCartMutation
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
@@ -13,11 +14,15 @@ import com.example.exclusive.CreateCartMutation
 import com.example.exclusive.CreateCheckoutMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
+import com.example.exclusive.DeleteCustomerAddressMutation
+import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
+import com.example.exclusive.RemoveProductFromCartMutation
 import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
 import com.example.exclusive.model.AddToCartResponse
+import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.Cart
 import com.example.exclusive.model.CartProduct
@@ -28,11 +33,13 @@ import com.example.exclusive.model.LineItem
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.UserError
 import com.example.exclusive.model.Variant
+import com.example.exclusive.model.Variants
 import com.example.exclusive.type.CartBuyerIdentityInput
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
+import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -348,6 +355,97 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             null
         }
     }
+
+    suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse? {
+        val mutation = RemoveProductFromCartMutation(
+            cartId = cartId,
+            lineIds = lineIds
+        )
+        try {
+            val response = apolloClient.mutation(mutation)
+            val cartLinesRemove = response.execute().data?.cartLinesRemove
+            val cart = cartLinesRemove?.cart?.let { Cart(it.id) }
+            val userErrors = cartLinesRemove?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+
+            if (userErrors.isNotEmpty()) {
+                for (error in userErrors) {
+                    Log.e("GraphQL", "Error: ${error.message}")
+                }
+            } else if (cart != null) {
+                Log.d("GraphQL", "Products removed from cart successfully. Cart ID: ${cart.id}")
+            }
+
+            return AddToCartResponse(cart, userErrors)
+        } catch (e: ApolloException) {
+            Log.e("GraphQL", "ApolloException: ${e.message}", e)
+        }
+        return null
+    }
+
+    suspend fun addAddressToCustomer(addressInput: MailingAddressInput, customerAccessToken: String): Boolean {
+        val mutation = AddAddressToCustomerMutation(
+            addressInput = addressInput,
+            customerAccessToken = customerAccessToken
+        )
+
+        try {
+            val response = apolloClient.mutation(mutation)
+            val userErrors = response.execute().data?.customerAddressCreate?.customerUserErrors
+            if (userErrors != null && userErrors.isNotEmpty()) {
+                for (error in userErrors) {
+                    println("Error: ${error.field}, ${error.message}")
+                }
+                return false
+            }
+            return true
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+            return false
+        }
+    }
+
+    suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput> {
+        val query = GetCustomerAddressesQuery(customerAccessToken)
+        val response = apolloClient.query(query).execute()
+
+        val addresses = response.data?.customer?.addresses?.edges?.map {
+            it.node.let { node ->
+                AddressInput(
+                    id = node.id,
+                    firstName = node.firstName ?: "",
+                    address1 = node.address1 ?: "",
+                    city = node.city ?: "",
+                    country = node.country ?: "",
+                    zip = node.zip ?: "",
+                    phone = node.phone ?: ""
+                )
+            }
+        } ?: emptyList()
+
+        return addresses
+    }
+
+    suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean {
+        val mutation = DeleteCustomerAddressMutation(
+            customerAccessToken = customerAccessToken,
+            id = addressId
+        )
+
+        try {
+            val response = apolloClient.mutation(mutation).execute()
+            val userErrors = response.data?.customerAddressDelete?.customerUserErrors
+            if (userErrors != null && userErrors.isNotEmpty()) {
+                for (error in userErrors) {
+                    println("Error: ${error.field}, ${error.message}")
+                }
+                return false
+            }
+            return true
+        } catch (e: Exception) {
+            println("Exception: ${e.message}")
+            return false
+        }
+    }
 }
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
     val imageEdges = productsQueryImages.edges.map { imageEdge ->
@@ -371,6 +469,5 @@ fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.excl
             )
         )
     }
-    return com.example.exclusive.model.Variants(variantEdges)
+    return Variants(variantEdges)
 }
-

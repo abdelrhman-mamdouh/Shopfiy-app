@@ -9,7 +9,7 @@ import com.example.exclusive.databinding.ItemCartBinding
 import com.example.exclusive.model.CartProduct
 import com.squareup.picasso.Picasso
 
-class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProductViewHolder>(CartProductDiffCallback()) {
+class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProductViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartProductViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,6 +18,11 @@ class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProdu
 
     override fun onBindViewHolder(holder: CartProductViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+    fun addItem(position: Int, item: CartProduct) {
+        val currentList = currentList.toMutableList()
+        currentList.add(position, item)
+        submitList(currentList)
     }
 
     class CartProductViewHolder(private val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -29,22 +34,30 @@ class CartProductAdapter : ListAdapter<CartProduct, CartProductAdapter.CartProdu
             Picasso.get().load(product.productImageUrl).into(binding.cartProductImageView)
 
             binding.btnIncrease.setOnClickListener {
-                // Handle increase quantity button click
-                // You may want to notify the listener about the quantity change
+
             }
             binding.btnDecrease.setOnClickListener {
 
             }
         }
     }
-}
 
-class CartProductDiffCallback : DiffUtil.ItemCallback<CartProduct>() {
-    override fun areItemsTheSame(oldItem: CartProduct, newItem: CartProduct): Boolean {
-        return oldItem.id == newItem.id
+    fun removeItem(position: Int): CartProduct? {
+        val currentList = currentList.toMutableList()
+        val removedItem = currentList.removeAt(position)
+        submitList(currentList)
+        return removedItem
     }
 
-    override fun areContentsTheSame(oldItem: CartProduct, newItem: CartProduct): Boolean {
-        return oldItem == newItem
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CartProduct>() {
+            override fun areItemsTheSame(oldItem: CartProduct, newItem: CartProduct): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: CartProduct, newItem: CartProduct): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

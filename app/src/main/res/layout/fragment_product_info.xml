@@ -3,16 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    >
+    android:background="@color/light_white">
 
     <!-- Title -->
     <include
-        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/title_bar"
         layout="@layout/top_border_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
     <!-- Image RecyclerView -->
     <ScrollView
         android:id="@+id/scrollView"
@@ -20,6 +19,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_30sdp"
+        android:padding="@dimen/_8sdp"
         app:layout_constraintBottom_toTopOf="@id/btn_add_to_cart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar">
@@ -32,16 +32,17 @@
                 android:id="@+id/rv_images"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteY="80dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="@dimen/_30sdp"
                 android:id="@+id/tv_variants"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_images"
@@ -55,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="$19.99"
+                style="@style/TextViewStyle"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/_30sdp"
+                style="@style/TextViewStyle"
                 android:text="H M"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -80,9 +83,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="32dp"
                 android:text="Short black dress"
+                android:maxLines="2"
                 android:textSize="16sp"
+                style="@style/TextViewStyleLight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_product_brand" />
 
@@ -114,6 +119,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed"
                 android:textSize="16sp"
+                style="@style/TextViewStyleLight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
 
@@ -126,6 +132,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="Reviews"
+                style="@style/TextViewStyle"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +147,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Alice"
                 android:textSize="16sp"
+                style="@style/TextViewStyleLight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_reviews_title" />
 
@@ -165,6 +173,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="Great dress, very comfortable!"
                 android:textSize="16sp"
+                style="@style/TextViewStyleLight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rb_reviewer_rating_1" />
@@ -177,6 +186,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Bob"
+                style="@style/TextViewStyleLight"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_reviewer_comment_1" />
@@ -202,6 +212,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
                 android:text="Love the design and fit!"
+                style="@style/TextViewStyleLight"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -216,6 +227,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Cathy"
                 android:textSize="16sp"
+                style="@style/TextViewStyleLight"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_reviewer_comment_2" />
 
@@ -246,30 +258,35 @@
                 app:layout_constraintTop_toBottomOf="@id/rb_reviewer_rating_3" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/btn_add_to_cart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="ADD TO CART"
-        android:backgroundTint="@color/primary_color"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/add_to_favourate_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintTop_toBottomOf="@id/scrollView"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
-<ImageView
-    android:id="@+id/add_to_favourate_icon"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/btn_add_to_cart"
-    android:src="@drawable/empty_love"/>
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/primary_color"
+        android:padding="@dimen/_8sdp"
+        android:text="ADD TO CART"
+        style="@style/TextViewStyle"
+        android:background="@drawable/round_corner"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/add_to_favourate_icon"
+        app:layout_constraintTop_toBottomOf="@id/scrollView" />
+
+    <ImageView
+        android:id="@+id/add_to_favourate_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:src="@drawable/empty_love"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_add_to_cart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_add_to_cart" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!-- Title -->
-
-<!-- Image RecyclerView -->

@@ -6,6 +6,11 @@
     app:startDestination="@id/productsFragment">
 
     <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.exclusive.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
         android:id="@+id/productsFragment"
         android:name="com.example.exclusive.ui.products.view.ProductsFragment"
         android:label="fragment_products"
@@ -77,5 +82,41 @@
             android:id="@+id/action_watchlistFragment_to_productInfoFragment"
             app:destination="@id/productInfoFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.example.exclusive.ui.settings.address.addAddress.AddAddressFragment"
+        android:label="fragment_add_address"
+        tools:layout="@layout/fragment_add_address" />
+
+    <action
+        android:id="@+id/action_settingsFragment_to_addAddressFragment"
+        app:destination="@id/addAddressFragment"
+        app:enterAnim="@anim/row_slide_in"/>
+
+    <action
+        android:id="@+id/action_addressesFragment_to_addAddressFragment"
+        app:destination="@id/addAddressFragment"
+        app:enterAnim="@anim/row_slide_in"/>
+    <fragment
+        android:id="@+id/addressesFragment"
+        android:name="com.example.exclusive.ui.settings.address.AddressesFragment"
+        android:label="AddressesFragment"
+        tools:layout="@layout/fragment_addresses"/>
+    <fragment
+        android:id="@+id/currenciesFragment"
+        android:name="com.example.exclusive.ui.settings.currency.CurrenciesFragment"
+        android:label="CurrenciesFragment"
+        tools:layout="fragment_currencies"/>
+
+    <action
+        android:id="@+id/action_settingsFragment_to_currenciesFragment"
+        app:destination="@id/currenciesFragment"
+        app:enterAnim="@anim/row_slide_in"/>
+    <fragment
+        android:id="@+id/dicountFragment"
+        android:name="com.example.exclusive.ui.discountads.DiscountFragment"
+        android:label="fragment_dicount"
+        tools:layout="@layout/fragment_dicount" />
 
 </navigation>

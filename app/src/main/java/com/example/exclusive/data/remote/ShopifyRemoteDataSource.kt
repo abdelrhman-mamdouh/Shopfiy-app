@@ -1,6 +1,7 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.model.AddToCartResponse
+import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CartProductResponse
@@ -9,6 +10,8 @@ import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.type.CustomerUserError
+import com.example.exclusive.type.MailingAddressInput
 
 
 interface ShopifyRemoteDataSource {
@@ -37,4 +40,11 @@ interface ShopifyRemoteDataSource {
         lineItems: List<CheckoutLineItemInput>,
         email: String?
     ): CheckoutResponse?
+
+    suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse?
+
+    suspend fun addAddress(addressInput: MailingAddressInput, customerAccessToken: String): Boolean
+
+    suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput>
+    suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean
 }
