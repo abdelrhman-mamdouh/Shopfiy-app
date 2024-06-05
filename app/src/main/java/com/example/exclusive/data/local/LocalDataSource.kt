@@ -2,6 +2,7 @@ package com.example.exclusive.data.local
 
 
 
+import android.provider.ContactsContract.CommonDataKinds.Email
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -21,6 +22,7 @@ class LocalDataSource @Inject constructor(
 ) : ILocalDataSource {
     companion object {
         val TOKEN_KEY = stringPreferencesKey("user_token")
+        val Email_KEY = stringPreferencesKey("user_email")
         val USER_CART = stringPreferencesKey("user_cart")
         val USER_CURRENCY = stringPreferencesKey("user_currency")
         val USER_CURRENCY_VALUE = doublePreferencesKey("user_currency_value")
@@ -35,7 +37,17 @@ class LocalDataSource @Inject constructor(
         .map { preferences ->
             preferences[USER_CART]
         }
-
+    override suspend fun saveEmail(email: String) {
+        dataStore.edit { preferences ->
+            preferences[Email_KEY] = email
+        }
+    }
+    override suspend fun readEmail(): String? {
+        return dataStore.data
+            .map { preferences ->
+                preferences[Email_KEY]
+            }.first()
+    }
    override suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = token

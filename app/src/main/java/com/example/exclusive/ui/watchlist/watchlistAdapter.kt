@@ -39,7 +39,7 @@ class WatchListAdapter(var onRemoveListner:(ProductNode)->Unit,var onItemClickLi
                 productBrand.text = product.vendor
                 productName.text = product.title
                 productPrice.text = "${product.variants.edges[0].node.priceV2.amount} ${product.variants.edges[0].node.priceV2.currencyCode}"
-                //productRating.rating = product.rating.toFloat()
+                productRatingBar.rating = product.rating
                 textGroup.setOnClickListener {
                     onItemClickListener(product)
                 }

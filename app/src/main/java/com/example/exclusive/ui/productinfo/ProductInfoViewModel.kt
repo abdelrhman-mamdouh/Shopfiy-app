@@ -7,8 +7,6 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.model.ProductNode
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewScoped
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -19,28 +17,29 @@ import javax.inject.Inject
 class ProductInfoViewModel @Inject constructor(private val remoteDataSource: ShopifyRemoteDataSource,private val localDataSource: LocalDataSource):ViewModel() {
     private val _isWatchList = MutableStateFlow<Boolean>(false)
     val isWatchList: StateFlow<Boolean> = _isWatchList
-    var accessToken : String? =null
+    var email : String? =null
 
     fun addProductToRealtimeDatabase(product: ProductNode){
         viewModelScope.launch {
-            accessToken=localDataSource.token.first()
-            remoteDataSource.addProductToRealtimeDatabase(product,accessToken.toString())
+            email=localDataSource.readEmail()
+            Log.d("readEmail", email.toString())
+            remoteDataSource.addProductToRealtimeDatabase(product,email.toString())
             _isWatchList.value = true
         }
 
     }
      fun isInWatchList(product: ProductNode){
         val result =viewModelScope.launch {
-            accessToken=localDataSource.token.first()
-            val watchlist = remoteDataSource.fetchWatchlistProducts(accessToken.toString())
+            email=localDataSource.readEmail()
+            val watchlist = remoteDataSource.fetchWatchlistProducts(email.toString())
             Log.d("watchlist", watchlist.toString())
             _isWatchList.value = watchlist.contains(product)
         }
     }
     fun removeProductFromWatchList(id: String){
        viewModelScope.launch {
-           accessToken=localDataSource.token.first()
-           remoteDataSource.deleteProduct(id,accessToken.toString())
+           email=localDataSource.readEmail()
+           remoteDataSource.deleteProduct(id,email.toString())
            _isWatchList.value = false
        }
     }

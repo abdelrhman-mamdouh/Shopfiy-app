@@ -17,6 +17,7 @@ import com.example.exclusive.databinding.FragmentProductsBinding
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.ui.products.viewmodel.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class ProductsFragment : Fragment(), OnProductClickListener {
@@ -75,6 +76,13 @@ class ProductsFragment : Fragment(), OnProductClickListener {
                 when (uiState) {
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
+                        uiState.data.forEach {
+                            val min = 1.0f
+                            val max = 5.0f
+                            val randomFloat = getRandomFloat(min, max)
+                            val formattedRandomFloat = formatFloat(randomFloat)
+                            it.rating = formattedRandomFloat.toFloat()
+                        }
                         adapter.updateProducts(uiState.data)
                     }
                     is UiState.Error -> {
@@ -92,6 +100,7 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     }
 
     override fun onProductClick(product: ProductNode) {
+
         NavHostFragment.findNavController(this@ProductsFragment)
             .navigate(ProductsFragmentDirections.
             actionProductsFragmentToProductInfoFragment(product))
@@ -105,5 +114,11 @@ class ProductsFragment : Fragment(), OnProductClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    fun getRandomFloat(min: Float, max: Float): Float {
+        return Random.nextFloat() * (max - min) + min
+    }
+    fun formatFloat(value: Float): String {
+        return String.format("%.1f", value)
     }
 }

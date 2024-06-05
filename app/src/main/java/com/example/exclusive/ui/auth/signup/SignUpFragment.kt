@@ -1,9 +1,12 @@
 package com.example.exclusive.ui.auth.signup
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +18,7 @@ import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentSignUpBinding
 import com.example.exclusive.ui.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -47,6 +51,7 @@ class SignUpFragment : Fragment() {
                 .navigate(R.id.action_signUpFragment_to_loginFragment)
         }
         binding.btnSignUp.setOnClickListener {
+            hideKeyboard()
             binding.progressBar.visibility = View.VISIBLE
             lifecycleScope.launch {
                 viewModel.signUp(
@@ -57,7 +62,12 @@ class SignUpFragment : Fragment() {
             }
             lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.signUpState.collect { success ->
+                    viewModel.signUpState
+                        .catch {
+                            binding.progressBar.visibility = View.GONE
+                            it.message?.let { it1 -> Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                        }
+                        .collect { success ->
                         if (success) {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(
@@ -67,20 +77,20 @@ class SignUpFragment : Fragment() {
                             ).show()
                             NavHostFragment.findNavController(this@SignUpFragment)
                                 .navigate(R.id.action_signUpFragment_to_loginFragment)
-                        } else {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                "process failed",
-                                Toast.LENGTH_SHORT
-                            ).show()
                         }
                     }
                 }
             }
         }
     }
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
 
+    fun Activity.hideKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
