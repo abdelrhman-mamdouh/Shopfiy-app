@@ -17,6 +17,7 @@ object Constants {
     const val BASE_URL: String = "https://mad44-android-sv-2.myshopify.com/api/2024-04/graphql.json"
     const val CURRENCY_BASE_URL: String = "https://api.fastforex.io/"
     const val API_KEY: String = "43f6205d2d0b257b652e16f5f7663414"
+    const val ACCESS_TOKEN: String = "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"
     const val CURRENCY_API_KEY: String = "2a61efd03e-9f8ad1d4f4-se2vx8"
 
     fun showAlert(context: Context, title: Int, message: String, icon: Int) {

@@ -26,6 +26,7 @@
     <string name="send">send</string>
     <string name="pleaseEnterEmail">Please, enter your email address. You will receive a link to create a new password via email.</string>
     <string name="products">Products</string>
+    <string name="coupon">Coupon Details</string>
     <string name="cart">My Bag</string>
     <string name="settings">Settings</string>
     <string name="currency">Currencies</string>
@@ -118,5 +119,6 @@
     <string name="enter_your_city">Enter Your City</string>
     <string name="enter_your_country">Enter Your Country</string>
     <string name="enter_your_zip_code">Enter Your Zip Code</string>
+    <string name="special_offer">Special Offer</string>
 
 </resources>

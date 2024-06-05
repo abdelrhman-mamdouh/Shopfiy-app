@@ -101,5 +101,10 @@
         android:id="@+id/action_settingsFragment_to_currenciesFragment"
         app:destination="@id/currenciesFragment"
         app:enterAnim="@anim/row_slide_in"/>
+    <fragment
+        android:id="@+id/dicountFragment"
+        android:name="com.example.exclusive.ui.discountads.DiscountFragment"
+        android:label="fragment_dicount"
+        tools:layout="@layout/fragment_dicount" />
 
 </navigation>

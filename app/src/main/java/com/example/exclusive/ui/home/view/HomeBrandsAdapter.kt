@@ -4,12 +4,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.exclusive.databinding.RowBrandBinding
 import com.example.exclusive.model.Brand
-import com.example.exclusive.ui.home.view.OnBrandClickListener
+import com.example.exclusive.ui.home.view.OnItemClickListener
 import com.squareup.picasso.Picasso
 
 class HomeBrandsAdapter(
     private var brands: List<Brand>,
-    private val listener: OnBrandClickListener
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<HomeBrandsAdapter.BrandViewHolder>() {
 
     inner class BrandViewHolder(private val binding: RowBrandBinding) :
@@ -19,7 +19,7 @@ class HomeBrandsAdapter(
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onBrandClick(brands[position])
+                    listener.onItemClick(brands[position])
                 }
             }
         }

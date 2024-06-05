@@ -24,7 +24,7 @@ tools:context=".ui.home.view.HomeFragment">
         android:layout_marginEnd="8dp"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
-        android:background="@drawable/ad2"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

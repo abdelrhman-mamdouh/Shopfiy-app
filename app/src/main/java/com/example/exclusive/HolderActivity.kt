@@ -16,6 +16,7 @@ class HolderActivity : AppCompatActivity() {
         binding = ActivityHolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         if (intent.getStringExtra(GO_TO).equals("CART")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.cartFragment)
         } else if(intent.getStringExtra(GO_TO).equals("ADDRESS")) {
@@ -24,7 +25,10 @@ class HolderActivity : AppCompatActivity() {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.currenciesFragment)
         }else if (intent.getStringExtra(GO_TO).equals("SETTINGS")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.settingsFragment)
+        }else if (intent.getStringExtra(GO_TO).equals("ADDS")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.dicountFragment)
         }
+
     }
 
     companion object {

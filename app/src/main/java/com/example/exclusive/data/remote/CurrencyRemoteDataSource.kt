@@ -1,14 +1,16 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.data.model.Currencies
-import com.example.exclusive.data.network.CurrencyApi
+import com.example.exclusive.data.network.ApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class CurrencyRemoteDataSource @Inject constructor(private val currencyApiInterface: CurrencyApi) {
+class CurrencyRemoteDataSource @Inject constructor(
+    private val currencyApiInterface: ApiService
+) {
 
     fun getCurrencies(currencyCode: String): Flow<UiState<Currencies>> = flow {
         emit(UiState.Loading)
