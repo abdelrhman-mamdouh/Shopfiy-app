@@ -44,7 +44,12 @@ class ProductInfoViewModel @Inject constructor(
             var  email=localDataSource.readEmail()
             val watchlist = remoteDataSource.fetchWatchlistProducts(email.toString())
             Log.d("watchlist", watchlist.toString())
-            _isWatchList.value = watchlist.contains(product)
+            var bool = false
+            watchlist.forEach {
+                if(it.id==product.id)
+                    bool = true
+            }
+            _isWatchList.value = bool
         }
     }
     fun removeProductFromWatchList(id: String){
