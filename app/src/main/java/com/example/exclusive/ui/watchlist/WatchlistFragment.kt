@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentWatchlistBinding
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.ui.productinfo.DailogFramgent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 @AndroidEntryPoint
@@ -39,6 +42,16 @@ class WatchlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchWatchlist()
+
+        binding.titleBar.tvTitle.text = getString(R.string.wish_list)
+        binding.titleBar.icBack.setOnClickListener{
+            this.requireActivity().onBackPressed()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
         val adapter = WatchListAdapter(removeItem,onItemClick,addItemToCart)
         binding.rvWatchlist.adapter = adapter
         binding.rvWatchlist.layoutManager = LinearLayoutManager(requireContext())
@@ -51,9 +64,19 @@ class WatchlistFragment : Fragment() {
         }
 
     }
-    val removeItem = {product: ProductNode ->
+    val removeItem: (ProductNode) -> Unit = { product ->
+
         viewModel.removeProductFromWatchList(product.id.substring(22))
 
+        val dialog = DailogFramgent(
+            onDialogPositiveClick = {
+                viewModel.removeProductFromWatchList(product.id.substring(22))
+            },
+            onDialogNegativeClick = {
+
+            }
+        )
+        dialog.show(requireActivity().supportFragmentManager, "dialog")
     }
     val addItemToCart = {product: ProductNode ->
 

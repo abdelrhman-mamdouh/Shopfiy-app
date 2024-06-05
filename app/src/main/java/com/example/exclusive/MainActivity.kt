@@ -20,14 +20,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up the navigation controller
+
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
         binding.bottomNavigationView.setupWithNavController(navController)
 
-        // Handle shopping cart click
+
         binding.appBarHome.cardViewShoppingCart.setOnClickListener {
             val intent = Intent(this, HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "CART")
+            }
+            startActivity(intent)
+        }
+        binding.appBarHome.imgViewFavorite.setOnClickListener {
+            val intent = Intent(this, HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "FAV")
             }
             startActivity(intent)
         }

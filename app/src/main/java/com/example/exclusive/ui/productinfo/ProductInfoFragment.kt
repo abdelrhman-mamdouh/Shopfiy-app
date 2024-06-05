@@ -99,23 +99,20 @@ class ProductInfoFragment : Fragment() {
             if (!viewModel.isWatchList.value) {
                 binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
                 viewModel.addProductToRealtimeDatabase(product)
+                SnackbarUtils.showSnackbar(requireContext(), view, "Product added to favorites")
             } else {
                 val onClickOk = {
                     binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
                     Log.d("idddddd", product.id)
                     viewModel.removeProductFromWatchList(product.id.substring(22))
-
+                    SnackbarUtils.showSnackbar(requireContext(), view, "Product removed from favorites")
                 }
                 val onClickCancel = {}
                 val dialog = DailogFramgent(onClickOk, onClickCancel)
                 dialog.show(requireActivity().supportFragmentManager, "dialog")
             }
-
-
         }
-        binding.btnAddToCart.setOnClickListener {
-            findNavController().navigate(R.id.action_productInfoFragment_to_watchlistFragment)
-        }
+
 
 
         binding.btnAddToCart.setOnClickListener {

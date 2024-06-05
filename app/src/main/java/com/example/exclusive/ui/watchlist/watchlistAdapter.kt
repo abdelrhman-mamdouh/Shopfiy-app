@@ -51,6 +51,7 @@ class WatchListAdapter(var onRemoveListner:(ProductNode)->Unit,var onItemClickLi
                     .into(productImage)
                 deleteButton.setOnClickListener {
                     onRemoveListner(product)
+
                 }
                 cartButton.setOnClickListener {
                     addToCart(product)

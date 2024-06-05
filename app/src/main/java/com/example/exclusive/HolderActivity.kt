@@ -27,6 +27,8 @@ class HolderActivity : AppCompatActivity() {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.settingsFragment)
         }else if (intent.getStringExtra(GO_TO).equals("ADDS")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.dicountFragment)
+        }else if (intent.getStringExtra(GO_TO).equals("FAV")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.watchlistFragment)
         }
 
     }

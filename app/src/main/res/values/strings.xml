@@ -116,6 +116,8 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="product_info">Product info</string>
+    <string name="wish_list">Wish List</string>
+    <string name="coupons">Coupons</string>
     <string name="enter_your_city">Enter Your City</string>
     <string name="enter_your_country">Enter Your Country</string>
     <string name="enter_your_zip_code">Enter Your Zip Code</string>

@@ -118,5 +118,8 @@
         android:name="com.example.exclusive.ui.discountads.DiscountFragment"
         android:label="fragment_dicount"
         tools:layout="@layout/fragment_dicount" />
-
+    <action
+        android:id="@+id/action_productsFragment_to_watchListFragment"
+        app:destination="@id/watchlistFragment"
+        app:enterAnim="@anim/row_slide_in"/>
 </navigation>

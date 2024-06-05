@@ -24,9 +24,9 @@ class DiscountFragment : Fragment() {
         populateView(priceRuleSummary)
         return view
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.titleBar.tvTitle.text = getString(R.string.coupon)
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().onBackPressed()
