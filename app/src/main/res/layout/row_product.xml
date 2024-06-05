@@ -9,15 +9,7 @@
     android:layout_margin="@dimen/_8sdp"
     android:backgroundTint="@color/white"
     app:cardCornerRadius="8dp">
-    <ImageButton
-        android:id="@+id/favorite_btn"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_26sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginLeft="@dimen/_95sdp"
-        android:background="@drawable/round_corner"
-        android:elevation="10dp"
-        android:src="@drawable/ic_favorite_off" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">

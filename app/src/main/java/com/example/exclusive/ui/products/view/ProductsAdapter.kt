@@ -19,12 +19,7 @@ class ProductsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.favoriteBtn.setOnClickListener{
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onFavClick(filteredProducts[position])
-                }
-            }
+
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {

@@ -122,5 +122,6 @@
     <string name="enter_your_country">Enter Your Country</string>
     <string name="enter_your_zip_code">Enter Your Zip Code</string>
     <string name="special_offer">Special Offer</string>
+    <string name="search_here">Search here</string>
 
 </resources>

@@ -2,6 +2,8 @@ package com.example.exclusive
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -20,11 +22,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
         binding.bottomNavigationView.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            findViewById<TextView>(R.id.tv_title).text = destination.label
+        }
 
+        // Set click listeners for the icons
         binding.appBarHome.cardViewShoppingCart.setOnClickListener {
             val intent = Intent(this, HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "CART")
@@ -34,6 +39,13 @@ class MainActivity : AppCompatActivity() {
         binding.appBarHome.imgViewFavorite.setOnClickListener {
             val intent = Intent(this, HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "FAV")
+            }
+            startActivity(intent)
+        }
+
+        binding.appBarHome.imgViewSearch.setOnClickListener {
+            val intent = Intent(this, HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "Search")
             }
             startActivity(intent)
         }

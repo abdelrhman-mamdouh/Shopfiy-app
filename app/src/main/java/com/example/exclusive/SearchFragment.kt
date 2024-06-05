@@ -1,59 +1,122 @@
 package com.example.exclusive
 
+import HomeBrandsAdapter
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.databinding.FragmentSearchBinding
+import com.example.exclusive.model.Brand
+import com.example.exclusive.ui.home.view.OnItemClickListener
+import com.example.exclusive.ui.home.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+@AndroidEntryPoint
+class SearchFragment : Fragment(), OnItemClickListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var adapter: HomeBrandsAdapter
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+    private var searchJob: Job? = null
+    private var brandsList: List<Brand> = listOf()
+    private var isListFetched = false
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.icBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
+        val recyclerView = binding.rvBrands
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        adapter = HomeBrandsAdapter(emptyList(), this)
+        recyclerView.adapter = adapter
+
+        binding.txtInputEditTextSearch.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val searchQuery = textView.text.toString()
+                filterBrands(searchQuery)
+                true
+            } else {
+                false
+            }
+        }
+
+        if (!isListFetched) {
+            observeList()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
-    }
+    private fun observeList() {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                when (uiState) {
+                    is UiState.Success -> {
+                        brandsList = uiState.data
+                        adapter.updateBrands(brandsList)
+                        binding.progressBar.visibility = View.GONE
+                    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    is UiState.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                    }
+
+                    UiState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    UiState.Idle -> {
+                        binding.progressBar.visibility = View.GONE
+                    }
                 }
             }
+        }
+        isListFetched = true
+    }
+
+    private fun filterBrands(searchQuery: String) {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            delay(300)
+            val filteredBrands = brandsList.filter { brand ->
+                brand.name.contains(searchQuery, ignoreCase = true)
+            }
+            adapter.updateBrands(filteredBrands)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        searchJob?.cancel()
+    }
+
+    override fun onItemClick(brand: Brand) {
+        val intent = Intent(context, HolderActivity::class.java)
+        intent.putExtra("brand_name", brand.name)
+        startActivity(intent)
     }
 }

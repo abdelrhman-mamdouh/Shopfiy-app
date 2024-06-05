@@ -30,6 +30,9 @@ class HolderActivity : AppCompatActivity() {
         }else if (intent.getStringExtra(GO_TO).equals("FAV")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.watchlistFragment)
         }
+        else if (intent.getStringExtra(GO_TO).equals("Search")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.searchFragment)
+        }
 
     }
 

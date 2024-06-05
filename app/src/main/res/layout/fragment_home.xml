@@ -10,21 +10,14 @@ tools:context=".ui.home.view.HomeFragment">
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerAdsSlider"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -69,6 +62,7 @@ tools:context=".ui.home.view.HomeFragment">
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressBar"
         android:layout_width="@dimen/_150sdp"
+
         android:layout_height="@dimen/_150sdp"
         android:layout_gravity="center"
         android:scaleType="fitXY"
