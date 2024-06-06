@@ -30,31 +30,34 @@ class ProductInfoViewModel @Inject constructor(
     private val _isWatchList = MutableStateFlow<Boolean>(false)
     val isWatchList: StateFlow<Boolean> = _isWatchList
     var accessToken: String? = null
-
-    fun isInWatchList(product: ProductNode) {
-        val result = viewModelScope.launch {
-            accessToken = localDataSource.token.first()
-            val watchlist = remoteDataSource.fetchWatchlistProducts(accessToken.toString())
-            Log.d("watchlist", watchlist.toString())
-            _isWatchList.value = watchlist.contains(product)
-        }
-    }
-
-    fun removeProductFromWatchList(id: String) {
+    fun addProductToRealtimeDatabase(product: ProductNode){
         viewModelScope.launch {
-            accessToken = localDataSource.token.first()
-            remoteDataSource.deleteProduct(id, accessToken.toString())
-            _isWatchList.value = false
-        }
-    }
-
-    fun addProductToRealtimeDatabase(product: ProductNode) {
-        viewModelScope.launch {
-            accessToken = localDataSource.token.first()
-            remoteDataSource.addProductToRealtimeDatabase(product, accessToken.toString())
+            var email=localDataSource.readEmail()
+            Log.d("readEmail", email.toString())
+            remoteDataSource.addProductToRealtimeDatabase(product,email.toString())
             _isWatchList.value = true
         }
 
+    }
+    fun isInWatchList(product: ProductNode){
+        val result =viewModelScope.launch {
+            var  email=localDataSource.readEmail()
+            val watchlist = remoteDataSource.fetchWatchlistProducts(email.toString())
+            Log.d("watchlist", watchlist.toString())
+            var bool = false
+            watchlist.forEach {
+                if(it.id==product.id)
+                    bool = true
+            }
+            _isWatchList.value = bool
+        }
+    }
+    fun removeProductFromWatchList(id: String){
+        viewModelScope.launch {
+            var email=localDataSource.readEmail()
+            remoteDataSource.deleteProduct(id,email.toString())
+            _isWatchList.value = false
+        }
     }
 
     fun addToCart(productId: String) {

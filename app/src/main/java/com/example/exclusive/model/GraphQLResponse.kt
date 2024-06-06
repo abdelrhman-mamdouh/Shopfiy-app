@@ -30,8 +30,8 @@ data class ProductNode(
     val description: String,
     val productType: String,
     val images: Images,
-    val variants: Variants
-
+    val variants: Variants,
+    var rating: Float = 4f
 ) : Parcelable
 
 @Parcelize

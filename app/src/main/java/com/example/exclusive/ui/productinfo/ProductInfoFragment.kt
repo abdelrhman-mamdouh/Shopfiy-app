@@ -66,8 +66,9 @@ class ProductInfoFragment : Fragment() {
         binding.tvProductBrand.text = product.vendor
         binding.tvProductDescription.text = product.description
         val reviews = getRandomNineReviews()
-        val rating = reviews.map { it.rating }.average()
-        binding.tvProductRating.rating = rating.toFloat()
+
+        binding.tvProductRating.rating = product.rating
+        Log.d("ratingg", product.rating.toString())
         binding.tvPrice.text =
             "${product.variants.edges[0].node.priceV2.amount} ${product.variants.edges[0].node.priceV2.currencyCode}"
         binding.tvReviewerName1.text = reviews[0].name
@@ -143,9 +144,8 @@ class ProductInfoFragment : Fragment() {
 
     fun onSelectListner(item: String, index: Int) {
         varientAdapter.index = index
-//        val varientAdapter = VarientAdapter(::onSelectListner, product.variants.edges.map{ it.node.title },index)
-//        binding.tvVariants.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//        binding.tvVariants.adapter = varientAdapter
-//        varientAdapter.submitList(product.variants.edges.map{ it.node.title })
+        binding.tvPrice.text="${product.variants.edges[index].node.priceV2.amount} ${product.variants.edges[index].node.priceV2.currencyCode}"
+
+        varientAdapter.notifyDataSetChanged()
     }
 }

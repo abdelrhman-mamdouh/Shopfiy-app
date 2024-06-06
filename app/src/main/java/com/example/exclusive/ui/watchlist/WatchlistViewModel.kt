@@ -18,19 +18,19 @@ class WatchlistViewModel@Inject constructor(private val remoteDataSource: Shopif
     ViewModel() {
         val _watchlist = MutableStateFlow<List<ProductNode>>(emptyList())
         val watchlist: StateFlow<List<ProductNode>> = _watchlist
-        var accessToken : String? =null
+        var email : String? =null
         fun fetchWatchlist(){
             viewModelScope.launch {
-                accessToken=localDataSource.token.first()
-                val result = remoteDataSource.fetchWatchlistProducts(accessToken.toString())
+                email=localDataSource.readEmail()
+                val result = remoteDataSource.fetchWatchlistProducts(email.toString())
                 Log.d("ViewModelWatchlist", result.toString())
                 _watchlist.value = result
             }
         }
         fun removeProductFromWatchList(id: String){
             viewModelScope.launch {
-                accessToken=localDataSource.token.first()
-                remoteDataSource.deleteProduct(id,accessToken.toString())
+                email=localDataSource.readEmail()
+                remoteDataSource.deleteProduct(id,email.toString())
                 fetchWatchlist()
             }
         }

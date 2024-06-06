@@ -1,10 +1,13 @@
 package com.example.exclusive.ui.auth
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,12 +44,21 @@ class ForgetPasswordFragment : Fragment() {
         }
         binding.btnSend.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
+            hideKeyboard()
             lifecycleScope.launch {
                 viewModel.sendPassword(binding.etEmail.text.toString())
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(requireContext(), "Check your email", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

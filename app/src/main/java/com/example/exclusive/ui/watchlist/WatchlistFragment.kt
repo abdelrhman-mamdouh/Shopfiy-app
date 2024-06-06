@@ -66,9 +66,7 @@ class WatchlistFragment : Fragment() {
     }
     val removeItem: (ProductNode) -> Unit = { product ->
 
-        viewModel.removeProductFromWatchList(product.id.substring(22))
-
-        val dialog = DailogFramgent(
+            val dialog = DailogFramgent(
             onDialogPositiveClick = {
                 viewModel.removeProductFromWatchList(product.id.substring(22))
             },

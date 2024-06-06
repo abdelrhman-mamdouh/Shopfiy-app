@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.RowProductBinding
 import com.example.exclusive.model.ProductNode
 import com.squareup.picasso.Picasso
+import kotlin.random.Random
 
 
 class ProductsAdapter(
@@ -20,6 +21,7 @@ class ProductsAdapter(
 
         init {
 
+
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -29,6 +31,8 @@ class ProductsAdapter(
         }
 
         fun bind(myProduct: ProductNode) {
+            binding.tvRating.text = myProduct.rating.toString()
+            binding.rbProduct.rating = myProduct.rating
             binding.tvProductName.text = myProduct.title
             binding.tvProductType.text = myProduct.productType
             binding.tvProductPrice.text =
@@ -73,4 +77,7 @@ class ProductsAdapter(
         allProducts = newProducts
         filterProducts("All")
     }
+
+
+
 }

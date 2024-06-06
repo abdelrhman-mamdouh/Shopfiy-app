@@ -1,11 +1,14 @@
 package com.example.exclusive.ui.auth.login
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,6 +19,9 @@ import com.example.exclusive.MainActivity
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentLoginBinding
 import com.example.exclusive.ui.auth.AuthViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -24,13 +30,13 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var auth:FirebaseAuth
     private val viewModel: AuthViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        auth =  Firebase.auth
     }
 
     override fun onCreateView(
@@ -77,6 +83,7 @@ class LoginFragment : Fragment() {
                 .navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         }
         binding.btnLogin.setOnClickListener {
+            hideKeyboard()
             binding.progressBar.visibility = View.VISIBLE
             lifecycleScope.launch {
                 viewModel.login(
@@ -107,17 +114,18 @@ class LoginFragment : Fragment() {
                             val intent = Intent(context, MainActivity::class.java)
                             startActivity(intent)
                         }
-                            else{
-                                binding.progressBar.visibility = View.INVISIBLE
-                                Toast.makeText(
-                                    requireContext(),
-                                    "process failed",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+
                     }
                 }
             }
         }
+    }
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

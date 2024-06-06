@@ -79,7 +79,7 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         val database =
             FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
 
-        val myRef = database.getReference(accessToken)
+        val myRef = database.getReference(accessToken.replace('.', '-'))
         myRef.child("products").child(product.id.substring(22)).setValue(product)
     }
 
@@ -94,7 +94,7 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val database =
                 FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
-                    .getReference(accessToken)
+                    .getReference(accessToken.replace('.', '-'))
             val productsRef = database.child("products")
 
             val deferred = CompletableDeferred<List<ProductNode>>()
@@ -132,7 +132,7 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
             return@withContext try {
                 val database =
                     FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
-                        .getReference(accessToken)
+                        .getReference(accessToken.replace('.', '-'))
                 Log.d("access token", accessToken)
                 val productRef = database.child("products").child(productId)
                 productRef.removeValue().await()
