@@ -30,7 +30,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     private lateinit var adapter: HomeBrandsAdapter
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val imageList = listOf(R.drawable.ad1, R.drawable.ad2, R.drawable.ad3)
+    private val imageList = listOf(R.drawable.ad10, R.drawable.ad20, R.drawable.ad30,R.drawable.ad40,R.drawable.ad50)
     private val handler = Handler(Looper.getMainLooper())
     private var currentPage = 0
 
