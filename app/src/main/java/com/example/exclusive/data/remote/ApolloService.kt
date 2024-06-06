@@ -15,6 +15,7 @@ import com.example.exclusive.CreateCheckoutMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
 import com.example.exclusive.DeleteCustomerAddressMutation
+import com.example.exclusive.GetAllProductsQuery
 import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
@@ -94,7 +95,32 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         return products
     }
 
+    suspend fun getAllProducts(): List<ProductNode> {
+        val products = mutableListOf<ProductNode>()
 
+        try {
+            val response: ApolloResponse<GetAllProductsQuery.Data> = apolloClient.query(GetAllProductsQuery()).execute()
+            val data = response.data
+            Log.d("in aplllo", data.toString())
+            data?.products?.edges?.forEach { edge ->
+                val node = edge.node
+                val productNode = ProductNode(
+                    node.id,
+                    node.title,
+                    node.vendor,
+                    node.description,
+                    node.productType,
+                    mapImages(node.images),
+                    mapVariants(node.variants)
+                )
+                products.add(productNode)
+            }
+        } catch (e: ApolloException) {
+            println("ApolloException: ${e.message}")
+        }
+        Log.d("in apllo", products.toString())
+        return products
+    }
     suspend fun getCategories(): List<Brand> {
         val brands = mutableListOf<Brand>()
 
@@ -454,6 +480,30 @@ fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.
         )
     }
     return com.example.exclusive.model.Images(imageEdges)
+}
+fun mapImages(productsQueryImages: GetAllProductsQuery.Images): com.example.exclusive.model.Images {
+    val imageEdges = productsQueryImages.edges.map { imageEdge ->
+        com.example.exclusive.model.ImageEdge(
+            com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
+        )
+    }
+    return com.example.exclusive.model.Images(imageEdges)
+}
+fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.example.exclusive.model.Variants {
+    val variantEdges = productsQueryVariants.edges.map { variantEdge ->
+        com.example.exclusive.model.VariantEdge(
+            com.example.exclusive.model.VariantNode(
+                variantEdge.node.id,
+                variantEdge.node.title,
+                variantEdge.node.sku!!,
+                com.example.exclusive.model.PriceV2(
+                    variantEdge.node.priceV2.amount.toString(),
+                    variantEdge.node.priceV2.currencyCode.toString()
+                )
+            )
+        )
+    }
+    return Variants(variantEdges)
 }
 fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.exclusive.model.Variants {
     val variantEdges = productsQueryVariants.edges.map { variantEdge ->

@@ -44,7 +44,9 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     override suspend fun getProducts(vendor: String): List<ProductNode> {
         return apolloService.getProducts(vendor)
     }
-
+    override suspend fun getAllProducts(): List<ProductNode> {
+        return apolloService.getAllProducts()
+    }
     override suspend fun createCustomer(
         email: String,
         password: String,

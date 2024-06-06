@@ -125,9 +125,13 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.exclusive.SearchFragment"
+        android:name="com.example.exclusive.ui.search.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_productInfoFragment"
+            app:destination="@id/productInfoFragment" />
+    </fragment>
     <action
         android:id="@+id/action_homeFragment_to_searchFragment"
         app:destination="@id/searchFragment"
