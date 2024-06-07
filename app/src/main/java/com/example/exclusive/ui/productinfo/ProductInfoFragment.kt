@@ -16,6 +16,8 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.model.Variant
+import com.example.exclusive.model.VariantNode
 import com.example.exclusive.model.getRandomNineReviews
 import com.example.exclusive.ui.products.viewmodel.ProductInfoViewModel
 import com.example.exclusive.utilities.SnackbarUtils
@@ -28,6 +30,7 @@ class ProductInfoFragment : Fragment() {
     lateinit var binding: FragmentProductInfoBinding
     lateinit var product: ProductNode
     lateinit var varientAdapter: VarientAdapter
+    lateinit var choosenVarient: VariantNode
     private val viewModel: ProductInfoViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +50,7 @@ class ProductInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.isInWatchList(product)
+        choosenVarient=product.variants.edges[0].node
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isWatchList.collect {
@@ -117,7 +121,7 @@ class ProductInfoFragment : Fragment() {
 
 
         binding.btnAddToCart.setOnClickListener {
-            viewModel.addToCart(product.variants.edges[0].node.id)
+            viewModel.addToCart(choosenVarient.id)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -145,7 +149,7 @@ class ProductInfoFragment : Fragment() {
     fun onSelectListner(item: String, index: Int) {
         varientAdapter.index = index
         binding.tvPrice.text="${product.variants.edges[index].node.priceV2.amount} ${product.variants.edges[index].node.priceV2.currencyCode}"
-
+        choosenVarient=product.variants.edges[index].node
         varientAdapter.notifyDataSetChanged()
     }
 }
