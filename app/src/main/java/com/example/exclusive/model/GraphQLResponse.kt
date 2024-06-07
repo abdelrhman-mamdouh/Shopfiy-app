@@ -123,6 +123,7 @@ data class CartProduct(
     val variantTitle: String,
     val variantPrice: String
 )
+
 data class MyCreateCartResponse(
     val cartCreate: MyCartCreate?
 )

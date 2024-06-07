@@ -1,6 +1,5 @@
 package com.example.exclusive.ui.cart
 
-import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CartFragment : Fragment() {
+class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
 
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
@@ -75,7 +74,7 @@ class CartFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        cartProductAdapter = CartProductAdapter()
+        cartProductAdapter = CartProductAdapter(this)
         binding.rvCart.apply {
             adapter = cartProductAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -119,13 +118,21 @@ class CartFragment : Fragment() {
     }
 
     private fun showUndoSnackbar(product: CartProduct) {
-        SnackbarUtils.showSnackbarWithUndo(binding.root, "Product removed from cart", View.OnClickListener {
+        SnackbarUtils.showSnackbarWithUndo(binding.root, "Product removed from cart") {
+            viewLifecycleOwner.lifecycleScope.launch {
+                cartViewModel.deleteProductFromCart(product)
 
-        })
+                cartProductAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onRemoveProduct(product: CartProduct) {
+        showUndoSnackbar(product)
     }
 }
