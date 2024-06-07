@@ -155,6 +155,6 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
 
     private fun updateTotalPrice() {
         val totalPrice = calculateTotalPrice()
-        binding.textViewTotalPrice.text = totalPrice.toString()
+        binding.textViewTotalPrice.text = String.format("%.2f", totalPrice)
     }
 }

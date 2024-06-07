@@ -50,7 +50,7 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
         fun bind(product: CartProduct) {
             Log.d(TAG, "bind: ${product.id} ${product.productId} ${product.variantId}")
             binding.etTitle.text = product.productTitle
-            binding.textViewProductPrice.text = product.variantPrice
+            binding.textViewProductPrice.text = product.variantPrice +" "+ product.variantPriceCode
             binding.tvVariant.text = "${product.quantity} Items"
 
             Picasso.get().load(product.productImageUrl).into(binding.cartProductImageView)
