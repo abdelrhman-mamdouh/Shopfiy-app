@@ -2,6 +2,8 @@ package com.example.exclusive.ui.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.exclusive.data.model.CouponsDetails
+import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.Brand
@@ -22,6 +24,8 @@ class HomeViewModel @Inject constructor(private val brandRepository: HomeReposit
     private val _dicountState = MutableStateFlow<UiState<List<PriceRuleSummary>>>(UiState.Idle)
     val discountState: StateFlow<UiState<List<PriceRuleSummary>>> get() = _dicountState
 
+    private val _couponDetailsState = MutableStateFlow<UiState<DiscountCode>>(UiState.Idle)
+    val couponDetailsState: StateFlow<UiState<DiscountCode>> = _couponDetailsState
     init {
         fetchBrands()
         fetchDiscountPrice()
@@ -39,7 +43,7 @@ class HomeViewModel @Inject constructor(private val brandRepository: HomeReposit
         }
     }
 
-    fun fetchDiscountPrice() {
+    private fun fetchDiscountPrice() {
         _dicountState.value = UiState.Loading
         viewModelScope.launch {
             try {
@@ -47,6 +51,18 @@ class HomeViewModel @Inject constructor(private val brandRepository: HomeReposit
                 _dicountState.value = UiState.Success(priceRulesResponse.priceRules)
             } catch (e: Exception) {
                 _dicountState.value = UiState.Error(e)
+            }
+        }
+    }
+
+    fun fetchCouponDetails(id: Long) {
+        _couponDetailsState.value = UiState.Loading
+        viewModelScope.launch {
+            try {
+                val getCouponDetails = brandRepository.getCouponDetails(id = id)
+                _couponDetailsState.value = UiState.Success(getCouponDetails.discount_codes[0])
+            } catch (e: Exception) {
+                _couponDetailsState.value = UiState.Error(e)
             }
         }
     }

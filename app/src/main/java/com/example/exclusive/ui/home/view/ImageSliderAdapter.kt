@@ -1,19 +1,27 @@
 package com.example.exclusive.ui.home.view
 
-import android.content.Context
-import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
+import com.example.exclusive.data.model.PriceRuleSummary
 
+private const val TAG = "ImageSliderAdapter"
 class ImageSliderAdapter(
-    private val context: Context,
-    private val imageList: List<Int>,
+    private var couponList: List<PriceRuleSummary> = emptyList(),
     private val listener: OnImageClickListener
 ) : RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder>() {
+
+    private val discountImageMap = mapOf(
+        -10.0 to R.drawable.ad10,
+        -20.0 to R.drawable.ad20,
+        -30.0 to R.drawable.ad30,
+        -40.0 to R.drawable.ad40,
+        -50.0 to R.drawable.ad50
+    )
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -25,7 +33,8 @@ class ImageSliderAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onImageClick(imageList[position].toInt())
+                listener.onImageClick(couponList[position].id)
+                Log.d(TAG, "onClick: ${couponList[position].id.toInt()}")
             }
         }
     }
@@ -37,10 +46,19 @@ class ImageSliderAdapter(
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.imageView.setImageResource(imageList[position])
+        val coupon = couponList[position]
+        val imageRes = discountImageMap[coupon.value]
+        if (imageRes != null) {
+            holder.imageView.setImageResource(imageRes)
+        }
     }
 
     override fun getItemCount(): Int {
-        return imageList.size
+        return couponList.size
+    }
+
+    fun updateCoupons(priceRule: List<PriceRuleSummary>) {
+        couponList = priceRule
+        notifyDataSetChanged()
     }
 }
