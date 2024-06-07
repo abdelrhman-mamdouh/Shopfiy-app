@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
+import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.CartProduct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,8 +53,14 @@ class CartViewModel @Inject constructor(
 
     private suspend fun getProductsInCart(cartId: String) {
         try {
-            val response = remoteDataSource.getProductsInCart(cartId)
-            _cartProductsResponse.value = response
+            val currency = localDataSource.getCurrency()
+            val products = remoteDataSource.getProductsInCart(cartId).map { product ->
+                val price = product.variantPrice.toDouble() / currency.second
+                val formattedPrice = String.format("%.2f", price)
+                product.copy(variantPrice = formattedPrice)
+                product.copy(variantPriceCode = currency.first)
+            }
+            _cartProductsResponse.value = products
         } catch (e: Exception) {
             _error.value = e.message
         }

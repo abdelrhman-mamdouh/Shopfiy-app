@@ -6,6 +6,7 @@ import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.remote.CurrencyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CurrencyRepository @Inject constructor(
@@ -18,5 +19,9 @@ class CurrencyRepository @Inject constructor(
 
     suspend fun saveCurrency(pair: Pair<String, Double>) {
         localDataSource.saveCurrency(pair.first, pair.second)
+    }
+
+    fun getCurrentCurrency(): Flow<Pair<String, Double>> = flow {
+        emit(localDataSource.getCurrency())
     }
 }

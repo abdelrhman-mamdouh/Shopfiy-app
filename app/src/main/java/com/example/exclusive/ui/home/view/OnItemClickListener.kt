@@ -10,5 +10,5 @@ interface OnItemClickListener {
 
 interface OnImageClickListener {
 
-    fun onImageClick(item: Int)
+    fun onImageClick(id: Long)
 }

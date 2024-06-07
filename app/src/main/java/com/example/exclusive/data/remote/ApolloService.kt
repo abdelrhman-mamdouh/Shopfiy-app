@@ -99,7 +99,8 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         val products = mutableListOf<ProductNode>()
 
         try {
-            val response: ApolloResponse<GetAllProductsQuery.Data> = apolloClient.query(GetAllProductsQuery()).execute()
+            val response: ApolloResponse<GetAllProductsQuery.Data> =
+                apolloClient.query(GetAllProductsQuery()).execute()
             val data = response.data
             Log.d("in aplllo", data.toString())
             data?.products?.edges?.forEach { edge ->
@@ -121,6 +122,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         Log.d("in apllo", products.toString())
         return products
     }
+
     suspend fun getCategories(): List<Brand> {
         val brands = mutableListOf<Brand>()
 
@@ -255,16 +257,20 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     }
 
     suspend fun createCart(token: String): CreateCartResponse? {
+
         val mutation = CreateCartMutation(
-            buyerIdentity = Optional.present(CartBuyerIdentityInput(
-                customerAccessToken = Optional.present(token)
+            buyerIdentity = Optional.present(
+                CartBuyerIdentityInput(
+                    customerAccessToken = Optional.present(token)
+                )
             )
-        ))
+        )
         try {
             val response = apolloClient.mutation(mutation)
             val cartCreate = response.execute().data?.cartCreate
             val cart = cartCreate?.cart?.let { Cart(it.id) }
-            val userErrors = cartCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+            val userErrors =
+                cartCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
 
             if (userErrors.isNotEmpty()) {
                 for (error in userErrors) {
@@ -312,6 +318,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                             variantPrice = variantPrice as String
                         )
                     )
+                    Log.d("TAG", "getProductsInCart: ${node.quantity}")
                 }
             }
         } catch (e: ApolloException) {
@@ -330,7 +337,8 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             val response = apolloClient.mutation(mutation)
             val cartLinesAdd = response.execute().data?.cartLinesAdd
             val cart = cartLinesAdd?.cart?.let { Cart(it.id) }
-            val userErrors = cartLinesAdd?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+            val userErrors =
+                cartLinesAdd?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
 
             if (userErrors.isNotEmpty()) {
                 for (error in userErrors) {
@@ -347,7 +355,10 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         return null
     }
 
-    suspend fun createCheckout(lineItems: List<CheckoutLineItemInput>, email: String?): CheckoutResponse? {
+    suspend fun createCheckout(
+        lineItems: List<CheckoutLineItemInput>,
+        email: String?
+    ): CheckoutResponse? {
         val mutation = CreateCheckoutMutation(
             lineItems = lineItems,
             email = Optional.Present(email)
@@ -373,7 +384,8 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                     }
                 )
             }
-            val userErrors = checkoutCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+            val userErrors =
+                checkoutCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
 
             CheckoutResponse(checkout, userErrors)
         } catch (e: ApolloException) {
@@ -391,7 +403,8 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             val response = apolloClient.mutation(mutation)
             val cartLinesRemove = response.execute().data?.cartLinesRemove
             val cart = cartLinesRemove?.cart?.let { Cart(it.id) }
-            val userErrors = cartLinesRemove?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
+            val userErrors =
+                cartLinesRemove?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
 
             if (userErrors.isNotEmpty()) {
                 for (error in userErrors) {
@@ -408,7 +421,10 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         return null
     }
 
-    suspend fun addAddressToCustomer(addressInput: MailingAddressInput, customerAccessToken: String): Boolean {
+    suspend fun addAddressToCustomer(
+        addressInput: MailingAddressInput,
+        customerAccessToken: String
+    ): Boolean {
         val mutation = AddAddressToCustomerMutation(
             addressInput = addressInput,
             customerAccessToken = customerAccessToken
@@ -473,6 +489,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         }
     }
 }
+
 fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
     val imageEdges = productsQueryImages.edges.map { imageEdge ->
         com.example.exclusive.model.ImageEdge(
@@ -481,6 +498,7 @@ fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.
     }
     return com.example.exclusive.model.Images(imageEdges)
 }
+
 fun mapImages(productsQueryImages: GetAllProductsQuery.Images): com.example.exclusive.model.Images {
     val imageEdges = productsQueryImages.edges.map { imageEdge ->
         com.example.exclusive.model.ImageEdge(
@@ -489,6 +507,7 @@ fun mapImages(productsQueryImages: GetAllProductsQuery.Images): com.example.excl
     }
     return com.example.exclusive.model.Images(imageEdges)
 }
+
 fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.example.exclusive.model.Variants {
     val variantEdges = productsQueryVariants.edges.map { variantEdge ->
         com.example.exclusive.model.VariantEdge(
@@ -499,12 +518,13 @@ fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.exampl
                 com.example.exclusive.model.PriceV2(
                     variantEdge.node.priceV2.amount.toString(),
                     variantEdge.node.priceV2.currencyCode.toString()
-                )
+                ), variantEdge.node.quantityAvailable!!,
             )
         )
     }
     return Variants(variantEdges)
 }
+
 fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.exclusive.model.Variants {
     val variantEdges = productsQueryVariants.edges.map { variantEdge ->
         com.example.exclusive.model.VariantEdge(
@@ -515,7 +535,7 @@ fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.excl
                 com.example.exclusive.model.PriceV2(
                     variantEdge.node.priceV2.amount.toString(),
                     variantEdge.node.priceV2.currencyCode.toString()
-                )
+                ),variantEdge.node.quantityAvailable!!
             )
         )
     }

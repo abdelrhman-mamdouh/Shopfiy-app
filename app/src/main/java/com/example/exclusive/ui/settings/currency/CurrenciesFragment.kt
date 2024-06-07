@@ -17,6 +17,7 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCurrenciesBinding
 import com.example.exclusive.ui.settings.currency.CurrenciesAdapter
+import com.example.exclusive.utilities.SnackbarUtils
 import com.example.exclusive.utilities.currencies
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -74,6 +75,7 @@ class CurrenciesFragment : Fragment() {
                         is UiState.Success -> {
                             val currencies = uiState.data
                             viewModel.saveCurrency(Pair(currencies.base, currencies.results["EGP"]!!))
+                            SnackbarUtils.showSnackbar(requireContext(), requireView(), "Current Currency is: ${currencies.base}")
                             Log.d(TAG, "${currencies.base} ${currencies.results["EGP"]}")
                             Log.d("CurrenciesFragment", "Currencies: $currencies")
                         }
