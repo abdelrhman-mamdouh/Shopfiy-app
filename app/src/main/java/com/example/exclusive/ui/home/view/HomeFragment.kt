@@ -36,7 +36,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -87,6 +87,53 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                 }
             }
         }
+
+        setupCoupons()
+    }
+
+    private fun setupCoupons() {
+        val discountImageMap = mapOf(
+            -10.0 to R.drawable.ad10,
+            -20.0 to R.drawable.ad20,
+            -30.0 to R.drawable.ad30,
+            -40.0 to R.drawable.ad40,
+            -50.0 to R.drawable.ad50
+        )
+
+        lifecycleScope.launch {
+            viewModel.discountState.collect { uiState ->
+                when (uiState) {
+                    is UiState.Success -> {
+                        val priceRule = uiState.data
+                        val imageList = mutableListOf<Int>()
+
+                        for (coupon in priceRule) {
+                            discountImageMap[coupon.value]?.let { imageRes ->
+                                imageList.add(imageRes)
+                            }
+                        }
+
+                        val myAdapter = ImageSliderAdapter(requireContext(), imageList, this@HomeFragment)
+                        binding.viewPagerAdsSlider.adapter = myAdapter
+
+                        SharedPreferencesManager.savePriceRule(requireContext(), priceRule[1])
+                        val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                            putExtra(HolderActivity.GO_TO, "ADDS")
+                        }
+                        startActivity(intent)
+                    }
+                    is UiState.Error -> {
+                        Log.e("PriceRuleError", uiState.exception.toString())
+                    }
+                    UiState.Loading -> {
+                        Log.d("PriceRule", "Loading...")
+                    }
+                    UiState.Idle -> {
+                        Log.d("PriceRule", "Idle")
+                    }
+                }
+            }
+        }
     }
 
     private fun setViewsVisibility(visibility: Int) {
@@ -121,28 +168,6 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     }
 
     override fun onImageClick(item: Int) {
-        lifecycleScope.launch {
-            viewModel.discountState.collect { uiState ->
-                when (uiState) {
-                    is UiState.Success -> {
-                        val priceRule = uiState.data[1]
-                        SharedPreferencesManager.savePriceRule(requireContext(), priceRule)
-                        val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                            putExtra(HolderActivity.GO_TO, "ADDS")
-                        }
-                        startActivity(intent)
-                    }
-                    is UiState.Error -> {
-                        Log.e("PriceRuleError", uiState.exception.toString())
-                    }
-                    UiState.Loading -> {
-                        Log.d("PriceRule", "Loading...")
-                    }
-                    UiState.Idle -> {
-                        Log.d("PriceRule", "Idle")
-                    }
-                }
-            }
-        }
+
     }
 }
