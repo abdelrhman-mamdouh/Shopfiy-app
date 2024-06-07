@@ -24,6 +24,6 @@ class ProductsRepositoryImpl @Inject constructor(
         return localDataSource.getUserCartId()!!
     }
     override suspend fun getCurrentCurrency(): Pair<String,Double> {
-        return localDataSource.getCurrency()!!
+        return localDataSource.getCurrency()
     }
 }
