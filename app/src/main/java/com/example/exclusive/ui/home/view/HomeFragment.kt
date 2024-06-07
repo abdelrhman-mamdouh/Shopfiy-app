@@ -16,17 +16,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.HolderActivity
 import com.example.exclusive.data.model.DiscountCode
+import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentHomeBinding
 import com.example.exclusive.model.Brand
 import com.example.exclusive.ui.home.viewmodel.HomeViewModel
+import com.example.exclusive.utilities.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
-
+    private var couponDetailsJob: Job? = null
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: HomeBrandsAdapter
     private lateinit var couponsAdapter: ImageSliderAdapter
@@ -34,7 +37,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     private val binding get() = _binding!!
     private val handler = Handler(Looper.getMainLooper())
     private var currentPage = 0
-
+    private var isDialogShowing = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -87,35 +90,9 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             }
         }
 
-        lifecycleScope.launch {
-            viewModel.couponDetailsState.collect { uiState ->
-                when (uiState) {
-                    is UiState.Success -> {
-                        val couponDetail = uiState.data
-                        Log.d(TAG, "onViewCreated: $couponDetail")
-                        showCouponDetailDialog(couponDetail)
-                    }
-                    is UiState.Error -> {
-                        Log.e("CouponDetailsError", uiState.exception.toString())
-                    }
-                    UiState.Loading -> {
-                        Log.d("CouponDetails", "Loading...")
-                    }
-                    UiState.Idle -> {
-                        Log.d("CouponDetails", "Idle")
-                    }
-                }
-            }
-        }
-        setupCoupons()
-    }
 
-    private fun showCouponDetailDialog(couponDetail: DiscountCode) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Coupon Details")
-            .setMessage("Code: ${couponDetail.code}\nValue: ${couponDetail.price_rule_id}")
-            .setPositiveButton("OK", null)
-            .show()
+
+        setupCoupons()
     }
 
     private fun setupCoupons() {
@@ -170,9 +147,36 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         intent.putExtra("brand_name", brand.name)
         startActivity(intent)
     }
+    override fun onImageClick(priceRuleSummary: PriceRuleSummary ) {
+        if (!isDialogShowing) {
+            isDialogShowing = true
+            couponDetailsJob?.cancel()
+            couponDetailsJob = lifecycleScope.launch {
+                viewModel.fetchCouponDetails(id = priceRuleSummary.id)
+                viewModel.couponDetailsState.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Success -> {
+                            val couponDetail = uiState.data
+                            Constants.showCouponDetailDialog(requireActivity(), couponDetail,priceRuleSummary) {
+                                isDialogShowing = false
+                            }
+                        }
+                        is UiState.Error -> {
+                            isDialogShowing = false
+                        }
 
-    override fun onImageClick(id: Long) {
-        Log.d("TAG", "onImageClick: $id")
-        viewModel.fetchCouponDetails(id = id)
+                        UiState.Idle -> {
+
+                        }
+                        UiState.Loading ->{
+
+                        }
+                    }
+                }
+            }
+        }
     }
+
+
+
 }
