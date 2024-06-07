@@ -14,7 +14,7 @@ query GetAllProductsQuery {
                         }
                     }
                 }
-                variants(first: 15) {
+                variants(first: 100) {
                     edges {
                         node {
                             id

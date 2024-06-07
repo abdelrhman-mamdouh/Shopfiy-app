@@ -1,6 +1,7 @@
 package com.example.exclusive.ui.home.repository
 
 
+import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.PriceRulesResponse
 import com.example.exclusive.data.remote.DiscountDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
@@ -19,5 +20,9 @@ class HomeRepositoryImpl @Inject constructor(
 
     override suspend fun getPriceRules(): PriceRulesResponse {
         return myRemoteDataSource.getPriceRules()
+    }
+
+    override suspend fun getCouponDetails(id: Long): CouponsDetails {
+        return myRemoteDataSource.getCouponDetails(id = id)
     }
 }

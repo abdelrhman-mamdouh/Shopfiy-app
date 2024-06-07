@@ -7,7 +7,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 
 class DailogFramgent (private val onDialogPositiveClick:()->Unit,private val onDialogNegativeClick:()->Unit): DialogFragment() {
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
             .setTitle("Warning")
@@ -19,7 +18,6 @@ class DailogFramgent (private val onDialogPositiveClick:()->Unit,private val onD
             .setNegativeButton("Cancel") { dialog, id ->
                 onDialogNegativeClick()
                 dialog.dismiss()
-            }
-            .create()
+            }.create()
     }
 }

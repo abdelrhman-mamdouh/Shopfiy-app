@@ -64,7 +64,8 @@ data class VariantNode(
     val id: String,
     val title: String,
     val sku: String,
-    var priceV2: PriceV2
+    var priceV2: PriceV2,
+    val quantityAvailable: Int,
 ) : Parcelable
 
 
@@ -121,8 +122,11 @@ data class CartProduct(
     val productImageUrl: String,
     val variantId: String,
     val variantTitle: String,
-    val variantPrice: String
+    var variantPrice: String,
+    var variantPriceCode: String = "EGP"
+
 )
+
 data class MyCreateCartResponse(
     val cartCreate: MyCartCreate?
 )
