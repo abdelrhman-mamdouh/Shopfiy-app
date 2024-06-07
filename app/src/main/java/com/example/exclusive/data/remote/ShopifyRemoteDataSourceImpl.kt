@@ -30,7 +30,25 @@ import javax.inject.Singleton
 class ShopifyRemoteDataSourceImpl @Inject constructor(
     private val apolloService: ApolloService
 ) : ShopifyRemoteDataSource {
+    override suspend fun saveCardId(cardId: String, accessToken: String) {
 
+        val database =
+            FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
+
+        val myRef = database.getReference(accessToken.replace('.', '-'))
+        myRef.child("cart-id").setValue(cardId)
+
+    }
+    suspend fun fetchCartId(accessToken: String): String? {
+
+        val database =
+            FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
+
+        val myRef = database.getReference(accessToken.replace('.', '-'))
+
+        return myRef.child("cart-id").get().await().value as String
+
+    }
 
     override suspend fun getBrands(): List<Brand> {
         return apolloService.getBrands()
