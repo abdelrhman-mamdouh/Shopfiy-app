@@ -117,7 +117,7 @@ class ProductInfoFragment : Fragment() {
 
 
         binding.btnAddToCart.setOnClickListener {
-            viewModel.addToCart(product.variants.edges[0].node.id)
+            viewModel.addToCart(product.variants.edges[0].node.id,product.variants.edges[0].node.quantityAvailable)
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

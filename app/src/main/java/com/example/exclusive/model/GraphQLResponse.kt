@@ -64,7 +64,8 @@ data class VariantNode(
     val id: String,
     val title: String,
     val sku: String,
-    var priceV2: PriceV2
+    var priceV2: PriceV2,
+    val quantityAvailable: Int,
 ) : Parcelable
 
 

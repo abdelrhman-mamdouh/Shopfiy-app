@@ -60,13 +60,13 @@ class ProductInfoViewModel @Inject constructor(
         }
     }
 
-    fun addToCart(productId: String) {
+    fun addToCart(productId: String,quantity:Int) {
         _addToCartState.value = UiState.Loading
         viewModelScope.launch {
             try {
                 val cartLineInput = CartLineInput(
                     attributes = Optional.Absent,
-                    quantity = Optional.Present(1),
+                    quantity = Optional.Present(quantity),
                     merchandiseId = productId,
                     sellingPlanId = Optional.Absent
                 )

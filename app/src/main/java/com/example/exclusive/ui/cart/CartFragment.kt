@@ -15,10 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentCartBinding
 import com.example.exclusive.model.CartProduct
-import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -32,8 +30,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     private lateinit var cartProductAdapter: CartProductAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         return binding.root
@@ -42,11 +39,12 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.cart)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().finish()
         }
@@ -62,7 +60,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.error.collect { error ->
                 if (error != null) {
-                    // Handle error
+
                 }
             }
         }
@@ -83,7 +81,8 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     }
 
     private fun setupSwipeToDelete() {
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        val itemTouchHelperCallback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -118,20 +117,25 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     }
 
     private fun showUndoSnackbar(product: CartProduct) {
-        SnackbarUtils.showSnackbarWithUndo(binding.root, "Product removed from cart") {
-            viewLifecycleOwner.lifecycleScope.launch {
-                cartViewModel.deleteProductFromCart(product)
-
-                cartProductAdapter.notifyDataSetChanged()
-            }
-        }
+        val position = cartProductAdapter.currentList.indexOf(product)
+        cartProductAdapter.removeItem(position)
+        Snackbar.make(binding.root, "Product removed from cart", Snackbar.LENGTH_LONG)
+            .setAction("UNDO") {
+                cartProductAdapter.addItem(position, product)
+            }.addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            cartViewModel.deleteProductFromCart(product)
+                        }
+                    }
+                }
+            }).show()
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
     override fun onRemoveProduct(product: CartProduct) {
         showUndoSnackbar(product)
     }

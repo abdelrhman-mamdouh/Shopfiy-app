@@ -518,7 +518,7 @@ fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.exampl
                 com.example.exclusive.model.PriceV2(
                     variantEdge.node.priceV2.amount.toString(),
                     variantEdge.node.priceV2.currencyCode.toString()
-                )
+                ), variantEdge.node.quantityAvailable!!,
             )
         )
     }
@@ -535,7 +535,7 @@ fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.excl
                 com.example.exclusive.model.PriceV2(
                     variantEdge.node.priceV2.amount.toString(),
                     variantEdge.node.priceV2.currencyCode.toString()
-                )
+                ),variantEdge.node.quantityAvailable!!
             )
         )
     }

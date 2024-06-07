@@ -42,7 +42,7 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
 
             Picasso.get().load(product.productImageUrl).into(binding.cartProductImageView)
 
-            binding.tvQuantity.text = product.quantity.toString()
+            binding.tvQuantity.text = "1"
 
             binding.btnIncrease.setOnClickListener {
                 val currentQuantity = binding.tvQuantity.text.toString().toInt()
