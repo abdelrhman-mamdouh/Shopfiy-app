@@ -15,6 +15,8 @@ private const val TAG = "CartProductAdapter"
 class CartProductAdapter(private val listener: OnQuantityChangeListener) :
     ListAdapter<CartProduct, CartProductAdapter.CartProductViewHolder>(DIFF_CALLBACK) {
 
+    private val selectedQuantities = mutableMapOf<String, Int>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartProductViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CartProductViewHolder(binding, listener)
@@ -30,7 +32,18 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
         submitList(currentList)
     }
 
-    class CartProductViewHolder(
+    fun removeItem(position: Int): CartProduct? {
+        val currentList = currentList.toMutableList()
+        val removedItem = currentList.removeAt(position)
+        submitList(currentList)
+        return removedItem
+    }
+
+    fun getCurrentQuantity(productId: String): Int {
+        return selectedQuantities[productId] ?: 1
+    }
+
+    inner class CartProductViewHolder(
         private val binding: ItemCartBinding,
         private val listener: OnQuantityChangeListener
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -42,13 +55,16 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
 
             Picasso.get().load(product.productImageUrl).into(binding.cartProductImageView)
 
-            binding.tvQuantity.text = "1"
+            val initialQuantity = selectedQuantities[product.id] ?: 1
+            binding.tvQuantity.text = initialQuantity.toString()
 
             binding.btnIncrease.setOnClickListener {
                 val currentQuantity = binding.tvQuantity.text.toString().toInt()
                 if (currentQuantity < product.quantity) {
                     val newQuantity = currentQuantity + 1
                     binding.tvQuantity.text = newQuantity.toString()
+                    selectedQuantities[product.id] = newQuantity
+                    listener.onQuantityChanged()
                 } else {
                     SnackbarUtils.showSnackbar(binding.root.context, binding.root, "Out of stock")
                 }
@@ -59,18 +75,13 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
                 if (currentQuantity > 1) {
                     val newQuantity = currentQuantity - 1
                     binding.tvQuantity.text = newQuantity.toString()
+                    selectedQuantities[product.id] = newQuantity
+                    listener.onQuantityChanged()
                 } else {
                     listener.onRemoveProduct(product)
                 }
             }
         }
-    }
-
-    fun removeItem(position: Int): CartProduct? {
-        val currentList = currentList.toMutableList()
-        val removedItem = currentList.removeAt(position)
-        submitList(currentList)
-        return removedItem
     }
 
     companion object {
@@ -87,5 +98,6 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
 
     interface OnQuantityChangeListener {
         fun onRemoveProduct(product: CartProduct)
+        fun onQuantityChanged()
     }
 }

@@ -53,6 +53,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
             cartViewModel.cartProductsResponse.collect { response ->
                 if (response != null) {
                     cartProductAdapter.submitList(response)
+                    updateTotalPrice()
                 }
             }
         }
@@ -138,5 +139,22 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     }
     override fun onRemoveProduct(product: CartProduct) {
         showUndoSnackbar(product)
+        updateTotalPrice()
+    }
+
+    override fun onQuantityChanged() {
+        updateTotalPrice()
+    }
+
+    private fun calculateTotalPrice(): Double {
+        return cartProductAdapter.currentList.sumOf { product ->
+            val quantity = cartProductAdapter.getCurrentQuantity(product.id)
+            quantity * product.variantPrice.toDouble()
+        }
+    }
+
+    private fun updateTotalPrice() {
+        val totalPrice = calculateTotalPrice()
+        binding.textViewTotalPrice.text = totalPrice.toString()
     }
 }
