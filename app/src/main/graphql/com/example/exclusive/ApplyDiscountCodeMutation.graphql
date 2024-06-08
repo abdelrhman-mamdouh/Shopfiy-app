@@ -1,0 +1,31 @@
+mutation ApplyDiscountCodeMutation($checkoutId: ID!, $discountCode: String!) {
+    checkoutDiscountCodeApplyV2(checkoutId: $checkoutId, discountCode: $discountCode) {
+        checkout {
+            id
+            discountApplications(first: 10) {
+                edges {
+                    node {
+                        ... on DiscountCodeApplication {
+                            code
+                            value {
+                                __typename
+                                ... on MoneyV2 {
+                                    amount
+                                    currencyCode
+                                }
+                                ... on PricingPercentageValue {
+                                    percentage
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        checkoutUserErrors {
+            code
+            field
+            message
+        }
+    }
+}

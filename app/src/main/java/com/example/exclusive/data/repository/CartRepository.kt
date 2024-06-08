@@ -2,6 +2,8 @@ package com.example.exclusive.data.repository
 
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutResponse
+import com.example.exclusive.type.CheckoutLineItemInput
 
 interface CartRepository {
     suspend fun getUserCartId(): String?
@@ -11,4 +13,9 @@ interface CartRepository {
     suspend fun readEmail(): String?
     suspend fun fetchCartId(email: String): String?
     suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse?
+    suspend fun createCheckout(
+        lineItems: List<CheckoutLineItemInput>,
+        email: String?
+    ): CheckoutResponse?
+
 }

@@ -52,12 +52,9 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
             binding.etTitle.text = product.productTitle
             binding.textViewProductPrice.text = product.variantPrice +" "+ product.variantPriceCode
             binding.tvVariant.text = "${product.quantity} Items"
-
             Picasso.get().load(product.productImageUrl).into(binding.cartProductImageView)
-
             val initialQuantity = selectedQuantities[product.id] ?: 1
             binding.tvQuantity.text = initialQuantity.toString()
-
             binding.btnIncrease.setOnClickListener {
                 val currentQuantity = binding.tvQuantity.text.toString().toInt()
                 if (currentQuantity < product.quantity) {
@@ -100,4 +97,5 @@ class CartProductAdapter(private val listener: OnQuantityChangeListener) :
         fun onRemoveProduct(product: CartProduct)
         fun onQuantityChanged()
     }
+
 }

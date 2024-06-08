@@ -4,6 +4,8 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutResponse
+import com.example.exclusive.type.CheckoutLineItemInput
 import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
@@ -41,4 +43,13 @@ class CartRepositoryImpl @Inject constructor(
     ): AddToCartResponse? {
        return remoteDataSource.removeFromCartById(cartId,lineIds)
     }
+    override suspend fun createCheckout(
+        lineItems: List<CheckoutLineItemInput>,
+        email: String?
+    ): CheckoutResponse? {
+        return remoteDataSource.createCheckout(lineItems, email)
+    }
+
+
+
 }

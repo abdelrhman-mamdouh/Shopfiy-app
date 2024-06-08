@@ -124,7 +124,6 @@ data class CartProduct(
     val variantTitle: String,
     var variantPrice: String,
     var variantPriceCode: String = "EGP"
-
 )
 
 data class MyCreateCartResponse(

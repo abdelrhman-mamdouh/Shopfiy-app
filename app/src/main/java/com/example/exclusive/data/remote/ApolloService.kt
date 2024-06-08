@@ -8,6 +8,7 @@ import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.exclusive.AddAddressToCustomerMutation
 import com.example.exclusive.AddToCartMutation
+import com.example.exclusive.ApplyDiscountCodeMutation
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
 import com.example.exclusive.CreateCartMutation
@@ -486,6 +487,31 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         } catch (e: Exception) {
             println("Exception: ${e.message}")
             return false
+        }
+    }
+    suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
+        val mutation = ApplyDiscountCodeMutation(
+            checkoutId = checkoutId,
+            discountCode = discountCode
+        )
+        return try {
+            val response: ApolloResponse<ApplyDiscountCodeMutation.Data> =
+                apolloClient.mutation(mutation).execute()
+
+            val errors = response.data?.checkoutDiscountCodeApplyV2?.checkoutUserErrors
+            if (errors != null && errors.isNotEmpty()) {
+                for (error in errors) {
+                    Log.e("GraphQL", "Error: ${error.message}")
+                }
+                false
+            } else {
+                val checkout = response.data?.checkoutDiscountCodeApplyV2?.checkout
+                Log.d("GraphQL", "Discount code applied successfully to checkout ID: ${checkout?.id}")
+                true
+            }
+        } catch (e: ApolloException) {
+            Log.e("GraphQL", "ApolloException: ${e.message}", e)
+            false
         }
     }
 }

@@ -47,4 +47,5 @@ interface ShopifyRemoteDataSource {
 
     suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput>
     suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean
+    suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean
 }

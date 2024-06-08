@@ -15,7 +15,7 @@ class ImageSliderAdapter(
     private val listener: OnImageClickListener
 ) : RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder>() {
 
-    private val defaultDrawable = R.drawable.ic_launcher_foreground
+    private val defaultDrawable = R.drawable.ic_launcher_background
 
     private val discountImageMap = mapOf(
         -10.0 to R.drawable.ad10,

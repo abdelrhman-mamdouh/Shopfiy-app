@@ -193,4 +193,8 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     ): Boolean {
         return apolloService.deleteCustomerAddress(customerAccessToken, addressId)
     }
+
+    override suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
+        return apolloService.applyDiscountCode(checkoutId,discountCode)
+    }
 }

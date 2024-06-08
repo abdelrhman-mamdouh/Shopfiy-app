@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/checkoutFragment"
-        android:name="com.example.exclusive.ui.checkout.CheckoutFragment"
+        android:name="com.example.exclusive.ui.checkout.view.CheckoutFragment"
         android:label="CheckoutFragment"
         tools:layout="@layout/fragment_check_out"/>
 

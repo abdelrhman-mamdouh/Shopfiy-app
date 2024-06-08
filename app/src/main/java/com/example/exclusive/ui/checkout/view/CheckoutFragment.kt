@@ -1,21 +1,30 @@
-package com.example.exclusive.ui.checkout
+// CheckoutFragment.kt
+package com.example.exclusive.ui.checkout.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.databinding.DialogAddressSelectionBinding
 import com.example.exclusive.databinding.FragmentCheckOutBinding
+import com.example.exclusive.model.CartProduct
 import com.example.exclusive.type.CheckoutLineItemInput
+
+import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 private const val TAG = "CheckoutFragment"
+
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {
 
@@ -34,6 +43,15 @@ class CheckoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.titleBar.tvTitle.text = getString(R.string.check_out)
+        binding.titleBar.icBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
 
         binding.btnSubmitOrder.setOnClickListener {
             val lineItems = listOf(
@@ -43,15 +61,45 @@ class CheckoutFragment : Fragment() {
                 )
             )
             val email = "abdelrhman99m@gmail.com"
-            checkoutViewModel.createCheckout(lineItems, email)
+
+            // Perform order submission logic here
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            checkoutViewModel.cartProductsResponse.collect { response ->
+                if (response != null) {
+                   // updateTotalPrice()
+                }
+            }
         }
 
         observeViewModel()
     }
 
+    private fun showAddressSelectionDialog() {
+        val dialogBinding = DialogAddressSelectionBinding.inflate(layoutInflater)
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(dialogBinding.root)
+
+        checkoutViewModel.addresses.value.let { state ->
+            if (state is UiState.Success) {
+                val addressAdapter = AddressAdapter(state.data) { address ->
+                    binding.tvShippingAddressDetails.text = "${address.address1}, ${address.city}, ${address.country}"
+                    binding.tvPhoneNumber.text = address.phone
+                    dialog.dismiss()
+                }
+                dialogBinding.rvAddresses.layoutManager = LinearLayoutManager(requireContext())
+                dialogBinding.rvAddresses.adapter = addressAdapter
+            }
+        }
+
+        dialog.show()
+    }
+
     private fun observeViewModel() {
+        checkoutViewModel.fetchCustomerAddresses()
         viewLifecycleOwner.lifecycleScope.launch {
-            checkoutViewModel.checkoutState.collect { state ->
+            checkoutViewModel.addresses.collect { state ->
                 when (state) {
                     is UiState.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
@@ -60,16 +108,15 @@ class CheckoutFragment : Fragment() {
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
-                        // Handle success, navigate to web URL or show success message
-                        val webUrl = state.data.webUrl
-                        Log.d(TAG, "observeViewModel: ${state.data.id}")
-                        Log.d(TAG, "observeViewModel: ${state.data.lineItems}")
-                        Toast.makeText(requireContext(), "Checkout Created: $webUrl", Toast.LENGTH_SHORT).show()
+                        binding.tvShippingAddressDetails.text = "${state.data[0].address1}, ${state.data[0].city}, ${state.data[0].country}"
+                        binding.tvPhoneNumber.text = state.data[0].phone
+                        binding.btnChangeAddress.setOnClickListener {
+                            showAddressSelectionDialog()
+                        }
                     }
                     is UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
-                        // Show error message
                         Toast.makeText(requireContext(), state.exception.message, Toast.LENGTH_SHORT).show()
                     }
                     UiState.Idle -> {
@@ -85,4 +132,5 @@ class CheckoutFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
