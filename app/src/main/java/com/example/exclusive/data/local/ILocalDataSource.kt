@@ -6,7 +6,7 @@ interface ILocalDataSource {
     suspend fun saveToken(token: String)
     suspend fun clearToken()
     suspend fun readToken(): String?
-    suspend fun getUserCartId(): String?
+
     suspend fun saveUserCartId(cartId: String)
     suspend fun saveCurrency(currency: String, currencyValue: Double)
     suspend fun getCurrency(): Pair<String, Double>

@@ -27,14 +27,19 @@ class CartViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val cartId = localDataSource.getUserCartId()
+            val email = localDataSource.readEmail()
+            if (email != null) {
+                email.replace('.', '-')
+            }
+            val cartId = remoteDataSource.fetchCartId(email!!)
             getProductsInCart(cartId = cartId!!)
         }
     }
 
     suspend fun deleteProductFromCart(product: CartProduct) {
         try {
-            val cartId = localDataSource.getUserCartId()
+            val email = localDataSource.readEmail()
+            val cartId = remoteDataSource.fetchCartId(email!!)
             val response = remoteDataSource.removeFromCartById(cartId!!, listOf(product.id))
 
             response?.let {

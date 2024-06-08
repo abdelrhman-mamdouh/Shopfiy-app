@@ -4,13 +4,11 @@ import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CartProductResponse
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
-import com.example.exclusive.type.CustomerUserError
 import com.example.exclusive.type.MailingAddressInput
 
 
@@ -20,7 +18,8 @@ interface ShopifyRemoteDataSource {
     suspend fun getCategories(): List<Brand>
     suspend fun getProducts(vendor: String): List<ProductNode>
     suspend fun getAllProducts(): List<ProductNode>
-    suspend fun saveCardId(cardId: String, accessToken: String)
+     suspend fun fetchCartId(email: String): String?
+    suspend fun saveCardId(cardId: String, email: String)
     suspend fun createCustomer(
         email: String,
         password: String,

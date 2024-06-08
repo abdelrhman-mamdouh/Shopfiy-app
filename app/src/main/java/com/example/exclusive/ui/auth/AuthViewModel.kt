@@ -8,7 +8,6 @@ import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseAuthSettings
 import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,6 +61,7 @@ class AuthViewModel @Inject constructor(
                 viewModelScope.launch {
                     val isSignUp = remoteDataSource.createCustomer(email, password, name, "")
                     _signUpState.value = isSignUp
+                    createAccessToken(email, password)
                 }
             } else {
                 Log.d(TAG, "Sign-up failed: ${task.exception.toString()}")
@@ -78,12 +78,14 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val result = remoteDataSource.createCustomerAccessToken(email, password)
             if (result != null) {
-                localDataSource.saveToken(result)
+ 
                 localDataSource.token.collect { token ->
-                    Log.d(TAG, "login: $token")
+                    Log.d(TAG, "signUp: $token")
                     val createResponse = remoteDataSource.createCart(token = token!!)
-                    Log.d(TAG, "login: ${createResponse?.cart?.id ?: "Not Found"}")
-                    createResponse?.cart?.let { localDataSource.saveUserCartId(cartId = it.id) }
+                    Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
+                    createResponse?.cart?.let {
+                        remoteDataSource.saveCardId(it.id,email)
+                    }
                 }
             }
         }
@@ -102,10 +104,8 @@ class AuthViewModel @Inject constructor(
                             _loginState.value = true
                             localDataSource.saveToken(result)
                             localDataSource.token.collect { token ->
-                                val createResponse = remoteDataSource.createCart(token = token!!)
-                                Log.d(TAG, "login: ${createResponse?.cart?.id ?: "Not Found"}")
-                                createResponse?.cart?.let { localDataSource.saveUserCartId(cartId = it.id) }
-                                Log.d(TAG, "login: $token")
+                                var cartId=  remoteDataSource.fetchCartId(email = email!!)
+                                Log.d(TAG, "cartId: $cartId")
                             }
                         } else {
                             _loginState.value = false

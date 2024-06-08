@@ -21,7 +21,12 @@ class ProductsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCartId(): String {
-        return localDataSource.getUserCartId()!!
+        val email = localDataSource.readEmail()
+        if (email != null) {
+            email.replace('.', '-')
+        }
+        val cartId = remoteDataSource.fetchCartId(email!!)
+        return cartId!!
     }
     override suspend fun getCurrentCurrency(): Pair<String,Double> {
         return localDataSource.getCurrency()

@@ -33,6 +33,7 @@ class ProductInfoViewModel @Inject constructor(
     fun addProductToRealtimeDatabase(product: ProductNode){
         viewModelScope.launch {
             var email=localDataSource.readEmail()
+
             Log.d("readEmail", email.toString())
             remoteDataSource.addProductToRealtimeDatabase(product,email.toString())
             _isWatchList.value = true
@@ -41,7 +42,7 @@ class ProductInfoViewModel @Inject constructor(
     }
     fun isInWatchList(product: ProductNode){
         val result =viewModelScope.launch {
-            var  email=localDataSource.readEmail()
+            var  email= localDataSource.readEmail()
             val watchlist = remoteDataSource.fetchWatchlistProducts(email.toString())
             Log.d("watchlist", watchlist.toString())
             var bool = false
@@ -70,9 +71,13 @@ class ProductInfoViewModel @Inject constructor(
                     merchandiseId = productId,
                     sellingPlanId = Optional.Absent
                 )
-                val cartId = localDataSource.getUserCartId()!!
+                val email = localDataSource.readEmail()
+                if (email != null) {
+                    email.replace('.', '-')
+                }
+                val cartId = remoteDataSource.fetchCartId(email!!)
                 Log.d(TAG, "addToCart: $cartId")
-                val response = remoteDataSource.addProductToCart(cartId, listOf(cartLineInput))
+                val response = remoteDataSource.addProductToCart(cartId!!, listOf(cartLineInput))
                 _addToCartState.value =
                     if (response != null) UiState.Success(response) else UiState.Error(Exception("Failed to add to cart"))
             } catch (e: Exception) {

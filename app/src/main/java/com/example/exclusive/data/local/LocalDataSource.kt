@@ -87,10 +87,5 @@ class LocalDataSource @Inject constructor(
                 Pair(currency, value)
             }.first()
     }
-    override suspend fun getUserCartId(): String? {
-        return dataStore.data
-            .map { preferences ->
-                preferences[USER_CART]
-            }.first()
-    }
+
 }
