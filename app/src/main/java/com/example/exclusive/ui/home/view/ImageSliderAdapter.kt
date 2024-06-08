@@ -15,13 +15,15 @@ class ImageSliderAdapter(
     private val listener: OnImageClickListener
 ) : RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder>() {
 
+    private val defaultDrawable = R.drawable.ic_launcher_foreground
+
     private val discountImageMap = mapOf(
         -10.0 to R.drawable.ad10,
         -20.0 to R.drawable.ad20,
         -30.0 to R.drawable.ad30,
         -40.0 to R.drawable.ad40,
         -50.0 to R.drawable.ad50
-    )
+    ).withDefault { defaultDrawable }
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -33,7 +35,7 @@ class ImageSliderAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onImageClick(couponList[position].id)
+                listener.onImageClick(couponList[position])
                 Log.d(TAG, "onClick: ${couponList[position].id.toInt()}")
             }
         }

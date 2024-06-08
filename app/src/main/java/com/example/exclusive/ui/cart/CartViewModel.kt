@@ -57,8 +57,9 @@ class CartViewModel @Inject constructor(
             val products = remoteDataSource.getProductsInCart(cartId).map { product ->
                 val price = product.variantPrice.toDouble() / currency.second
                 val formattedPrice = String.format("%.2f", price)
-                product.copy(variantPrice = formattedPrice)
-                product.copy(variantPriceCode = currency.first)
+                product.variantPrice = formattedPrice
+                product.variantPriceCode = currency.first
+                product
             }
             _cartProductsResponse.value = products
         } catch (e: Exception) {

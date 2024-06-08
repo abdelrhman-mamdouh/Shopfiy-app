@@ -2,14 +2,23 @@ package com.example.exclusive.utilities
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.exclusive.R
+import com.example.exclusive.data.model.DiscountCode
+import com.example.exclusive.data.model.PriceRuleSummary
+import com.example.exclusive.databinding.DialogCouponDetailBinding
 import com.example.exclusive.databinding.GoToLoginDialogBinding
 
 object Constants {
@@ -29,27 +38,38 @@ object Constants {
             .show()
     }
 
-    fun showDialog(requireActivity: Activity, dialogTitle:String, dialogMessage:String, btnName:String, goToLoginHandle:() -> Unit){
-        val inflater = requireActivity.layoutInflater
-        val dialog = Dialog(requireActivity)
+    fun showCouponDetailDialog(activity: Activity, couponDetail: DiscountCode, priceRuleSummary: PriceRuleSummary, onDismiss: () -> Unit) {
+        val binding = DialogCouponDetailBinding.inflate(activity.layoutInflater)
+        val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val bind : GoToLoginDialogBinding = GoToLoginDialogBinding.inflate(inflater)
-        dialog.setContentView(bind.root)
-        dialog.setTitle(dialogTitle)
-        bind.warningTitle.text = dialogMessage
-        bind.goToLogin.text = btnName
-        bind.okBtn.text = requireActivity.getString(R.string.app_name)
-        bind.okBtn.setOnClickListener {
-            dialog.dismiss()
+        dialog.setContentView(binding.root)
+
+        binding.tvCouponCode.text = "Code: ${couponDetail.code}"
+        binding.tvDiscountValue.text = priceRuleSummary.value.toString()+"%"
+        binding.tvDiscountType.text = priceRuleSummary.valueType
+        binding.tvDiscountLimit.text = priceRuleSummary.usageLimit.toString()
+        binding.tvDiscountSelection.text = priceRuleSummary.customerSelection
+        binding.tvDiscountValid.text = "Valid from : "+priceRuleSummary.startsAt + "  to: " + priceRuleSummary.endsAt
+
+
+        binding.btnCopyCode.setOnClickListener {
+            val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Coupon Code", couponDetail.code)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(activity, "Coupon code copied to clipboard", Toast.LENGTH_SHORT).show()
         }
-        bind.goToLogin.setOnClickListener{
-            goToLoginHandle()
-            dialog.dismiss()
-        }
+
         dialog.setCanceledOnTouchOutside(true)
+
+        dialog.setOnDismissListener {
+            onDismiss()
+        }
+
         dialog.show()
     }
+
+
 
     fun playAnimation(view: View, context: Context, animation: Int) {
         view.startAnimation(AnimationUtils.loadAnimation(context, animation))

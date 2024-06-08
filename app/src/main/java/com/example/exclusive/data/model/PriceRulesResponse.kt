@@ -19,3 +19,8 @@ data class PriceRuleSummary(
     @SerializedName("starts_at") val startsAt: String,
     @SerializedName("ends_at") val endsAt: String
 ):Parcelable
+
+data class CombinedData(
+    val priceRule: PriceRuleSummary,
+    val discountCode: DiscountCode
+)

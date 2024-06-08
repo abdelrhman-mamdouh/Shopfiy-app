@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.home.view
 
+import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.model.Brand
 
 
@@ -10,5 +11,5 @@ interface OnItemClickListener {
 
 interface OnImageClickListener {
 
-    fun onImageClick(id: Long)
+    fun onImageClick(id: PriceRuleSummary)
 }
