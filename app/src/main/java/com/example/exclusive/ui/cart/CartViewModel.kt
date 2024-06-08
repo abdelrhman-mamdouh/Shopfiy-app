@@ -2,9 +2,7 @@ package com.example.exclusive.ui.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
-import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.data.repository.CartRepository
 import com.example.exclusive.model.CartProduct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,10 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val cartRepository: CartRepository
 ) : ViewModel() {
-
 
     private val _cartProductsResponse = MutableStateFlow<List<CartProduct>?>(null)
     val cartProductsResponse: StateFlow<List<CartProduct>?> = _cartProductsResponse
@@ -27,23 +23,24 @@ class CartViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val cartId = localDataSource.getUserCartId()
-            getProductsInCart(cartId = cartId!!)
+            val cartId = cartRepository.getUserCartId()
+            cartId?.let { getProductsInCart(cartId) }
         }
     }
 
     suspend fun deleteProductFromCart(product: CartProduct) {
         try {
-            val cartId = localDataSource.getUserCartId()
-            val response = remoteDataSource.removeFromCartById(cartId!!, listOf(product.id))
-
-            response?.let {
-                if (it.userErrors.isEmpty()) {
-                    val updatedList = _cartProductsResponse.value?.toMutableList()
-                    updatedList?.remove(product)
-                    _cartProductsResponse.value = updatedList
-                } else {
-                    _error.value = it.userErrors.joinToString { error -> error.message }
+            val cartId = cartRepository.getUserCartId()
+            cartId?.let {
+                val response = cartRepository.removeProductFromCart(it, product.id)
+                response?.let {
+                    if (it.userErrors.isEmpty()) {
+                        val updatedList = _cartProductsResponse.value?.toMutableList()
+                        updatedList?.remove(product)
+                        _cartProductsResponse.value = updatedList
+                    } else {
+                        _error.value = it.userErrors.joinToString { error -> error.message }
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -53,12 +50,11 @@ class CartViewModel @Inject constructor(
 
     private suspend fun getProductsInCart(cartId: String) {
         try {
-            val currency = localDataSource.getCurrency()
-            val products = remoteDataSource.getProductsInCart(cartId).map { product ->
+            val currency = cartRepository.getCurrency()
+            val products = cartRepository.getProductsInCart(cartId).map { product ->
                 val price = product.variantPrice.toDouble() / currency.second
                 val formattedPrice = String.format("%.2f", price)
-                product.copy(variantPrice = formattedPrice)
-                product.copy(variantPriceCode = currency.first)
+                product.copy(variantPrice = formattedPrice, variantPriceCode = currency.first)
             }
             _cartProductsResponse.value = products
         } catch (e: Exception) {

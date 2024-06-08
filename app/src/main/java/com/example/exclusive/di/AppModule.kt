@@ -1,9 +1,15 @@
 package com.example.exclusive.di
 
 import com.apollographql.apollo3.ApolloClient
+import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.network.ApiService
 import com.example.exclusive.data.network.DiscountApi
 import com.example.exclusive.data.remote.ApolloService
+import com.example.exclusive.data.remote.ShopifyRemoteDataSource
+import com.example.exclusive.data.repository.AddressRepository
+import com.example.exclusive.data.repository.AddressRepositoryImpl
+import com.example.exclusive.data.repository.CartRepository
+import com.example.exclusive.data.repository.CartRepositoryImpl
 import com.example.exclusive.utilities.Constants
 import dagger.Module
 import dagger.Provides
@@ -89,5 +95,23 @@ object AppModule {
     @Provides
     fun provideApolloService(apolloClient: ApolloClient): ApolloService {
         return ApolloService(apolloClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartRepository(
+        remoteDataSource: ShopifyRemoteDataSource,
+        localDataSource: LocalDataSource
+    ): CartRepository {
+        return CartRepositoryImpl(remoteDataSource, localDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAddressRepository(
+        remoteDataSource: ShopifyRemoteDataSource,
+        localDataSource: LocalDataSource
+    ): AddressRepository {
+        return AddressRepositoryImpl(remoteDataSource, localDataSource)
     }
 }

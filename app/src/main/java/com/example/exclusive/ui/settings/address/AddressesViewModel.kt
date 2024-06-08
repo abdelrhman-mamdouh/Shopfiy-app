@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.model.AddressInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddressesViewModel @Inject constructor(
-    private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val addressRepository: AddressRepository
 ) : ViewModel() {
 
     private val _addresses = MutableStateFlow<UiState<List<AddressInput>>>(UiState.Idle)
@@ -25,7 +25,7 @@ class AddressesViewModel @Inject constructor(
         viewModelScope.launch {
             _addresses.value = UiState.Loading
             try {
-                val addresses = remoteDataSource.getCustomerAddresses(localDataSource.readToken()!!)
+                val addresses = addressRepository.fetchCustomerAddresses()
                 _addresses.value = UiState.Success(addresses)
             } catch (e: Exception) {
                 _addresses.value = UiState.Error(e)
@@ -36,7 +36,8 @@ class AddressesViewModel @Inject constructor(
     fun deleteAddress(addressId: String) {
         viewModelScope.launch {
             try {
-                remoteDataSource.deleteCustomerAddress(localDataSource.readToken()!!, addressId)
+                addressRepository.deleteCustomerAddress(addressId)
+                fetchCustomerAddresses()
             } catch (e: Exception) {
                 // Handle error
             }
