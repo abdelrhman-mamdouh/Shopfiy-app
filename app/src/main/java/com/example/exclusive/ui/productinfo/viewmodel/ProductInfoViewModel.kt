@@ -33,7 +33,7 @@ class ProductInfoViewModel @Inject constructor(
     fun addProductToRealtimeDatabase(product: ProductNode){
         viewModelScope.launch {
             var email=localDataSource.readEmail()
-
+            email?.replace('.', '-')
             Log.d("readEmail", email.toString())
             remoteDataSource.addProductToRealtimeDatabase(product,email.toString())
             _isWatchList.value = true
@@ -72,9 +72,7 @@ class ProductInfoViewModel @Inject constructor(
                     sellingPlanId = Optional.Absent
                 )
                 val email = localDataSource.readEmail()
-                if (email != null) {
-                    email.replace('.', '-')
-                }
+                email?.replace('.', '-')
                 val cartId = remoteDataSource.fetchCartId(email!!)
                 Log.d(TAG, "addToCart: $cartId")
                 val response = remoteDataSource.addProductToCart(cartId!!, listOf(cartLineInput))

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.type.MailingAddressInput
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +18,7 @@ import javax.inject.Inject
 private const val TAG = "AddAddressViewModel"
 @HiltViewModel
 class AddAddressViewModel @Inject constructor(
-    private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val addressRepository: AddressRepository
 ) : ViewModel() {
 
     private val _addAddressResult = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
@@ -28,9 +28,7 @@ class AddAddressViewModel @Inject constructor(
         viewModelScope.launch {
             _addAddressResult.value = UiState.Loading
             try {
-                val customerAccessToken = localDataSource.readToken()!!
-                Log.d(TAG, "addAddress: $customerAccessToken")
-                val success = remoteDataSource.addAddress(address, customerAccessToken)
+                val success = addressRepository.addCustomerAddress(address)
                 _addAddressResult.value = UiState.Success(success)
             } catch (e: Exception) {
                 _addAddressResult.value = UiState.Error(e)

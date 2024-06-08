@@ -12,4 +12,5 @@ interface ILocalDataSource {
     suspend fun getCurrency(): Pair<String, Double>
     suspend fun saveEmail(email: String)
     suspend fun readEmail(): String?
+    suspend fun getUserCartId(): String?
 }
