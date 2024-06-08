@@ -20,6 +20,7 @@ interface ShopifyRemoteDataSource {
     suspend fun getCategories(): List<Brand>
     suspend fun getProducts(vendor: String): List<ProductNode>
     suspend fun getAllProducts(): List<ProductNode>
+    suspend fun saveCardId(cardId: String, accessToken: String)
     suspend fun createCustomer(
         email: String,
         password: String,
