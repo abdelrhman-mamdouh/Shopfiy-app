@@ -10,16 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
 import com.example.exclusive.model.ProductNode
-import com.example.exclusive.model.Variant
 import com.example.exclusive.model.VariantNode
 import com.example.exclusive.model.getRandomNineReviews
-import com.example.exclusive.ui.products.viewmodel.ProductInfoViewModel
+import com.example.exclusive.ui.productinfo.viewmodel.ProductInfoViewModel
 import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

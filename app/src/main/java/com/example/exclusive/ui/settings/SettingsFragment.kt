@@ -8,11 +8,19 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.HolderActivity
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
+import com.example.exclusive.model.ProductNode
+import com.example.exclusive.ui.productinfo.DailogFramgent
+import com.example.exclusive.ui.watchlist.WatchListAdapter
+import com.example.exclusive.ui.watchlist.WatchlistFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -57,6 +65,33 @@ class SettingsFragment : Fragment() {
                     UiState.Idle -> {
                         // Handle the idle state if necessary
                     }
+                }
+            }
+        }
+
+        val adapter = WatchListAdapter({ product ->
+
+            val dialog = DailogFramgent(
+                onDialogPositiveClick = {
+                    viewModel.removeProductFromWatchList(product.id.substring(22))
+                },
+                onDialogNegativeClick = {
+
+                }
+            )
+            dialog.show(requireActivity().supportFragmentManager, "dialog")
+        }, { product: ProductNode ->
+            NavHostFragment.findNavController(this@SettingsFragment).navigate(
+                WatchlistFragmentDirections.actionWatchlistFragmentToProductInfoFragment(product))
+        }, addToCart = {product: ProductNode ->
+            viewModel.addToCart(product.variants.edges[0].node.title, 1)
+        })
+
+        binding.rvWishlist.adapter = adapter
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.watchlist.collect{
+                    adapter.submitList(it)
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.exclusive.ui.products.viewmodel
+package com.example.exclusive.ui.productinfo.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,6 @@ import com.example.exclusive.type.CartLineInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
