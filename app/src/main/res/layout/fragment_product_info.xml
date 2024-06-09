@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:padding="@dimen/_8sdp"
-        app:layout_constraintBottom_toTopOf="@id/btn_add_to_cart"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/linearContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar">
 
@@ -48,245 +48,290 @@
                 app:layout_constraintTop_toBottomOf="@+id/rv_images"
                 tools:layout_editor_absoluteY="80dp" />
             <!-- Size Dropdown -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:background="@drawable/round_rectangle_white"
+                android:elevation="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_variants"> <!-- Price Text -->
+                <TextView
+                    android:id="@+id/tv_price"
+                    style="@style/TextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="$19.99"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_product_brand" />
 
-            <!-- Price Text -->
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="$19.99"
-                style="@style/TextViewStyle"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_product_brand" />
+                <!-- Product Brand -->
+                <TextView
+                    android:id="@+id/tv_product_brand"
+                    style="@style/TextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:text="H M"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteY="272dp" />
 
-            <!-- Product Brand -->
-            <TextView
-                android:id="@+id/tv_product_brand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="@dimen/_30sdp"
-                style="@style/TextViewStyle"
-                android:text="H M"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_variants"
-                tools:layout_editor_absoluteY="272dp" />
+                <!-- Product Name -->
+                <TextView
+                    android:id="@+id/tv_product_name"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:maxLines="2"
+                    android:text="Short black dress"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_product_brand" />
 
-            <!-- Product Name -->
-            <TextView
-                android:id="@+id/tv_product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:text="Short black dress"
-                android:maxLines="2"
-                android:textSize="16sp"
-                style="@style/TextViewStyleLight"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_product_brand" />
+                <!-- Product Rating -->
+                <RatingBar
+                    android:id="@+id/tv_product_rating"
 
-            <!-- Product Rating -->
-            <RatingBar
-                android:id="@+id/tv_product_rating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:numStars="5"
+                    android:rating="3"
 
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:numStars="5"
-                android:rating="3"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:stepSize="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_product_name" />
 
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:stepSize="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_product_name" />
+                <!-- Product Description -->
+                <TextView
+                    android:id="@+id/tv_product_description"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
 
-            <!-- Product Description -->
-            <TextView
-                android:id="@+id/tv_product_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed"
-                android:textSize="16sp"
-                style="@style/TextViewStyleLight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_product_rating" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                app:layout_constraintTop_toBottomOf="@id/tv_product_rating" />
             <!-- Reviews Title -->
             <TextView
                 android:id="@+id/tv_reviews_title"
+                style="@style/TextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="Reviews"
-                style="@style/TextViewStyle"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_product_description" />
+                app:layout_constraintTop_toBottomOf="@id/container" />
 
-            <!-- Review 1 -->
-            <TextView
-                android:id="@+id/tv_reviewer_name_1"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearReviewe2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Alice"
-                android:textSize="16sp"
-                style="@style/TextViewStyleLight"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/round_rectangle_white"
+                android:elevation="@dimen/_12sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reviews_title" />
+                app:layout_constraintTop_toBottomOf="@id/linearReviewe1">
 
-            <RatingBar
-                android:id="@+id/rb_reviewer_rating_1"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:rating="4"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:stepSize="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reviewer_name_1" />
+                <!-- Review 1 -->
+                <TextView
+                    android:id="@+id/tv_reviewer_name_2"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Alice"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tv_reviewer_comment_1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:text="Great dress, very comfortable!"
-                android:textSize="16sp"
-                style="@style/TextViewStyleLight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rb_reviewer_rating_1" />
+                <RatingBar
+                    android:id="@+id/rb_reviewer_rating_2"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:padding="@dimen/_12sdp"
+                    android:progressTint="@color/quantum_yellow"
+                    android:rating="4"
+                    android:secondaryProgressTint="@color/black"
+                    android:stepSize="0.5" />
 
-            <!-- Review 2 -->
-            <TextView
-                android:id="@+id/tv_reviewer_name_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Bob"
-                style="@style/TextViewStyleLight"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reviewer_comment_1" />
+                <TextView
+                    android:id="@+id/tv_reviewer_comment_2"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Great dress, very comfortable!"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-            <RatingBar
-                android:id="@+id/rb_reviewer_rating_2"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearReviewe3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:rating="5"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:stepSize="0.5"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/round_rectangle_white"
+                android:elevation="@dimen/_12sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reviewer_name_2" />
+                app:layout_constraintTop_toBottomOf="@id/linearReviewe2">
 
-            <TextView
-                android:id="@+id/tv_reviewer_comment_2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:text="Love the design and fit!"
-                style="@style/TextViewStyleLight"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rb_reviewer_rating_2" />
+                <!-- Review 1 -->
+                <TextView
+                    android:id="@+id/tv_reviewer_name_3"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Alice"
+                    android:textSize="16sp" />
 
-            <!-- Review 3 -->
-            <TextView
-                android:id="@+id/tv_reviewer_name_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Cathy"
-                android:textSize="16sp"
-                style="@style/TextViewStyleLight"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reviewer_comment_2" />
+                <RatingBar
+                    android:id="@+id/rb_reviewer_rating_3"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:padding="@dimen/_12sdp"
+                    android:progressTint="@color/quantum_yellow"
+                    android:rating="4"
+                    android:secondaryProgressTint="@color/black"
+                    android:stepSize="0.5" />
 
-            <RatingBar
-                android:id="@+id/rb_reviewer_rating_3"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:rating="3.5"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:stepSize="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_reviewer_name_3" />
+                <TextView
+                    android:id="@+id/tv_reviewer_comment_3"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Great dress, very comfortable!"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_reviewer_comment_3"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/linearReviewe1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:text="Good quality but a bit tight."
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/round_rectangle_white"
+                android:elevation="@dimen/_12sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rb_reviewer_rating_3" />
+                app:layout_constraintTop_toBottomOf="@id/tv_reviews_title">
+
+                <!-- Review 1 -->
+                <TextView
+                    android:id="@+id/tv_reviewer_name_1"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Alice"
+                    android:textSize="16sp" />
+
+                <RatingBar
+                    android:id="@+id/rb_reviewer_rating_1"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:padding="@dimen/_12sdp"
+                    android:progressTint="@color/quantum_yellow"
+                    android:rating="4"
+                    android:secondaryProgressTint="@color/black"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/tv_reviewer_comment_1"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Great dress, very comfortable!"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_add_to_cart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/primary_color"
-        android:padding="@dimen/_8sdp"
-        android:text="ADD TO CART"
-        style="@style/TextViewStyle"
-        android:background="@drawable/round_corner"
-        android:textColor="@android:color/white"
+    <LinearLayout
+        android:id="@+id/linearContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:background="@drawable/bg_check_out"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingRight="@dimen/_12sdp"
+        android:weightSum="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/add_to_favourate_icon"
-        app:layout_constraintTop_toBottomOf="@id/scrollView" />
-
-    <ImageView
-        android:id="@+id/add_to_favourate_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_8sdp"
-        android:layout_marginLeft="@dimen/_8sdp"
-        android:src="@drawable/empty_love"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_add_to_cart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_add_to_cart" />
+        app:layout_constraintTop_toBottomOf="@id/scrollView">
+
+        <ImageView
+            android:id="@+id/add_to_favourate_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/_32sdp"
+            android:background="@drawable/round_corner"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/empty_love"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_add_to_cart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_add_to_cart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_to_cart"
+            style="@style/TextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="4"
+            android:backgroundTint="@color/white"
+            android:paddingVertical="12dp"
+            android:text="ADD TO CART"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_color"
+            app:cornerRadius="16dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
