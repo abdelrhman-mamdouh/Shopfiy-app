@@ -24,6 +24,7 @@ class LocalDataSource @Inject constructor(
         val TOKEN_KEY = stringPreferencesKey("user_token")
         val Email_KEY = stringPreferencesKey("user_email")
         val USER_CART = stringPreferencesKey("user_cart")
+        val USER_CHECKOUT = stringPreferencesKey("user_checkout")
         val USER_CURRENCY = stringPreferencesKey("user_currency")
         val USER_CURRENCY_VALUE = doublePreferencesKey("user_currency_value")
     }
@@ -82,7 +83,7 @@ class LocalDataSource @Inject constructor(
     override suspend fun getCurrency(): Pair<String, Double> {
         return dataStore.data
             .map { preferences ->
-                val currency = preferences[USER_CURRENCY] ?: "USD"
+                val currency = preferences[USER_CURRENCY] ?: "EGY"
                 val value = preferences[USER_CURRENCY_VALUE] ?: 1.0
                 Pair(currency, value)
             }.first()
@@ -93,4 +94,15 @@ class LocalDataSource @Inject constructor(
                 preferences[USER_CART]
                }.first()
        }
+    override suspend fun getUserCheckOut(): String? {
+        return dataStore.data
+            .map { preferences ->
+                preferences[USER_CHECKOUT]
+            }.first()
+    }
+    override suspend fun saveUserCheckOut(checkoutId: String) {
+        dataStore.edit { preferences ->
+            preferences[USER_CHECKOUT] = checkoutId
+        }
+    }
 }

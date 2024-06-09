@@ -183,6 +183,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
 
                     }
                     is UiState.Success -> {
+                        Log.i("TAG", "observeViewModel: ${state.data}")
                         SnackbarUtils.showSnackbar(requireContext(),requireView(),"Checkout Created")
                         findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
                     }

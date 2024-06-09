@@ -6,6 +6,7 @@ import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
@@ -196,5 +197,9 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
         return apolloService.applyDiscountCode(checkoutId,discountCode)
+    }
+
+    override suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
+        return apolloService.getCheckoutDetails(checkoutId)
     }
 }

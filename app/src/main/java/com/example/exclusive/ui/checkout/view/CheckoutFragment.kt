@@ -2,6 +2,7 @@
 package com.example.exclusive.ui.checkout.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,11 @@ import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
 import com.example.exclusive.databinding.FragmentCheckOutBinding
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.LineItem
 import com.example.exclusive.type.CheckoutLineItemInput
 
 import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
+import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,7 +33,7 @@ class CheckoutFragment : Fragment() {
 
     private var _binding: FragmentCheckOutBinding? = null
     private val binding get() = _binding!!
-
+    private val viewModel: CheckoutViewModel by viewModels()
     private val checkoutViewModel: CheckoutViewModel by viewModels()
 
     override fun onCreateView(
@@ -52,6 +55,37 @@ class CheckoutFragment : Fragment() {
                 requireActivity().finish()
             }
         })
+        binding.btnApplyCode.setOnClickListener {
+            val discountCode = binding.etDiscountCode.text.toString()
+            if (discountCode.isNotBlank()) {
+                lifecycleScope.launch {
+                   val success= checkoutViewModel.applyDiscountCode(discountCode)
+                    if(success){
+                        SnackbarUtils.showSnackbar(requireContext(),requireView(),"Discount Added")
+                        lifecycleScope.launch {
+                            checkoutViewModel.checkoutDetailsState.collect { state ->
+                                when (state) {
+                                    is UiState.Loading -> {
+                                    }
+                                    is UiState.Success -> {
+                                        val checkoutDetails = state.data
+                                        binding.tvOrderPrice.text= checkoutDetails.totalPrice?.amount +" "+checkoutDetails.totalPrice?.currencyCode
+                                    }
+                                    is UiState.Error -> {
+                                        val errorMessage = state.exception.message
+                                    }
+                                    UiState.Idle -> {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+
+            }
+        }
 
         binding.btnSubmitOrder.setOnClickListener {
             val lineItems = listOf(
@@ -60,18 +94,31 @@ class CheckoutFragment : Fragment() {
                     variantId = "gid://shopify/ProductVariant/45323489870078"
                 )
             )
-            val email = "abdelrhman99m@gmail.com"
-
-            // Perform order submission logic here
         }
+            val email = "abdelrhman99m@gmail.com"
+            checkoutViewModel.fetchCheckoutDetails()
+            lifecycleScope.launch {
+                checkoutViewModel.checkoutDetailsState.collect { state ->
+                    when (state) {
+                        is UiState.Loading -> {
+                        }
+                        is UiState.Success -> {
+                            val checkoutDetails = state.data
+                            binding.tvOrderPrice.text= checkoutDetails.totalPrice?.amount +" "+checkoutDetails.totalPrice?.currencyCode
+                        }
+                        is UiState.Error -> {
+                            val errorMessage = state.exception.message
+                        }
+                        UiState.Idle -> {
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            checkoutViewModel.cartProductsResponse.collect { response ->
-                if (response != null) {
-                   // updateTotalPrice()
+                        }
+                    }
                 }
             }
-        }
+
+
+
+
 
         observeViewModel()
     }
@@ -132,5 +179,7 @@ class CheckoutFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }

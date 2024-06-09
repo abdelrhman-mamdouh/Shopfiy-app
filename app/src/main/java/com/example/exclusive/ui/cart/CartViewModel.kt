@@ -83,6 +83,7 @@ class CartViewModel @Inject constructor(
             try {
                 val checkoutResponse = cartRepository.createCheckout(lineItems, cartRepository.readEmail())
                 _checkoutState.value = if (checkoutResponse?.checkout != null) {
+                    cartRepository.saveUserCheckOut(checkoutResponse.checkout.id)
                     UiState.Success(checkoutResponse.checkout)
                 } else {
                     UiState.Error(Exception("Failed to create checkout"))

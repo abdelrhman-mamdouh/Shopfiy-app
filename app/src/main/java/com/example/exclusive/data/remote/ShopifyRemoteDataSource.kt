@@ -4,6 +4,7 @@ import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.ProductNode
@@ -48,4 +49,5 @@ interface ShopifyRemoteDataSource {
     suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput>
     suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean
     suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean
+    suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails?
 }

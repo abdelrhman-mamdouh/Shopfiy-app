@@ -50,6 +50,13 @@ class CartRepositoryImpl @Inject constructor(
         return remoteDataSource.createCheckout(lineItems, email)
     }
 
+    override suspend fun getUserCheckOut(): String? {
+        return localDataSource.getUserCheckOut()
+    }
+
+    override suspend fun saveUserCheckOut(checkoutId: String) {
+        localDataSource.saveUserCheckOut(checkoutId)
+    }
 
 
 }

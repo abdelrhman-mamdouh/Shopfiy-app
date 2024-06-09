@@ -17,5 +17,7 @@ interface CartRepository {
         lineItems: List<CheckoutLineItemInput>,
         email: String?
     ): CheckoutResponse?
+    suspend fun getUserCheckOut(): String?
+    suspend fun saveUserCheckOut(checkoutId: String)
 
 }

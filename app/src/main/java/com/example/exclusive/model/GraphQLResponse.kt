@@ -2,7 +2,6 @@ package com.example.exclusive.model
 
 import android.os.Parcelable
 import com.apollographql.apollo3.api.Optional
-import com.example.exclusive.AddAddressToCustomerMutation
 import com.example.exclusive.type.MailingAddressInput
 import kotlinx.android.parcel.Parcelize
 
@@ -113,7 +112,14 @@ data class UserError(
     val field: List<String>?,
     val message: String
 )
-
+data class CheckoutDetails(
+    val id: String,
+    val createdAt: String,
+    val completedAt: String?,
+    val currencyCode: String,
+    val totalPrice: PriceV2?,
+    val lineItems: List<LineItem>
+)
 data class CartProduct(
     val id: String,
     val quantity: Int,

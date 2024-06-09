@@ -5,6 +5,7 @@ import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject
 
@@ -26,5 +27,13 @@ class CheckoutRepositoryImpl @Inject constructor(
     }
     override suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
         return remoteDataSource.applyDiscountCode(checkoutId,discountCode)
+    }
+
+    override suspend fun getUserCheckOut(): String? {
+        return localDataSource.getUserCheckOut()
+    }
+
+    override suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
+        return remoteDataSource.getCheckoutDetails(checkoutId)
     }
 }

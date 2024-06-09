@@ -1,10 +1,13 @@
 package com.example.exclusive.ui.checkout.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutDetails
+import com.example.exclusive.model.LineItem
 import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +20,9 @@ class CheckoutViewModel @Inject constructor(
     private val checkoutRepository: CheckoutRepositoryImpl
 ) : ViewModel() {
 
-    private val _cartProductsResponse = MutableStateFlow<List<CartProduct>?>(null)
-    val cartProductsResponse: StateFlow<List<CartProduct>?> = _cartProductsResponse
+    private val _checkoutDetailsState = MutableStateFlow<UiState<CheckoutDetails>>(UiState.Idle)
+    val checkoutDetailsState: StateFlow<UiState<CheckoutDetails>> = _checkoutDetailsState
+
     private val _addresses = MutableStateFlow<UiState<List<AddressInput>>>(UiState.Idle)
     val addresses: StateFlow<UiState<List<AddressInput>>> = _addresses
     private val _error = MutableStateFlow<String?>(null)
@@ -35,19 +39,33 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getProductsInCart(cartId: String) {
-        try {
-            val currency = checkoutRepository.getCurrency()
-            val products = checkoutRepository.getProductsInCart(cartId).map { product ->
-                val price = product.variantPrice.toDouble() / currency.second
-                val formattedPrice = String.format("%.2f", price)
-                product.variantPrice = formattedPrice
-                product.variantPriceCode = currency.first
-                product
+     fun fetchCheckoutDetails() {
+        viewModelScope.launch {
+            _checkoutDetailsState.value = UiState.Loading
+            try {
+                val checkoutId = checkoutRepository.getUserCheckOut()
+                val checkoutDetails = checkoutRepository.getCheckoutDetails(checkoutId!!)
+                if (checkoutDetails != null) {
+                    _checkoutDetailsState.value = UiState.Success(checkoutDetails)
+                } else {
+                    _checkoutDetailsState.value = UiState.Error(Exception("Checkout details not found"))
+                }
+            } catch (e: Exception) {
+                _checkoutDetailsState.value = UiState.Error(e)
             }
-            _cartProductsResponse.value = products
+        }
+    }
+    suspend fun applyDiscountCode(discountCode: String): Boolean {
+        val checkoutId = checkoutRepository.getUserCheckOut()
+        return try {
+            val success = checkoutRepository.applyDiscountCode(checkoutId!!, discountCode)
+            if (success) {
+                fetchCheckoutDetails()
+            }
+            success
         } catch (e: Exception) {
-            _error.value = e.message
+            Log.e("ApplyDiscount", "Error applying discount code: ${e.message}", e)
+            false
         }
     }
 

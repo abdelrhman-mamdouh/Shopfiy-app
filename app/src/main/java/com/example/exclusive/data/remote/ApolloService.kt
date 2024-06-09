@@ -17,6 +17,7 @@ import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
 import com.example.exclusive.DeleteCustomerAddressMutation
 import com.example.exclusive.GetAllProductsQuery
+import com.example.exclusive.GetCheckoutDetailsQuery
 import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
@@ -29,9 +30,11 @@ import com.example.exclusive.model.Brand
 import com.example.exclusive.model.Cart
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.Checkout
+import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
 import com.example.exclusive.model.LineItem
+import com.example.exclusive.model.PriceV2
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.UserError
 import com.example.exclusive.model.Variant
@@ -512,6 +515,59 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         } catch (e: ApolloException) {
             Log.e("GraphQL", "ApolloException: ${e.message}", e)
             false
+        }
+    }
+    suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
+        val query = GetCheckoutDetailsQuery(
+            checkoutId = checkoutId
+        )
+
+        return try {
+            val response: ApolloResponse<GetCheckoutDetailsQuery.Data> =
+                apolloClient.query(query).execute()
+
+            val checkout = response.data?.node
+            if (checkout != null) {
+                return CheckoutDetails(
+                    id = checkout.onCheckout!!.id,
+                    createdAt = checkout.onCheckout!!.createdAt.toString(),
+                    completedAt = checkout.onCheckout!!.completedAt?.toString(),
+                    currencyCode = checkout.onCheckout!!.currencyCode.toString(),
+                    totalPrice = checkout.onCheckout!!.totalPriceV2?.let {
+                        PriceV2(
+                            amount = it.amount.toString(),
+                            currencyCode = it.currencyCode.toString()
+                        )
+                    },
+                    lineItems = checkout.onCheckout!!.lineItems?.edges?.mapNotNull { edge ->
+                        edge.node?.let { node ->
+                            node.variant?.let { variant ->
+                                Variant(
+                                    id = variant.id,
+                                    title = variant.title,
+                                    price = variant.priceV2?.let {
+                                        PriceV2(
+                                            amount = it.amount.toString(),
+                                            currencyCode = it.currencyCode.toString()
+                                        )
+                                    }.toString()
+                                )
+                            }?.let {
+                                LineItem(
+                                    title = node.title,
+                                    quantity = node.quantity,
+                                    variant = it
+                                )
+                            }
+                        }
+                    } ?: emptyList()
+                )
+            } else {
+                null
+            }
+        } catch (e: ApolloException) {
+            Log.e("Apollo", "Error retrieving checkout details: ${e.message}", e)
+            null
         }
     }
 }
