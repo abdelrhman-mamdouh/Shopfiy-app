@@ -2,7 +2,6 @@
 package com.example.exclusive.ui.checkout.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +15,8 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
 import com.example.exclusive.databinding.FragmentCheckOutBinding
-import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.DiscountValue
 import com.example.exclusive.model.LineItem
-import com.example.exclusive.type.CheckoutLineItemInput
-
 import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
 import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -37,8 +34,7 @@ class CheckoutFragment : Fragment() {
     private val checkoutViewModel: CheckoutViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCheckOutBinding.inflate(inflater, container, false)
         return binding.root
@@ -50,77 +46,69 @@ class CheckoutFragment : Fragment() {
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
         binding.btnApplyCode.setOnClickListener {
             val discountCode = binding.etDiscountCode.text.toString()
             if (discountCode.isNotBlank()) {
                 lifecycleScope.launch {
-                   val success= checkoutViewModel.applyDiscountCode(discountCode)
-                    if(success){
-                        SnackbarUtils.showSnackbar(requireContext(),requireView(),"Discount Added")
-                        lifecycleScope.launch {
-                            checkoutViewModel.checkoutDetailsState.collect { state ->
-                                when (state) {
-                                    is UiState.Loading -> {
-                                    }
-                                    is UiState.Success -> {
-                                        val checkoutDetails = state.data
-                                        binding.tvOrderPrice.text= checkoutDetails.totalPrice?.amount +" "+checkoutDetails.totalPrice?.currencyCode
-                                    }
-                                    is UiState.Error -> {
-                                        val errorMessage = state.exception.message
-                                    }
-                                    UiState.Idle -> {
-
-                                    }
-                                }
-                            }
-                        }
+                    val success = checkoutViewModel.applyDiscountCode(discountCode)
+                    if (success) {
+                        SnackbarUtils.showSnackbar(
+                            requireContext(), requireView(), "Discount Added"
+                        )
+                        observeCheckOutDetails()
                     }
                 }
             } else {
 
             }
         }
-
         binding.btnSubmitOrder.setOnClickListener {
-            val lineItems = listOf(
-                CheckoutLineItemInput(
-                    quantity = 1,
-                    variantId = "gid://shopify/ProductVariant/45323489870078"
-                )
-            )
         }
-            val email = "abdelrhman99m@gmail.com"
-            checkoutViewModel.fetchCheckoutDetails()
-            lifecycleScope.launch {
-                checkoutViewModel.checkoutDetailsState.collect { state ->
-                    when (state) {
-                        is UiState.Loading -> {
-                        }
-                        is UiState.Success -> {
-                            val checkoutDetails = state.data
-                            binding.tvOrderPrice.text= checkoutDetails.totalPrice?.amount +" "+checkoutDetails.totalPrice?.currencyCode
-                        }
-                        is UiState.Error -> {
-                            val errorMessage = state.exception.message
-                        }
-                        UiState.Idle -> {
+        checkoutViewModel.fetchCheckoutDetails()
+        observeCheckOutDetails()
+        observeViewModel()
+    }
 
+    private fun observeCheckOutDetails() {
+        lifecycleScope.launch {
+            checkoutViewModel.checkoutDetailsState.collect { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    is UiState.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val checkoutDetails = state.data
+                        val discountValue = checkoutDetails.discountApplications.firstOrNull()?.value
+
+                        if (discountValue is DiscountValue.Percentage) {
+                            binding.tvDiscountPrice.text = "${discountValue.percentage}%"
+                        } else {
+                            binding.tvDiscountPrice.text = "N/A"
                         }
+                        binding.tvOrderPrice.text = calculateTotalPrice(checkoutDetails.lineItems).toString() + " " + checkoutDetails.totalPrice?.currencyCode
+                        binding.tvSummaryPrice.text = checkoutDetails.totalPrice?.amount + " " + checkoutDetails.totalPrice?.currencyCode
+                    }
+
+
+
+                    is UiState.Error -> {
+                        val errorMessage = state.exception.message
+                    }
+
+                    UiState.Idle -> {
+                        binding.progressBar.visibility = View.GONE
                     }
                 }
             }
-
-
-
-
-
-        observeViewModel()
+        }
     }
 
     private fun showAddressSelectionDialog() {
@@ -131,7 +119,8 @@ class CheckoutFragment : Fragment() {
         checkoutViewModel.addresses.value.let { state ->
             if (state is UiState.Success) {
                 val addressAdapter = AddressAdapter(state.data) { address ->
-                    binding.tvShippingAddressDetails.text = "${address.address1}, ${address.city}, ${address.country}"
+                    binding.tvShippingAddressDetails.text =
+                        "${address.address1}, ${address.city}, ${address.country}"
                     binding.tvPhoneNumber.text = address.phone
                     dialog.dismiss()
                 }
@@ -152,20 +141,26 @@ class CheckoutFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                         binding.btnSubmitOrder.isEnabled = false
                     }
+
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
-                        binding.tvShippingAddressDetails.text = "${state.data[0].address1}, ${state.data[0].city}, ${state.data[0].country}"
+                        binding.tvShippingAddressDetails.text =
+                            "${state.data[0].address1}, ${state.data[0].city}, ${state.data[0].country}"
                         binding.tvPhoneNumber.text = state.data[0].phone
                         binding.btnChangeAddress.setOnClickListener {
                             showAddressSelectionDialog()
                         }
                     }
+
                     is UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
-                        Toast.makeText(requireContext(), state.exception.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(), state.exception.message, Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
@@ -179,7 +174,12 @@ class CheckoutFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
+    fun calculateTotalPrice(lineItems: List<LineItem>): Double {
+        var totalPrice = 0.0
+        for (lineItem in lineItems) {
+            val priceAmount = lineItem.variant.price.amount.toDouble()
+            totalPrice += lineItem.quantity * priceAmount
+        }
+        return totalPrice
+    }
 }

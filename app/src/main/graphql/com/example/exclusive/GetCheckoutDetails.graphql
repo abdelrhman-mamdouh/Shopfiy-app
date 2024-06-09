@@ -25,6 +25,25 @@ query GetCheckoutDetails($checkoutId: ID!) {
                     }
                 }
             }
+            discountApplications(first: 10) {
+                edges {
+                    node {
+                        ... on DiscountCodeApplication {
+                            code
+                            value {
+                                __typename
+                                ... on MoneyV2 {
+                                    amount
+                                    currencyCode
+                                }
+                                ... on PricingPercentageValue {
+                                    percentage
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

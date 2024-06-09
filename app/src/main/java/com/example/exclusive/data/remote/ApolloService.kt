@@ -33,6 +33,8 @@ import com.example.exclusive.model.Checkout
 import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
+import com.example.exclusive.model.DiscountCodeApplication
+import com.example.exclusive.model.DiscountValue
 import com.example.exclusive.model.LineItem
 import com.example.exclusive.model.PriceV2
 import com.example.exclusive.model.ProductNode
@@ -45,6 +47,8 @@ import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
 import com.example.exclusive.type.MailingAddressInput
+import com.example.exclusive.type.MoneyV2
+import com.example.exclusive.type.PricingPercentageValue
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -382,7 +386,10 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                             variant = Variant(
                                 id = edge.node.variant!!.id,
                                 title = edge.node.variant.title,
-                                price = edge.node.variant.price.amount.toString()
+                                price = PriceV2(
+                                    amount = edge.node.variant.price.amount.toString(),
+                                    currencyCode = ""
+                                )
                             )
                         )
                     }
@@ -492,6 +499,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             return false
         }
     }
+
     suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
         val mutation = ApplyDiscountCodeMutation(
             checkoutId = checkoutId,
@@ -509,7 +517,10 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                 false
             } else {
                 val checkout = response.data?.checkoutDiscountCodeApplyV2?.checkout
-                Log.d("GraphQL", "Discount code applied successfully to checkout ID: ${checkout?.id}")
+                Log.d(
+                    "GraphQL",
+                    "Discount code applied successfully to checkout ID: ${checkout?.id}"
+                )
                 true
             }
         } catch (e: ApolloException) {
@@ -517,50 +528,73 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
             false
         }
     }
+
     suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
-        val query = GetCheckoutDetailsQuery(
-            checkoutId = checkoutId
-        )
+        val query = GetCheckoutDetailsQuery(checkoutId = checkoutId)
 
         return try {
             val response: ApolloResponse<GetCheckoutDetailsQuery.Data> =
                 apolloClient.query(query).execute()
-
-            val checkout = response.data?.node
+            val checkout = response.data?.node?.onCheckout
             if (checkout != null) {
-                return CheckoutDetails(
-                    id = checkout.onCheckout!!.id,
-                    createdAt = checkout.onCheckout!!.createdAt.toString(),
-                    completedAt = checkout.onCheckout!!.completedAt?.toString(),
-                    currencyCode = checkout.onCheckout!!.currencyCode.toString(),
-                    totalPrice = checkout.onCheckout!!.totalPriceV2?.let {
+                val discountApplications =
+                    checkout.discountApplications?.edges?.mapNotNull { edge ->
+                        edge.node?.onDiscountCodeApplication?.let { node ->
+                            val value = node.value
+                            when {
+                                value?.onMoneyV2 != null -> {
+                                    DiscountValue.Money(
+                                        amount = value.onMoneyV2.amount.toString(),
+                                        currencyCode = value.onMoneyV2.currencyCode.toString()
+                                    )
+                                }
+
+                                value?.onPricingPercentageValue != null -> {
+                                    DiscountValue.Percentage(value.onPricingPercentageValue.percentage.toString())
+                                }
+
+                                else -> null
+                            }?.let { discountValue ->
+                                DiscountCodeApplication(
+                                    code = node.code ?: "",
+                                    value = discountValue
+                                )
+                            }
+                        }
+                    } ?: emptyList()
+
+                CheckoutDetails(
+                    id = checkout.id,
+                    createdAt = checkout.createdAt.toString(),
+                    completedAt = checkout.completedAt?.toString(),
+                    currencyCode = checkout.currencyCode.toString(),
+                    totalPrice = checkout.totalPriceV2?.let {
                         PriceV2(
                             amount = it.amount.toString(),
                             currencyCode = it.currencyCode.toString()
                         )
                     },
-                    lineItems = checkout.onCheckout!!.lineItems?.edges?.mapNotNull { edge ->
-                        edge.node?.let { node ->
-                            node.variant?.let { variant ->
-                                Variant(
-                                    id = variant.id,
-                                    title = variant.title,
-                                    price = variant.priceV2?.let {
-                                        PriceV2(
-                                            amount = it.amount.toString(),
-                                            currencyCode = it.currencyCode.toString()
-                                        )
-                                    }.toString()
-                                )
-                            }?.let {
-                                LineItem(
-                                    title = node.title,
-                                    quantity = node.quantity,
-                                    variant = it
-                                )
-                            }
+                    lineItems = checkout.lineItems?.edges?.mapNotNull { edge ->
+                        edge.node?.variant?.let { variant ->
+                            Variant(
+                                id = variant.id,
+                                title = variant.title,
+                                price = variant.priceV2?.let {
+                                    PriceV2(
+                                        amount = it.amount.toString(),
+                                        currencyCode = it.currencyCode.toString()
+                                    )
+                                }!!
+                            )
+                        }?.let { variant ->
+                            LineItem(
+                                title = edge.node?.title ?: "",
+                                quantity = edge.node?.quantity ?: 0,
+                                variant = variant
+                            )
                         }
-                    } ?: emptyList()
+                    } ?: emptyList(),
+                    discountApplications = discountApplications
                 )
             } else {
                 null
@@ -572,54 +606,55 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     }
 }
 
-fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
-    val imageEdges = productsQueryImages.edges.map { imageEdge ->
-        com.example.exclusive.model.ImageEdge(
-            com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
-        )
-    }
-    return com.example.exclusive.model.Images(imageEdges)
-}
-
-fun mapImages(productsQueryImages: GetAllProductsQuery.Images): com.example.exclusive.model.Images {
-    val imageEdges = productsQueryImages.edges.map { imageEdge ->
-        com.example.exclusive.model.ImageEdge(
-            com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
-        )
-    }
-    return com.example.exclusive.model.Images(imageEdges)
-}
-
-fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.example.exclusive.model.Variants {
-    val variantEdges = productsQueryVariants.edges.map { variantEdge ->
-        com.example.exclusive.model.VariantEdge(
-            com.example.exclusive.model.VariantNode(
-                variantEdge.node.id,
-                variantEdge.node.title,
-                variantEdge.node.sku!!,
-                com.example.exclusive.model.PriceV2(
-                    variantEdge.node.priceV2.amount.toString(),
-                    variantEdge.node.priceV2.currencyCode.toString()
-                ), variantEdge.node.quantityAvailable!!,
+    fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
+        val imageEdges = productsQueryImages.edges.map { imageEdge ->
+            com.example.exclusive.model.ImageEdge(
+                com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
             )
-        )
+        }
+        return com.example.exclusive.model.Images(imageEdges)
     }
-    return Variants(variantEdges)
-}
 
-fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.exclusive.model.Variants {
-    val variantEdges = productsQueryVariants.edges.map { variantEdge ->
-        com.example.exclusive.model.VariantEdge(
-            com.example.exclusive.model.VariantNode(
-                variantEdge.node.id,
-                variantEdge.node.title,
-                variantEdge.node.sku!!,
-                com.example.exclusive.model.PriceV2(
-                    variantEdge.node.priceV2.amount.toString(),
-                    variantEdge.node.priceV2.currencyCode.toString()
-                ),variantEdge.node.quantityAvailable!!
+    fun mapImages(productsQueryImages: GetAllProductsQuery.Images): com.example.exclusive.model.Images {
+        val imageEdges = productsQueryImages.edges.map { imageEdge ->
+            com.example.exclusive.model.ImageEdge(
+                com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
             )
-        )
+        }
+        return com.example.exclusive.model.Images(imageEdges)
     }
-    return Variants(variantEdges)
-}
+
+    fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.example.exclusive.model.Variants {
+        val variantEdges = productsQueryVariants.edges.map { variantEdge ->
+            com.example.exclusive.model.VariantEdge(
+                com.example.exclusive.model.VariantNode(
+                    variantEdge.node.id,
+                    variantEdge.node.title,
+                    variantEdge.node.sku!!,
+                    com.example.exclusive.model.PriceV2(
+                        variantEdge.node.priceV2.amount.toString(),
+                        variantEdge.node.priceV2.currencyCode.toString()
+                    ),
+                    variantEdge.node.quantityAvailable!!,
+                )
+            )
+        }
+        return Variants(variantEdges)
+    }
+
+    fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.exclusive.model.Variants {
+        val variantEdges = productsQueryVariants.edges.map { variantEdge ->
+            com.example.exclusive.model.VariantEdge(
+                com.example.exclusive.model.VariantNode(
+                    variantEdge.node.id,
+                    variantEdge.node.title,
+                    variantEdge.node.sku!!,
+                    com.example.exclusive.model.PriceV2(
+                        variantEdge.node.priceV2.amount.toString(),
+                        variantEdge.node.priceV2.currencyCode.toString()
+                    ), variantEdge.node.quantityAvailable!!
+                )
+            )
+        }
+        return Variants(variantEdges)
+    }

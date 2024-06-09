@@ -2,6 +2,7 @@ package com.example.exclusive.model
 
 import android.os.Parcelable
 import com.apollographql.apollo3.api.Optional
+import com.example.exclusive.GetCheckoutDetailsQuery
 import com.example.exclusive.type.MailingAddressInput
 import kotlinx.android.parcel.Parcelize
 
@@ -93,7 +94,6 @@ data class ProductItem(
     val imageUrl: String
 )
 
-// Data classes for the createCard mutation
 data class CreateCartResponse(
     val cart: Cart?,
     val userErrors: List<UserError>
@@ -118,8 +118,18 @@ data class CheckoutDetails(
     val completedAt: String?,
     val currencyCode: String,
     val totalPrice: PriceV2?,
-    val lineItems: List<LineItem>
+    val lineItems: List<LineItem>,
+    val discountApplications: List<DiscountCodeApplication>
 )
+data class DiscountCodeApplication(
+    val code: String,
+    val value: DiscountValue?
+)
+
+sealed class DiscountValue {
+    data class Money(val amount: String, val currencyCode: String) : DiscountValue()
+    data class Percentage(val percentage: String) : DiscountValue()
+}
 data class CartProduct(
     val id: String,
     val quantity: Int,
@@ -175,7 +185,7 @@ data class LineItem(
 data class Variant(
     val id: String,
     val title: String,
-    val price: String
+    val price: PriceV2
 )
 
 
