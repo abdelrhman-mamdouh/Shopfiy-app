@@ -1,10 +1,8 @@
 package com.example.exclusive.ui.orders.view
 
-import com.example.exclusive.model.Brand
 import com.example.exclusive.model.MyOrder
-import com.example.exclusive.model.OrderItem
 
-
+@FunctionalInterface
 interface OnOrderClickListener {
 
     fun onOrderClick(order: MyOrder)
