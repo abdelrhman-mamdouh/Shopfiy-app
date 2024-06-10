@@ -56,8 +56,14 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
                 when (uiState) {
                     is UiState.Success -> {
                         binding.lottieAnimationView.visibility = View.GONE
-                        cartProductAdapter.submitList(uiState.data)
-                        updateTotalPrice()
+                        if (uiState.data.isEmpty()) {
+                            showNoDataFound()
+                        } else {
+                            binding.rvCart.visibility = View.VISIBLE
+                            binding.lottieNoDataAnimationView.visibility = View.GONE
+                            cartProductAdapter.submitList(uiState.data)
+                            updateTotalPrice()
+                        }
                     }
                     is UiState.Error -> {
                         binding.lottieAnimationView.visibility = View.GONE
@@ -159,6 +165,12 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     private fun showLoading() {
         binding.lottieAnimationView.visibility = View.VISIBLE
         binding.lottieAnimationView.playAnimation()
+    }
+
+    private fun showNoDataFound() {
+        binding.rvCart.visibility = View.GONE
+        binding.lottieNoDataAnimationView.visibility = View.VISIBLE
+        binding.lottieNoDataAnimationView.playAnimation()
     }
 
     override fun onDestroyView() {

@@ -22,9 +22,7 @@ class ProductsRepositoryImpl @Inject constructor(
 
     override suspend fun getCartId(): String {
         val email = localDataSource.readEmail()
-        if (email != null) {
-            email.replace('.', '-')
-        }
+        email?.replace('.', '-')
         val cartId = remoteDataSource.fetchCartId(email!!)
         return cartId!!
     }

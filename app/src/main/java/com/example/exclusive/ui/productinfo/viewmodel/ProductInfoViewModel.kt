@@ -54,7 +54,7 @@ class ProductInfoViewModel @Inject constructor(
     }
     fun removeProductFromWatchList(id: String){
         viewModelScope.launch {
-            var email=localDataSource.readEmail()
+            val email =localDataSource.readEmail()
             remoteDataSource.deleteProduct(id,email.toString())
             _isWatchList.value = false
         }
