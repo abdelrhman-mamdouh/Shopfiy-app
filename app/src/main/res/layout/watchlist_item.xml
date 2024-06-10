@@ -6,9 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:id="@+id/watchlist_item"
-    android:layout_marginTop="@dimen/_8sdp"
-    android:layout_marginBottom="@dimen/_8sdp"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:layout_margin="8dp">
 
     <!-- Product Image -->
     <ImageView

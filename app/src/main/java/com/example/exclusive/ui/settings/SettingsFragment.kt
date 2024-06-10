@@ -2,17 +2,26 @@ package com.example.exclusive.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.HolderActivity
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
+import com.example.exclusive.model.ProductNode
+import com.example.exclusive.ui.productinfo.DailogFramgent
+import com.example.exclusive.ui.watchlist.WatchListAdapter
+import com.example.exclusive.ui.watchlist.WatchlistFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,36 +45,85 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-        binding.titleBar.tvTitle.text = getString(R.string.settings)
 
         lifecycleScope.launch {
             viewModel.currenciesStateFlow.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        // Handle the success state
+                        hideLoading()
+                        Log.d(TAG, "onViewCreated: s")
                         val currency = uiState.data
-                        // Update the UI with the currency data
                         binding.tvCode.text = "${currency.first}: ${currency.second}"
                     }
                     is UiState.Error -> {
-                        // Handle the error state
-                        // Show error message
+                        hideLoading()
                     }
                     is UiState.Loading -> {
-                        // Handle the loading state
+                        Log.d(TAG, "onViewCreated: ")
+                        showLoading()
                     }
                     UiState.Idle -> {
-                        // Handle the idle state if necessary
+                        hideLoading()
                     }
                 }
             }
         }
+
+        val adapter = WatchListAdapter( onRemoveListner = { product ->
+            val dialog = DailogFramgent(
+                onDialogPositiveClick = {
+                    viewModel.removeProductFromWatchList(product.id.substring(22))
+                },
+                onDialogNegativeClick = {
+                    val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                        putExtra(HolderActivity.GO_TO, "INFO")
+                    }
+                    startActivity(intent)
+                }
+            )
+            dialog.show(requireActivity().supportFragmentManager, "dialog")
+        }, onItemClickListener = {
+
+        }, addToCart = {product: ProductNode ->
+            viewModel.addToCart(product.variants.edges[0].node.title, 1)
+        })
+
+        binding.rvWishlist.adapter = adapter
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.watchlist.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            showLoading()
+                        }
+                        is UiState.Success -> {
+                            hideLoading()
+                            adapter.submitList(uiState.data)
+                        }
+                        is UiState.Error -> {
+                            hideLoading()
+                            // Handle the error state, e.g., show an error message
+                        }
+                        UiState.Idle -> {
+                            // Handle the idle state if necessary
+                        }
+                    }
+                }
+            }
+        }
+
+        binding.ivMoreWishlist.setOnClickListener {
+            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "FAV")
+            }
+            startActivity(intent)
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Fetch the currencies when the fragment is resumed
+    override fun onStart() {
         viewModel.fetchCurrencies()
+        super.onStart()
     }
 
     private fun setListeners() {
@@ -76,10 +134,6 @@ class SettingsFragment : Fragment() {
                     requireActivity().finish()
                 }
             })
-
-        binding.titleBar.icBack.setOnClickListener{
-            requireActivity().finish()
-        }
         binding.tvAddress.setOnClickListener {
             val intent = Intent(requireContext(), HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "ADDRESS")
@@ -93,6 +147,17 @@ class SettingsFragment : Fragment() {
             }
             startActivity(intent)
         }
+    }
+
+    private fun showLoading() {
+        binding.lottieLoading.visibility = View.VISIBLE
+        binding.mainContent.visibility = View.GONE
+        binding.lottieLoading.playAnimation()
+    }
+
+    private fun hideLoading() {
+        binding.lottieLoading.visibility = View.GONE
+        binding.mainContent.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

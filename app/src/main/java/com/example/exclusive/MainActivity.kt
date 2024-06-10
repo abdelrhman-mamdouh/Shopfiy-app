@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tv_title).text = destination.label
         }
 
-        // Set click listeners for the icons
         binding.appBarHome.cardViewShoppingCart.setOnClickListener {
             val intent = Intent(this, HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "CART")

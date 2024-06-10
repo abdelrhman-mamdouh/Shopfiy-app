@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.example.exclusive.model.AddressInput
 import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 private const val TAG = "AddAddressFragment"
 @AndroidEntryPoint
@@ -46,12 +48,23 @@ class AddAddressFragment : Fragment() {
                 requireActivity().finish()
             }
         })
+
+        val countryList = getAllCountries()
+        val egyptIndex = countryList.indexOf("Egypt")
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, countryList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sCountry.adapter = adapter
+
+        if (egyptIndex != -1) {
+            binding.sCountry.setSelection(egyptIndex)
+        }
         binding.button.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val details = binding.etDetails.text.toString()
             val phone = binding.tvPhone.text.toString()
             val city = binding.etCity.text.toString()
-            val country = binding.etCountry.text.toString()
+            val country = binding.sCountry.selectedItem.toString()
             val zip = binding.etZip.text.toString()
             val isDefault = binding.cbDefaultAddress.isChecked
 
@@ -74,18 +87,16 @@ class AddAddressFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is UiState.Success -> {
-
                         Toast.makeText(requireContext(), "Here ${uiState.data}", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = View.GONE
                         if (uiState.data) {
-                            SnackbarUtils.showSnackbar(requireContext(),view,"Address added successfully")
+                            SnackbarUtils.showSnackbar(requireContext(), view, "Address added successfully")
                             findNavController().navigateUp()
                         }
                     }
                     is UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
-                        SnackbarUtils.showSnackbar(requireContext(),view,"Error adding address: ${uiState.exception.message}")
-
+                        SnackbarUtils.showSnackbar(requireContext(), view, "Error adding address: ${uiState.exception.message}")
                     }
                     is UiState.Idle -> {
                         // Initial idle state, do nothing
@@ -93,6 +104,12 @@ class AddAddressFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getAllCountries(): List<String> {
+        return Locale.getISOCountries().map { code ->
+            Locale("", code).displayCountry
+        }.sorted()
     }
 
     override fun onDestroyView() {

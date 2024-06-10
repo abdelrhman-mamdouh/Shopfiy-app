@@ -33,7 +33,7 @@ class WatchlistFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentWatchlistBinding.inflate(inflater, container, false)
         return binding.root
@@ -77,7 +77,7 @@ class WatchlistFragment : Fragment() {
         dialog.show(requireActivity().supportFragmentManager, "dialog")
     }
     val addItemToCart = {product: ProductNode ->
-
+        viewModel.addToCart(product.variants.edges[0].node.title, 1)
     }
     val onItemClick = {product: ProductNode ->
         NavHostFragment.findNavController(this@WatchlistFragment).navigate(WatchlistFragmentDirections.actionWatchlistFragmentToProductInfoFragment(product))

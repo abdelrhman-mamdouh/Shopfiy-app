@@ -6,11 +6,6 @@
     app:startDestination="@id/productsFragment">
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.exclusive.ui.settings.SettingsFragment"
-        android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
         android:id="@+id/productsFragment"
         android:name="com.example.exclusive.ui.products.view.ProductsFragment"
         android:label="fragment_products"

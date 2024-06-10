@@ -16,7 +16,6 @@ class WatchlistDiffUtil: DiffUtil.ItemCallback<ProductNode>() {
     override fun areContentsTheSame(oldItem: ProductNode, newItem: ProductNode): Boolean {
         return oldItem == newItem
     }
-
 }
 class WatchListAdapter(var onRemoveListner:(ProductNode)->Unit,var onItemClickListener:(ProductNode)->Unit,var addToCart:(ProductNode)->Unit): androidx.recyclerview.widget.ListAdapter<ProductNode, WatchListAdapter.ViewHolder>(
     WatchlistDiffUtil()
@@ -56,7 +55,6 @@ class WatchListAdapter(var onRemoveListner:(ProductNode)->Unit,var onItemClickLi
                 cartButton.setOnClickListener {
                     addToCart(product)
                 }
-
             }
         }
     }
