@@ -15,12 +15,14 @@ class DiscountDataSource @Inject constructor(private val discountApi: DiscountAp
             val accessToken = Constants.ACCESS_TOKEN
 
             val response = discountApi.getPriceRules(accessToken)
-            Log.i("TAG", "getPriceRules: ${response}")
+
             if (response.isSuccessful) {
 
                 return response.body() ?: throw Exception("Response body is null")
             } else {
-                Log.i("TAG", "getPriceRules: ${response.code()}")
+                val errorBody = response.errorBody()?.string()
+                Log.e("API_ERROR", errorBody ?: "Unknown error")
+
                 throw Exception("Failed to get price rules: ${response.code()}")
             }
         } catch (e: Exception) {

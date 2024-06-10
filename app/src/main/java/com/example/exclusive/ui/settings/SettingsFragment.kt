@@ -147,6 +147,12 @@ class SettingsFragment : Fragment() {
             }
             startActivity(intent)
         }
+        binding.tvOrders.setOnClickListener {
+            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "ORDERS")
+            }
+            startActivity(intent)
+        }
     }
 
     private fun showLoading() {

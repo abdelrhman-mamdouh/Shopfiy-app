@@ -8,6 +8,8 @@ import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.exclusive.AddAddressToCustomerMutation
 import com.example.exclusive.AddToCartMutation
+import com.example.exclusive.ApplyDiscountCodeMutation
+import com.example.exclusive.ApplyShippingAddressMutation
 import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
 import com.example.exclusive.CreateCartMutation
@@ -15,7 +17,9 @@ import com.example.exclusive.CreateCheckoutMutation
 import com.example.exclusive.CustomerAccessTokenCreateMutation
 import com.example.exclusive.CustomerCreateMutation
 import com.example.exclusive.DeleteCustomerAddressMutation
+import com.example.exclusive.GetAllOrdersQuery
 import com.example.exclusive.GetAllProductsQuery
+import com.example.exclusive.GetCheckoutDetailsQuery
 import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.ProductsQuery
@@ -24,14 +28,24 @@ import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.AddressInput
+import com.example.exclusive.model.BillingAddress
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.Cart
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.Checkout
+import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
+import com.example.exclusive.model.DiscountCodeApplication
+import com.example.exclusive.model.DiscountValue
 import com.example.exclusive.model.LineItem
+import com.example.exclusive.model.LineItems
+import com.example.exclusive.model.MyOrder
+import com.example.exclusive.model.Order
+import com.example.exclusive.model.Price
+import com.example.exclusive.model.PriceV2
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.model.TotalPrice
 import com.example.exclusive.model.UserError
 import com.example.exclusive.model.Variant
 import com.example.exclusive.model.Variants
@@ -144,10 +158,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     }
 
     suspend fun createCustomer(
-        email: String,
-        password: String,
-        firstName: String,
-        secondName: String
+        email: String, password: String, firstName: String, secondName: String
     ): Boolean {
         val mutation = CustomerCreateMutation(
             input = CustomerCreateInput(
@@ -182,8 +193,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     suspend fun createCustomerAccessToken(email: String, password: String): String? {
         val mutation = CustomerAccessTokenCreateMutation(
             input = CustomerAccessTokenCreateInput(
-                email = email,
-                password = password
+                email = email, password = password
             )
         )
 
@@ -233,8 +243,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
 
     suspend fun resetPasswordByUrl(resetUrl: String, newPassword: String): Boolean {
         val mutation = ResetPasswordByUrlMutation(
-            resetUrl = resetUrl,
-            password = newPassword
+            resetUrl = resetUrl, password = newPassword
         )
 
         try {
@@ -330,8 +339,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
 
     suspend fun addToCartById(cartId: String, lines: List<CartLineInput>): AddToCartResponse? {
         val mutation = AddToCartMutation(
-            cartId = cartId,
-            lines = lines
+            cartId = cartId, lines = lines
         )
         try {
             val response = apolloClient.mutation(mutation)
@@ -356,20 +364,17 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     }
 
     suspend fun createCheckout(
-        lineItems: List<CheckoutLineItemInput>,
-        email: String?
+        lineItems: List<CheckoutLineItemInput>, email: String?
     ): CheckoutResponse? {
         val mutation = CreateCheckoutMutation(
-            lineItems = lineItems,
-            email = Optional.Present(email)
+            lineItems = lineItems, email = Optional.Present(email)
         )
 
         return try {
             val response = apolloClient.mutation(mutation).execute()
             val checkoutCreate = response.data?.checkoutCreate
             val checkout = checkoutCreate?.checkout?.let {
-                Checkout(
-                    id = it.id,
+                Checkout(id = it.id,
                     webUrl = it.webUrl.toString(),
                     lineItems = it.lineItems.edges.map { edge ->
                         LineItem(
@@ -378,11 +383,14 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                             variant = Variant(
                                 id = edge.node.variant!!.id,
                                 title = edge.node.variant.title,
-                                price = edge.node.variant.price.amount.toString()
-                            )
+                                price = PriceV2(
+                                    amount = edge.node.variant.price.amount.toString(),
+                                    currencyCode = ""
+                                )
+                            ),
+                            45
                         )
-                    }
-                )
+                    })
             }
             val userErrors =
                 checkoutCreate?.userErrors?.map { UserError(it.field, it.message) } ?: emptyList()
@@ -396,8 +404,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
 
     suspend fun removeFromCartById(cartId: String, lineIds: List<String>): AddToCartResponse? {
         val mutation = RemoveProductFromCartMutation(
-            cartId = cartId,
-            lineIds = lineIds
+            cartId = cartId, lineIds = lineIds
         )
         try {
             val response = apolloClient.mutation(mutation)
@@ -422,12 +429,10 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
     }
 
     suspend fun addAddressToCustomer(
-        addressInput: MailingAddressInput,
-        customerAccessToken: String
+        addressInput: MailingAddressInput, customerAccessToken: String
     ): Boolean {
         val mutation = AddAddressToCustomerMutation(
-            addressInput = addressInput,
-            customerAccessToken = customerAccessToken
+            addressInput = addressInput, customerAccessToken = customerAccessToken
         )
 
         try {
@@ -469,8 +474,7 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
 
     suspend fun deleteCustomerAddress(customerAccessToken: String, addressId: String): Boolean {
         val mutation = DeleteCustomerAddressMutation(
-            customerAccessToken = customerAccessToken,
-            id = addressId
+            customerAccessToken = customerAccessToken, id = addressId
         )
 
         try {
@@ -486,6 +490,191 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
         } catch (e: Exception) {
             println("Exception: ${e.message}")
             return false
+        }
+    }
+
+    suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
+        val mutation = ApplyDiscountCodeMutation(
+            checkoutId = checkoutId, discountCode = discountCode
+        )
+        return try {
+            val response: ApolloResponse<ApplyDiscountCodeMutation.Data> =
+                apolloClient.mutation(mutation).execute()
+
+            val errors = response.data?.checkoutDiscountCodeApplyV2?.checkoutUserErrors
+            if (errors != null && errors.isNotEmpty()) {
+                for (error in errors) {
+                    Log.e("GraphQL", "Error: ${error.message}")
+                }
+                false
+            } else {
+                val checkout = response.data?.checkoutDiscountCodeApplyV2?.checkout
+                Log.d(
+                    "GraphQL", "Discount code applied successfully to checkout ID: ${checkout?.id}"
+                )
+                true
+            }
+        } catch (e: ApolloException) {
+            Log.e("GraphQL", "ApolloException: ${e.message}", e)
+            false
+        }
+    }
+
+    suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
+        val query = GetCheckoutDetailsQuery(checkoutId = checkoutId)
+
+        return try {
+            val response: ApolloResponse<GetCheckoutDetailsQuery.Data> =
+                apolloClient.query(query).execute()
+            val checkout = response.data?.node?.onCheckout
+            if (checkout != null) {
+                val discountApplications =
+                    checkout.discountApplications?.edges?.mapNotNull { edge ->
+                        edge.node?.onDiscountCodeApplication?.let { node ->
+                            val value = node.value
+                            when {
+                                value?.onMoneyV2 != null -> {
+                                    DiscountValue.Money(
+                                        amount = value.onMoneyV2.amount.toString(),
+                                        currencyCode = value.onMoneyV2.currencyCode.toString()
+                                    )
+                                }
+
+                                value?.onPricingPercentageValue != null -> {
+                                    DiscountValue.Percentage(value.onPricingPercentageValue.percentage.toString())
+                                }
+
+                                else -> null
+                            }?.let { discountValue ->
+                                DiscountCodeApplication(
+                                    code = node.code ?: "", value = discountValue
+                                )
+                            }
+                        }
+                    } ?: emptyList()
+
+                CheckoutDetails(webUrl = checkout.webUrl.toString(),
+                    id = checkout.id,
+                    createdAt = checkout.createdAt.toString(),
+                    completedAt = checkout.completedAt?.toString(),
+                    currencyCode = checkout.currencyCode.toString(),
+                    totalPrice = checkout.totalPriceV2?.let {
+                        PriceV2(
+                            amount = it.amount.toString(), currencyCode = it.currencyCode.toString()
+                        )
+                    },
+                    lineItems = checkout.lineItems?.edges?.mapNotNull { edge ->
+                        edge.node?.variant?.let { variant ->
+                            Variant(
+                                id = variant.id,
+                                title = variant.title,
+                                price = variant.priceV2?.let {
+                                    PriceV2(
+                                        amount = it.amount.toString(),
+                                        currencyCode = it.currencyCode.toString()
+                                    )
+                                }!!
+                            )
+                        }?.let { variant ->
+                            LineItem(
+                                title = edge.node?.title ?: "",
+                                quantity = edge.node?.quantity ?: 0,
+                                variant = variant,
+                                45
+                            )
+                        }
+                    } ?: emptyList(),
+                    discountApplications = discountApplications)
+            } else {
+                null
+            }
+        } catch (e: ApolloException) {
+            Log.e("Apollo", "Error retrieving checkout details: ${e.message}", e)
+            null
+        }
+    }
+
+    suspend fun getAllOrders(customerAccessToken: String): List<MyOrder> {
+        val orders = mutableListOf<MyOrder>()
+
+        try {
+            val response: ApolloResponse<GetAllOrdersQuery.Data> =
+                apolloClient.query(GetAllOrdersQuery(customerAccessToken)).execute()
+            Log.i("getAllOrders", "getAllOrders: ${customerAccessToken}+ ${response}")
+            response.data?.customer?.orders?.edges?.forEach { edge ->
+                val node = edge.node
+                val id = node.id
+                val name = node.name
+                val email = node.email
+                val processedAt = node.processedAt
+                val orderNumber = node.orderNumber
+                val statusUrl = node.statusUrl
+                val phone = node.phone
+                val totalPrice = node.totalPrice?.let {
+                    TotalPrice(it.amount.toString(),it.currencyCode.toString())
+                }
+                val billingAddress = node.billingAddress?.let {
+                    BillingAddress(it.address1, it.city,it.firstName,it.phone)
+                }
+                val lineItems = node.lineItems.edges.map { itemEdge ->
+                    val itemNode = itemEdge.node
+                    LineItems(
+                        title = itemNode.title,
+                        quantity = itemNode.quantity,
+                        imageUrl = itemNode.variant?.image?.url.toString(),
+                        originalTotalPrice = Price(
+                            amount = itemNode.originalTotalPrice.amount.toString(),
+                            currencyCode = itemNode.originalTotalPrice.currencyCode.toString()
+                        )
+                    )
+                }
+
+                orders.add(
+                    MyOrder(
+                        id = id,
+                        name = name,
+                        email = email!!,
+                        processedAt = processedAt.toString(),
+                        orderNumber = orderNumber.toString(),
+                        statusUrl = statusUrl.toString(),
+                        phone = phone,
+                        totalPrice = totalPrice!!,
+                        billingAddress = billingAddress,
+                        lineItems = lineItems
+                    )
+                )
+            }
+        } catch (e: ApolloException) {
+            println("ApolloException: ${e.message}")
+        }
+
+        return orders
+    }
+    suspend fun applyShippingAddress(checkoutId: String, shippingAddress: MailingAddressInput): Boolean {
+        val mutation = ApplyShippingAddressMutation(checkoutId = checkoutId, shippingAddress = shippingAddress)
+        return try {
+            val response: ApolloResponse<ApplyShippingAddressMutation.Data> =
+                apolloClient.mutation(mutation).execute()
+
+            val errors = response.data?.checkoutShippingAddressUpdateV2?.checkoutUserErrors
+            if (errors != null && errors.isNotEmpty()) {
+                for (error in errors) {
+                    Log.e("GraphQL", "Error: ${error.message}")
+                }
+                false
+            } else {
+                val checkout = response.data?.checkoutShippingAddressUpdateV2?.checkout
+                if (checkout != null) {
+                    Log.d("GraphQL", "Shipping address applied successfully to checkout ID: ${checkout.id}")
+                    Log.d("GraphQL", "Shipping address applied successfully to checkout webUrl: ${checkout.webUrl}")
+                    true
+                } else {
+                    false
+                }
+            }
+        } catch (e: ApolloException) {
+            Log.e("GraphQL", "ApolloException: ${e.message}", e)
+            false
         }
     }
 }
@@ -518,7 +707,8 @@ fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): com.exampl
                 com.example.exclusive.model.PriceV2(
                     variantEdge.node.priceV2.amount.toString(),
                     variantEdge.node.priceV2.currencyCode.toString()
-                ), variantEdge.node.quantityAvailable!!,
+                ),
+                variantEdge.node.quantityAvailable!!,
             )
         )
     }
@@ -535,7 +725,8 @@ fun mapVariants(productsQueryVariants: ProductsQuery.Variants): com.example.excl
                 com.example.exclusive.model.PriceV2(
                     variantEdge.node.priceV2.amount.toString(),
                     variantEdge.node.priceV2.currencyCode.toString()
-                ),variantEdge.node.quantityAvailable!!
+                ),
+                variantEdge.node.quantityAvailable!!
             )
         )
     }

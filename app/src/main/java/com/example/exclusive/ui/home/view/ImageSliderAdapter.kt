@@ -13,6 +13,7 @@ import com.example.exclusive.data.model.PriceRuleSummary
 
 class ImageSliderAdapter(
     private val listener: OnImageClickListener
+
 ) : ListAdapter<PriceRuleSummary, ImageSliderAdapter.ImageViewHolder>(DiffCallback()) {
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

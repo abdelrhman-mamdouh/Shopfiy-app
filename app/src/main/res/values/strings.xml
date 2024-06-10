@@ -127,5 +127,7 @@
     <string name="percentage">Percentage</string>
     <string name="discount_value">Discount Value:</string>
     <string name="customer_selection">Customer Selection:</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="apply">Apply</string>
 
 </resources>

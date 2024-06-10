@@ -6,8 +6,10 @@ import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.Brand
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
+import com.example.exclusive.model.MyOrder
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
@@ -192,5 +194,24 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         addressId: String
     ): Boolean {
         return apolloService.deleteCustomerAddress(customerAccessToken, addressId)
+    }
+
+    override suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
+        return apolloService.applyDiscountCode(checkoutId,discountCode)
+    }
+
+    override suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
+        return apolloService.getCheckoutDetails(checkoutId)
+    }
+
+    override suspend fun getAllOrders(customerAccessToken: String): List<MyOrder> {
+        return apolloService.getAllOrders(customerAccessToken)
+    }
+
+    override suspend fun applyShippingAddress(
+        checkoutId: String,
+        shippingAddress: MailingAddressInput
+    ): Boolean {
+        return apolloService.applyShippingAddress(checkoutId,shippingAddress)
     }
 }

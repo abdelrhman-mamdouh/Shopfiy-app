@@ -28,6 +28,8 @@ annotation class BaseUrl1
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class BaseUrl2
+
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -82,6 +84,7 @@ object AppModule {
     fun provideDiscountApi(@BaseUrl2 retrofit: Retrofit): DiscountApi {
         return retrofit.create(DiscountApi::class.java)
     }
+
     @Singleton
     @Provides
     fun provideApolloClient(): ApolloClient {

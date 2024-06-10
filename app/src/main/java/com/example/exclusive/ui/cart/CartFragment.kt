@@ -1,6 +1,7 @@
 package com.example.exclusive.ui.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCartBinding
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,6 +53,8 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().finish()
         }
+
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartProductsResponse.collect { uiState ->
@@ -90,9 +95,11 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
         }
 
         binding.buttonCheckout.setOnClickListener {
-            findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
+            val lineItems = getCheckoutLineItems()
+            cartViewModel.createCheckout(lineItems)
         }
         setupRecyclerView()
+        observeViewModel()
     }
 
     private fun setupRecyclerView() {
@@ -197,5 +204,36 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     private fun updateTotalPrice() {
         val totalPrice = calculateTotalPrice()
         binding.textViewTotalPrice.text = String.format("%.2f", totalPrice)
+    }
+    private fun getCheckoutLineItems(): List<CheckoutLineItemInput> {
+        return cartProductAdapter.currentList.map { product ->
+            val quantity = cartProductAdapter.getCurrentQuantity(product.id)
+            CheckoutLineItemInput(
+                quantity = quantity,
+                variantId = product.variantId
+            )
+        }
+    }
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            cartViewModel.checkoutState.collect { state ->
+                when (state) {
+                    is UiState.Loading -> {
+
+                    }
+                    is UiState.Success -> {
+                        Log.i("TAG", "observeViewModel: ${state.data}")
+                        SnackbarUtils.showSnackbar(requireContext(),requireView(),"Checkout Created")
+                        findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
+                    }
+                    is UiState.Error -> {
+                        Toast.makeText(requireContext(), state.exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                    UiState.Idle -> {
+
+                    }
+                }
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
     <action
-        android:id="@+id/action_productsFragment_to_orderFragment"
+        android:id="@+id/action_settingsFragment_to_orderFragment"
         app:destination="@id/orderFragment"
         app:enterAnim="@anim/row_slide_in"
 
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/checkoutFragment"
-        android:name="com.example.exclusive.ui.checkout.CheckoutFragment"
+        android:name="com.example.exclusive.ui.checkout.view.CheckoutFragment"
         android:label="CheckoutFragment"
         tools:layout="@layout/fragment_check_out"/>
 

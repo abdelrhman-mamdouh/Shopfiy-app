@@ -1,5 +1,6 @@
 package com.example.exclusive.data.repository
 
+import android.util.Log
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.model.AddressInput
@@ -23,6 +24,7 @@ class AddressRepositoryImpl @Inject constructor(
 
     override suspend fun addCustomerAddress(address: MailingAddressInput): Boolean {
         val token = localDataSource.readToken()!!
+        Log.i("addCustomerAddress", "addCustomerAddress: ${token}")
         return remoteDataSource.addAddress(address, token)
     }
 }
