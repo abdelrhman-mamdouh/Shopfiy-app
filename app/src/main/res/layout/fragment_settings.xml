@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_white"
     tools:context=".ui.settings.SettingsFragment"
     android:layout_marginBottom="20dp">
 
@@ -26,26 +25,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp" />
-        <include
-            android:id="@+id/title_bar"
-            layout="@layout/top_border_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Various UI components -->
-
-
-        <TextView
-            android:id="@+id/tv_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="Welcome, Client"
-            style="@style/TextViewStyleHeader"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
         <TextView
             android:id="@+id/tv_orders"
@@ -57,17 +36,18 @@
             style="@style/TextViewStyle"
             android:textSize="@dimen/_14sdp"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/iv_more_orders"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:scaleType="fitCenter"
             android:contentDescription="@string/for_more"
             android:src="@drawable/ic_read_more"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
-            app:layout_constraintTop_toTopOf="@id/tv_orders" />
+            app:layout_constraintTop_toTopOf="@id/tv_orders"
+            app:layout_constraintBottom_toBottomOf="@id/tv_orders"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_orders"
@@ -96,13 +76,14 @@
 
         <ImageView
             android:id="@+id/iv_more_wishlist"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_read_more"
             android:contentDescription="@string/for_more"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
-            app:layout_constraintTop_toTopOf="@id/tv_wishlist" />
+            app:layout_constraintTop_toTopOf="@id/tv_wishlist"
+            app:layout_constraintBottom_toBottomOf="@id/tv_wishlist"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_wishlist"
@@ -176,8 +157,8 @@
 
             <ImageView
                 android:id="@+id/iv_address"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_read_more"
                 android:contentDescription="@string/for_more"

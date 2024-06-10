@@ -12,9 +12,8 @@
         android:icon="@drawable/ic_category" />
 
     <item
-        android:id="@+id/profileFragment"
-        android:title="Me"
-        android:icon="@drawable/ic_me" />
-
+        android:id="@+id/settingsFragment"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings" />
 
 </menu>

@@ -2,6 +2,7 @@ package com.example.exclusive.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,6 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-        binding.titleBar.tvTitle.text = getString(R.string.settings)
 
         lifecycleScope.launch {
             viewModel.currenciesStateFlow.collect { uiState ->
@@ -69,20 +69,21 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        val adapter = WatchListAdapter({ product ->
-
+        val adapter = WatchListAdapter( onRemoveListner = { product ->
             val dialog = DailogFramgent(
                 onDialogPositiveClick = {
                     viewModel.removeProductFromWatchList(product.id.substring(22))
                 },
                 onDialogNegativeClick = {
-
+                    val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                        putExtra(HolderActivity.GO_TO, "INFO")
+                    }
+                    startActivity(intent)
                 }
             )
             dialog.show(requireActivity().supportFragmentManager, "dialog")
-        }, { product: ProductNode ->
-            NavHostFragment.findNavController(this@SettingsFragment).navigate(
-                WatchlistFragmentDirections.actionWatchlistFragmentToProductInfoFragment(product))
+        }, onItemClickListener = {
+
         }, addToCart = {product: ProductNode ->
             viewModel.addToCart(product.variants.edges[0].node.title, 1)
         })
@@ -94,6 +95,13 @@ class SettingsFragment : Fragment() {
                     adapter.submitList(it)
                 }
             }
+        }
+
+        binding.ivMoreWishlist.setOnClickListener {
+            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "FAV")
+            }
+            startActivity(intent)
         }
     }
 
@@ -111,10 +119,6 @@ class SettingsFragment : Fragment() {
                     requireActivity().finish()
                 }
             })
-
-        binding.titleBar.icBack.setOnClickListener{
-            requireActivity().finish()
-        }
         binding.tvAddress.setOnClickListener {
             val intent = Intent(requireContext(), HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "ADDRESS")

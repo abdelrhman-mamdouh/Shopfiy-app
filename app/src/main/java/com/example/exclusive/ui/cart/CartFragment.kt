@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
+import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCartBinding
 import com.example.exclusive.model.CartProduct
 import com.google.android.material.snackbar.Snackbar
@@ -50,18 +52,33 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            cartViewModel.cartProductsResponse.collect { response ->
-                if (response != null) {
-                    cartProductAdapter.submitList(response)
-                    updateTotalPrice()
+            cartViewModel.cartProductsResponse.collect { uiState ->
+                when (uiState) {
+                    is UiState.Success -> {
+                        binding.lottieAnimationView.visibility = View.GONE
+                        cartProductAdapter.submitList(uiState.data)
+                        updateTotalPrice()
+                    }
+                    is UiState.Error -> {
+                        binding.lottieAnimationView.visibility = View.GONE
+                        // Handle the error
+                        showError(uiState.exception.message)
+                    }
+                    UiState.Loading -> {
+                        showLoading()
+                    }
+                    UiState.Idle -> {
+                        binding.lottieAnimationView.visibility = View.GONE
+                    }
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.error.collect { error ->
-                if (error != null) {
-
+                error?.let {
+                    // Handle the error
+                    showError(it)
                 }
             }
         }
@@ -133,10 +150,22 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
                 }
             }).show()
     }
+
+    private fun showError(message: String?) {
+        // Display error message to the user
+        Toast.makeText(requireContext(), message ?: "Unknown error", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading() {
+        binding.lottieAnimationView.visibility = View.VISIBLE
+        binding.lottieAnimationView.playAnimation()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onRemoveProduct(product: CartProduct) {
         showUndoSnackbar(product)
         updateTotalPrice()

@@ -38,6 +38,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     private val handler = Handler(Looper.getMainLooper())
     private var currentPage = 0
     private var isDialogShowing = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -90,8 +91,6 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             }
         }
 
-
-
         setupCoupons()
     }
 
@@ -102,7 +101,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                     is UiState.Success -> {
                         val priceRule = uiState.data
                         Log.d(TAG, "setupCoupons: $priceRule")
-                        couponsAdapter.updateCoupons(priceRule)
+                        couponsAdapter.submitList(priceRule)
                     }
                     is UiState.Error -> {
                         Log.e("PriceRuleError", uiState.exception.toString())
@@ -147,7 +146,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         intent.putExtra("brand_name", brand.name)
         startActivity(intent)
     }
-    override fun onImageClick(priceRuleSummary: PriceRuleSummary ) {
+
+    override fun onImageClick(priceRuleSummary: PriceRuleSummary) {
         if (!isDialogShowing) {
             isDialogShowing = true
             couponDetailsJob?.cancel()
@@ -157,7 +157,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                     when (uiState) {
                         is UiState.Success -> {
                             val couponDetail = uiState.data
-                            Constants.showCouponDetailDialog(requireActivity(), couponDetail,priceRuleSummary) {
+                            Constants.showCouponDetailDialog(requireActivity(), couponDetail, priceRuleSummary) {
                                 isDialogShowing = false
                             }
                         }
@@ -168,7 +168,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                         UiState.Idle -> {
 
                         }
-                        UiState.Loading ->{
+                        UiState.Loading -> {
 
                         }
                     }
@@ -176,7 +176,4 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             }
         }
     }
-
-
-
 }
