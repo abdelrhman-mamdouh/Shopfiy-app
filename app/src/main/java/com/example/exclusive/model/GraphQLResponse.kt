@@ -3,8 +3,10 @@ package com.example.exclusive.model
 import android.os.Parcelable
 import com.apollographql.apollo3.api.Optional
 import com.example.exclusive.GetCheckoutDetailsQuery
+import com.example.exclusive.type.Customer
 import com.example.exclusive.type.MailingAddressInput
 import kotlinx.android.parcel.Parcelize
+import java.math.BigDecimal
 
 data class Brand(val id: String, val name: String, val imageUrl: String)
 @Parcelize
@@ -113,6 +115,7 @@ data class UserError(
     val message: String
 )
 data class CheckoutDetails(
+    val webUrl:String,
     val id: String,
     val createdAt: String,
     val completedAt: String?,
@@ -179,9 +182,9 @@ data class Checkout(
 data class LineItem(
     val title: String,
     val quantity: Int,
-    val variant: Variant
+    val variant: Variant,
+    val price: Int
 )
-
 data class Variant(
     val id: String,
     val title: String,
@@ -192,11 +195,13 @@ data class Variant(
 data class AddressInput(
     val id: String?= null,
     val firstName: String,
+    val lastName: String =firstName ,
     val phone: String,
     val address1: String,
     val city: String,
     val country: String,
-    val zip: String
+    val zip: String,
+    val province : String =city,
 ) {
     fun toInput(): MailingAddressInput {
         return MailingAddressInput(
@@ -205,7 +210,50 @@ data class AddressInput(
             address1 = Optional.present(address1),
             city = Optional.present(city),
             country = Optional.present(country),
-            zip = Optional.present(zip)
+            zip = Optional.present(zip),
+            province = Optional.present(province),
+            lastName = Optional.present(lastName)
         )
     }
 }
+@Parcelize
+data class MyOrder(
+    val id: String,
+    val name: String,
+    val email: String,
+    val processedAt: String,
+    val orderNumber: String,
+    val statusUrl: String,
+    val phone: String?,
+    val totalPrice :TotalPrice,
+    val billingAddress: BillingAddress?,
+    val lineItems: List<LineItems>
+):Parcelable
+@Parcelize
+data class LineItems(
+    val title: String,
+    val quantity: Int,
+    val imageUrl: String?,
+    val originalTotalPrice: Price
+):Parcelable
+@Parcelize
+data class BillingAddress(
+    val address1: String?,
+    val city: String?,
+    val firstName:String?,
+    val phone:String?
+):Parcelable
+@Parcelize
+data class Price(
+    val amount: String,
+    val currencyCode: String
+):Parcelable
+@Parcelize
+data class TotalPrice(
+    val amount: String,
+    val currencyCode: String
+):Parcelable
+
+
+
+

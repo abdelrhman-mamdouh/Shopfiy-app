@@ -2,11 +2,11 @@ package com.example.exclusive.ui.checkout.repository
 
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
-import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.type.MailingAddressInput
+
 import javax.inject.Inject
 
 
@@ -36,4 +36,13 @@ class CheckoutRepositoryImpl @Inject constructor(
     override suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
         return remoteDataSource.getCheckoutDetails(checkoutId)
     }
+
+    override suspend fun applyShippingAddress(
+        checkoutId: String,
+        shippingAddress: MailingAddressInput
+    ): Boolean {
+      return remoteDataSource.applyShippingAddress(checkoutId,shippingAddress)
+    }
+
+
 }

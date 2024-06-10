@@ -26,7 +26,6 @@ class AuthViewModel @Inject constructor(
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-
     private val _signUpState = MutableStateFlow<Boolean>(false)
     val signUpState: StateFlow<Boolean> get() = _signUpState
 

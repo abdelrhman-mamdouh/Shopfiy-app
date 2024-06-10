@@ -1,0 +1,45 @@
+query GetAllOrders($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+        numberOfOrders
+        orders(first: 100) {
+            edges {
+                node {
+                    id
+                    name
+                    email
+                    processedAt
+                    orderNumber
+                    statusUrl
+                    phone
+                    totalPrice{
+                        amount
+                        currencyCode
+                    }
+                    billingAddress {
+                        firstName
+                        address1
+                        city
+                        phone
+                    }
+                    lineItems(first: 10) {
+                        edges {
+                            node {
+                                title
+                                quantity
+                                variant {
+                                    image {
+                                        url
+                                    }
+                                }
+                                originalTotalPrice {
+                                    amount
+                                    currencyCode
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

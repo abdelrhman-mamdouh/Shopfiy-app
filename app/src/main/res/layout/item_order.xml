@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="15dp"
-    app:cardElevation="4dp"
+    app:cardElevation="@dimen/_5sdp"
     app:cardUseCompatPadding="true"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:strokeColor="@color/primary_color"
-    app:strokeWidth="1dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -20,12 +19,14 @@
 
         <ImageView
             android:id="@+id/orderImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:padding="@dimen/_5sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:src="@drawable/order"
+            android:src="@drawable/ic_order"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,11 +35,13 @@
             android:id="@+id/tv_order_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+
             android:layout_marginTop="10dp"
+            style="@style/TextViewStyle"
+            android:textSize="@dimen/_14sdp"
             android:text="@string/orderNumber"
             android:textColor="@color/black"
-            android:textSize="20sp"
+
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/orderImage"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,8 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:textColor="@color/black"
-            android:textSize="15sp"
+            style="@style/TextViewStyleLight"
+            android:text="asfd"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@id/tv_order_number"
             app:layout_constraintStart_toEndOf="@id/tv_order_number"
             app:layout_constraintTop_toTopOf="@id/tv_order_number" />
@@ -58,12 +62,12 @@
             android:id="@+id/tv_order_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+
             android:layout_marginTop="16dp"
             android:text="@string/price"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            style="@style/TextViewStyle"
+            android:textSize="@dimen/_14sdp"
+                        android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/orderImage"
             app:layout_constraintTop_toBottomOf="@id/tv_order_number"
@@ -74,12 +78,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:textColor="@color/black"
-            android:textSize="15sp"
+            style="@style/TextViewStyleLight"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@id/tv_order_price"
             app:layout_constraintStart_toEndOf="@id/tv_order_price"
             app:layout_constraintTop_toTopOf="@id/tv_order_price" />
+        <TextView
+            android:id="@+id/tv_order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_marginTop="@dimen/_15sdp"
+           android:layout_marginBottom="@dimen/_15sdp"
+            android:text="@string/date"
+            style="@style/TextViewStyle"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/orderImage"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_price"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tv_order_date_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            style="@style/TextViewStyleLight"
+            android:textSize="@dimen/_14sdp"
+            android:text="2024-06-10T07"
+
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_date"
+            app:layout_constraintStart_toEndOf="@id/tv_order_date"
+            app:layout_constraintTop_toTopOf="@id/tv_order_date" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </com.google.android.material.card.MaterialCardView>

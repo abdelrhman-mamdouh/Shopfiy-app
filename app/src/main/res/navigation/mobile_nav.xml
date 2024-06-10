@@ -26,7 +26,7 @@
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
     <action
-        android:id="@+id/action_productsFragment_to_orderFragment"
+        android:id="@+id/action_settingsFragment_to_orderFragment"
         app:destination="@id/orderFragment"
         app:enterAnim="@anim/row_slide_in"
 

@@ -9,7 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/_8sdp"
+        android:layout_gravity="center_vertical"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/image_view"
@@ -23,51 +25,60 @@
 
         <TextView
             android:id="@+id/title_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/product_title"
+            android:text="asdstrisadasdasdasdg/product_title"
+            android:textSize="@dimen/_12sdp"
             style="@style/TextViewStyle"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp"
+            />
 
 
         <TextView
             android:id="@+id/color_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp"
             android:text="@string/product_color"
             style="@style/TextViewStyleLight"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/title_text_view" />
 
-        <TextView
-            android:id="@+id/size_text_view"
+
+
+        <RatingBar
+            android:id="@+id/rb_product"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_size"
-            style="@style/TextViewStyleLight"
+            android:numStars="5"
+
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:progressTint="@color/quantum_yellow"
+            android:rating="4.5"
+            android:secondaryProgressTint="@color/black"
+            android:stepSize="0.5"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/color_text_view" />
 
-        <TextView
-            android:id="@+id/units_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/product_units"
-            style="@style/TextViewStyleLight"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/size_text_view" />
 
         <TextView
             android:id="@+id/price_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/product_price"
+            android:textColor="@color/primary_color"
             style="@style/TextViewStyle"
             android:layout_marginRight="@dimen/_10sdp"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/units_text_view" />
+            app:layout_constraintTop_toTopOf="@id/rb_product" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"

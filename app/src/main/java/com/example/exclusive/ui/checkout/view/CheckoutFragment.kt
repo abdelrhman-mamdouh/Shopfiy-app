@@ -2,6 +2,7 @@
 package com.example.exclusive.ui.checkout.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +16,18 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
 import com.example.exclusive.databinding.FragmentCheckOutBinding
+import com.example.exclusive.model.AddressInput
+
 import com.example.exclusive.model.DiscountValue
 import com.example.exclusive.model.LineItem
 import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
 import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shopify.checkoutsheetkit.ShopifyCheckoutSheetKit
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-private const val TAG = "CheckoutFragment"
+private const val TAG = "TAG"
 
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {
@@ -32,7 +36,7 @@ class CheckoutFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CheckoutViewModel by viewModels()
     private val checkoutViewModel: CheckoutViewModel by viewModels()
-
+    private lateinit var checkoutEventProcessor: CustomCheckoutEventProcessor
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -46,12 +50,15 @@ class CheckoutFragment : Fragment() {
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     requireActivity().finish()
                 }
             })
+
+
         binding.btnApplyCode.setOnClickListener {
             val discountCode = binding.etDiscountCode.text.toString()
             if (discountCode.isNotBlank()) {
@@ -68,41 +75,45 @@ class CheckoutFragment : Fragment() {
 
             }
         }
-        binding.btnSubmitOrder.setOnClickListener {
-        }
-        checkoutViewModel.fetchCheckoutDetails()
+        checkoutEventProcessor = CustomCheckoutEventProcessor(requireContext(),requireView())
         observeCheckOutDetails()
-        observeViewModel()
+        observeAddressesViewModel()
     }
 
     private fun observeCheckOutDetails() {
+        checkoutViewModel.fetchCheckoutDetails()
         lifecycleScope.launch {
             checkoutViewModel.checkoutDetailsState.collect { state ->
                 when (state) {
                     is UiState.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
                     }
-
                     is UiState.Success -> {
+
                         binding.progressBar.visibility = View.GONE
                         val checkoutDetails = state.data
-                        val discountValue = checkoutDetails.discountApplications.firstOrNull()?.value
-
+                        val discountValue =
+                            checkoutDetails.discountApplications.firstOrNull()?.value
+                        Log.i(TAG, "observeCheckOutDetails: ${state.data.webUrl}")
                         if (discountValue is DiscountValue.Percentage) {
                             binding.tvDiscountPrice.text = "${discountValue.percentage}%"
                         } else {
                             binding.tvDiscountPrice.text = "N/A"
                         }
-                        binding.tvOrderPrice.text = calculateTotalPrice(checkoutDetails.lineItems).toString() + " " + checkoutDetails.totalPrice?.currencyCode
-                        binding.tvSummaryPrice.text = checkoutDetails.totalPrice?.amount + " " + checkoutDetails.totalPrice?.currencyCode
+                        binding.tvOrderPrice.text =
+                            calculateTotalPrice(checkoutDetails.lineItems).toString() + " " + checkoutDetails.totalPrice?.currencyCode
+                        binding.tvSummaryPrice.text =
+                            checkoutDetails.totalPrice?.amount + " " + checkoutDetails.totalPrice?.currencyCode
+
+                        binding.btnSubmitOrder.setOnClickListener {
+                            Log.i(TAG, "onVidsdfsdfewCreated: ${convertShopifyCheckoutUrl(state.data.webUrl)}")
+                            ShopifyCheckoutSheetKit.getConfiguration()
+                            ShopifyCheckoutSheetKit.present(convertShopifyCheckoutUrl(state.data.webUrl), requireActivity(), checkoutEventProcessor)
+                        }
                     }
-
-
-
                     is UiState.Error -> {
                         val errorMessage = state.exception.message
                     }
-
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                     }
@@ -119,10 +130,30 @@ class CheckoutFragment : Fragment() {
         checkoutViewModel.addresses.value.let { state ->
             if (state is UiState.Success) {
                 val addressAdapter = AddressAdapter(state.data) { address ->
-                    binding.tvShippingAddressDetails.text =
-                        "${address.address1}, ${address.city}, ${address.country}"
-                    binding.tvPhoneNumber.text = address.phone
-                    dialog.dismiss()
+                    val address = AddressInput(
+                        firstName = address.firstName,
+                        address1 = address.address1,
+                        phone = address.phone,
+                        city = address.city,
+                        country = address.country,
+                        zip = address.zip
+                    )
+                    val mailingAddressInput = address.toInput()
+                    lifecycleScope.launch {
+                        val success = checkoutViewModel.applyShippingAddress(mailingAddressInput)
+                        if (success) {
+                            binding.tvShippingAddressDetails.text =
+                                "${address.address1}, ${address.city}, ${address.country}"
+                            binding.tvPhoneNumber.text = address.phone
+                            SnackbarUtils.showSnackbar(
+                                requireContext(), requireView(), "Address Added"
+                            )
+                            observeCheckOutDetails()
+                            dialog.dismiss()
+                        } else {
+                            Toast.makeText(requireContext(), "Error applying address", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
                 dialogBinding.rvAddresses.layoutManager = LinearLayoutManager(requireContext())
                 dialogBinding.rvAddresses.adapter = addressAdapter
@@ -132,7 +163,8 @@ class CheckoutFragment : Fragment() {
         dialog.show()
     }
 
-    private fun observeViewModel() {
+
+    private fun observeAddressesViewModel() {
         checkoutViewModel.fetchCustomerAddresses()
         viewLifecycleOwner.lifecycleScope.launch {
             checkoutViewModel.addresses.collect { state ->
@@ -170,11 +202,13 @@ class CheckoutFragment : Fragment() {
         }
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    fun calculateTotalPrice(lineItems: List<LineItem>): Double {
+
+    private fun calculateTotalPrice(lineItems: List<LineItem>): Double {
         var totalPrice = 0.0
         for (lineItem in lineItems) {
             val priceAmount = lineItem.variant.price.amount.toDouble()
@@ -182,4 +216,11 @@ class CheckoutFragment : Fragment() {
         }
         return totalPrice
     }
+    private fun convertShopifyCheckoutUrl(originalUrl: String): String {
+        val regex = Regex("""\d+/checkouts/""")
+        val convertedUrl = originalUrl.replace(regex, "checkouts/co/")
+        return convertedUrl
+    }
+
+
 }

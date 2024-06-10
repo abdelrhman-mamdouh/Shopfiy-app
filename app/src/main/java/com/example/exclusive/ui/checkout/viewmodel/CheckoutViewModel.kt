@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.AddressInput
-import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CheckoutDetails
-import com.example.exclusive.model.LineItem
+
+import com.example.exclusive.model.Order
+import com.example.exclusive.type.MailingAddressInput
 import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +40,7 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
-     fun fetchCheckoutDetails() {
+    fun fetchCheckoutDetails() {
         viewModelScope.launch {
             _checkoutDetailsState.value = UiState.Loading
             try {
@@ -48,13 +49,15 @@ class CheckoutViewModel @Inject constructor(
                 if (checkoutDetails != null) {
                     _checkoutDetailsState.value = UiState.Success(checkoutDetails)
                 } else {
-                    _checkoutDetailsState.value = UiState.Error(Exception("Checkout details not found"))
+                    _checkoutDetailsState.value =
+                        UiState.Error(Exception("Checkout details not found"))
                 }
             } catch (e: Exception) {
                 _checkoutDetailsState.value = UiState.Error(e)
             }
         }
     }
+
     suspend fun applyDiscountCode(discountCode: String): Boolean {
         val checkoutId = checkoutRepository.getUserCheckOut()
         return try {
@@ -65,6 +68,21 @@ class CheckoutViewModel @Inject constructor(
             success
         } catch (e: Exception) {
             Log.e("ApplyDiscount", "Error applying discount code: ${e.message}", e)
+            false
+        }
+    }
+    suspend fun applyShippingAddress(shippingAddress: MailingAddressInput): Boolean {
+
+        val checkoutId = checkoutRepository.getUserCheckOut()
+        return try {
+            val success = checkoutRepository.applyShippingAddress(checkoutId!!, shippingAddress)
+            if (success) {
+
+
+            }
+            success
+        } catch (e: Exception) {
+            Log.e("ApplyShippingAddress", "Error applying shipping address: ${e.message}", e)
             false
         }
     }

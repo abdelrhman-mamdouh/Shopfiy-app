@@ -3,6 +3,8 @@ package com.example.exclusive.ui.checkout.repository
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CheckoutDetails
+import com.example.exclusive.type.MailingAddressInput
+
 
 interface CheckoutRepository {
     suspend fun getCurrency(): Pair<String, Double>
@@ -11,4 +13,6 @@ interface CheckoutRepository {
     suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean
     suspend fun getUserCheckOut(): String?
     suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails?
+    suspend fun applyShippingAddress(checkoutId: String, shippingAddress: MailingAddressInput): Boolean
+
 }
