@@ -27,23 +27,23 @@ class SettingsViewModel @Inject constructor(
     val addToCartState: StateFlow<UiState<AddToCartResponse>> get() = _addToCartState
     private val _currenciesStateFlow = MutableStateFlow<UiState<Pair<String, Double>>>(UiState.Idle)
     val currenciesStateFlow: StateFlow<UiState<Pair<String, Double>>> get() = _currenciesStateFlow
-    private val _watchlist = MutableStateFlow<List<ProductNode>>(emptyList())
-    val watchlist: StateFlow<List<ProductNode>> = _watchlist
+    private val _watchlist = MutableStateFlow<UiState<List<ProductNode>>>(UiState.Idle)
+    val watchlist: StateFlow<UiState<List<ProductNode>>> = _watchlist
     var email : String? =null
     init {
-        viewModelScope.launch {
-            fetchWatchlist()
-        }
+        fetchWatchlist()
     }
     private fun fetchWatchlist() {
+        _watchlist.value = UiState.Loading
         viewModelScope.launch {
-            email=localDataSource.readEmail()
+            email = localDataSource.readEmail()
             val result = remoteDataSource.fetchWatchlistProducts(email.toString())
             Log.d("ViewModelWatchlist", result.toString())
-            if (result.size > 2)
-                _watchlist.value = result.subList(0, 2)
-            else
-                _watchlist.value = result
+            _watchlist.value = if (result.size > 2) {
+                UiState.Success(result.subList(0, 2))
+            } else {
+                UiState.Success(result)
+            }
         }
     }
 

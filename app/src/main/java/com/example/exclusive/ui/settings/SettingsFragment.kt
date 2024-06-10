@@ -50,20 +50,20 @@ class SettingsFragment : Fragment() {
             viewModel.currenciesStateFlow.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        // Handle the success state
+                        hideLoading()
+                        Log.d(TAG, "onViewCreated: s")
                         val currency = uiState.data
-                        // Update the UI with the currency data
                         binding.tvCode.text = "${currency.first}: ${currency.second}"
                     }
                     is UiState.Error -> {
-                        // Handle the error state
-                        // Show error message
+                        hideLoading()
                     }
                     is UiState.Loading -> {
-                        // Handle the loading state
+                        Log.d(TAG, "onViewCreated: ")
+                        showLoading()
                     }
                     UiState.Idle -> {
-                        // Handle the idle state if necessary
+                        hideLoading()
                     }
                 }
             }
@@ -89,10 +89,26 @@ class SettingsFragment : Fragment() {
         })
 
         binding.rvWishlist.adapter = adapter
+
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.watchlist.collect{
-                    adapter.submitList(it)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.watchlist.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            showLoading()
+                        }
+                        is UiState.Success -> {
+                            hideLoading()
+                            adapter.submitList(uiState.data)
+                        }
+                        is UiState.Error -> {
+                            hideLoading()
+                            // Handle the error state, e.g., show an error message
+                        }
+                        UiState.Idle -> {
+                            // Handle the idle state if necessary
+                        }
+                    }
                 }
             }
         }
@@ -105,10 +121,9 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Fetch the currencies when the fragment is resumed
+    override fun onStart() {
         viewModel.fetchCurrencies()
+        super.onStart()
     }
 
     private fun setListeners() {
@@ -132,6 +147,17 @@ class SettingsFragment : Fragment() {
             }
             startActivity(intent)
         }
+    }
+
+    private fun showLoading() {
+        binding.lottieLoading.visibility = View.VISIBLE
+        binding.mainContent.visibility = View.GONE
+        binding.lottieLoading.playAnimation()
+    }
+
+    private fun hideLoading() {
+        binding.lottieLoading.visibility = View.GONE
+        binding.mainContent.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {
