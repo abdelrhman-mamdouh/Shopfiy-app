@@ -12,26 +12,26 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.AuthMain
 import com.example.exclusive.HolderActivity
-import com.example.exclusive.R
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
+import com.example.exclusive.model.MyOrder
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.ui.orders.view.OnOrderClickListener
+import com.example.exclusive.ui.orders.view.OrderAdapter
 import com.example.exclusive.ui.productinfo.DailogFramgent
 import com.example.exclusive.ui.watchlist.WatchListAdapter
-import com.example.exclusive.ui.watchlist.WatchlistFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 private const val TAG = "SettingsFragment"
+
 @AndroidEntryPoint
-class SettingsFragment : Fragment() {
-    private lateinit var localDataSource: LocalDataSource
+
+class SettingsFragment : Fragment(), OnOrderClickListener {
+
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SettingsViewModel by viewModels()
@@ -65,13 +65,16 @@ class SettingsFragment : Fragment() {
                         val currency = uiState.data
                         binding.tvCode.text = "${currency.first}: ${currency.second}"
                     }
+
                     is UiState.Error -> {
                         hideLoading()
                     }
+
                     is UiState.Loading -> {
                         Log.d(TAG, "onViewCreated: ")
                         showLoading()
                     }
+
                     UiState.Idle -> {
                         hideLoading()
                     }
@@ -79,7 +82,7 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        val adapter = WatchListAdapter( onRemoveListner = { product ->
+        val adapter = WatchListAdapter(onRemoveListner = { product ->
             val dialog = DailogFramgent(
                 onDialogPositiveClick = {
                     viewModel.removeProductFromWatchList(product.id.substring(22))
@@ -94,7 +97,7 @@ class SettingsFragment : Fragment() {
             dialog.show(requireActivity().supportFragmentManager, "dialog")
         }, onItemClickListener = {
 
-        }, addToCart = {product: ProductNode ->
+        }, addToCart = { product: ProductNode ->
             viewModel.addToCart(product.variants.edges[0].node.title, 1)
         })
 
@@ -107,14 +110,17 @@ class SettingsFragment : Fragment() {
                         is UiState.Loading -> {
                             showLoading()
                         }
+
                         is UiState.Success -> {
                             hideLoading()
                             adapter.submitList(uiState.data)
                         }
+
                         is UiState.Error -> {
                             hideLoading()
                             // Handle the error state, e.g., show an error message
                         }
+
                         UiState.Idle -> {
                             // Handle the idle state if necessary
                         }
@@ -123,11 +129,40 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        observe()
+
         binding.ivMoreWishlist.setOnClickListener {
             val intent = Intent(requireContext(), HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "FAV")
             }
             startActivity(intent)
+        }
+    }
+
+    private fun observe() {
+        lifecycleScope.launch {
+            viewModel.ordersState.collect { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        Log.i("observeOrders", "observeOrders: ${state.data}")
+                        val orders = state.data.subList(0, 2)
+                        val ordersAdapter = OrderAdapter(orders, this@SettingsFragment)
+                        binding.rvOrders.adapter = ordersAdapter
+                    }
+
+                    is UiState.Error -> {
+
+                    }
+
+                    UiState.Loading -> {
+                        // Show a loading indicator
+                    }
+
+                    UiState.Idle -> {
+                        // Initial state, do nothing
+                    }
+                }
+            }
         }
     }
 
@@ -179,5 +214,9 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onOrderClick(order: MyOrder) {
+        // Not Handled Yet
     }
 }

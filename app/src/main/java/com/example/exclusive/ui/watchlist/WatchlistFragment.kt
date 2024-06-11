@@ -25,11 +25,6 @@ class WatchlistFragment : Fragment() {
     lateinit var binding: FragmentWatchlistBinding
     private val viewModel: WatchlistViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,7 +72,7 @@ class WatchlistFragment : Fragment() {
         dialog.show(requireActivity().supportFragmentManager, "dialog")
     }
     val addItemToCart = {product: ProductNode ->
-        viewModel.addToCart(product.variants.edges[0].node.title, 1)
+        viewModel.addToCart(product.variants.edges[0].node.id,product.variants.edges[0].node.quantityAvailable)
     }
     val onItemClick = {product: ProductNode ->
         NavHostFragment.findNavController(this@WatchlistFragment).navigate(WatchlistFragmentDirections.actionWatchlistFragmentToProductInfoFragment(product))

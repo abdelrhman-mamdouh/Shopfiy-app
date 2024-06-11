@@ -9,6 +9,7 @@ import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.data.repository.CurrencyRepository
 import com.example.exclusive.model.AddToCartResponse
+import com.example.exclusive.model.MyOrder
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +24,8 @@ class SettingsViewModel @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
+    private val _ordersState = MutableStateFlow<UiState<List<MyOrder>>>(UiState.Idle)
+    val ordersState: StateFlow<UiState<List<MyOrder>>> = _ordersState
     private val _addToCartState = MutableStateFlow<UiState<AddToCartResponse>>(UiState.Idle)
     val addToCartState: StateFlow<UiState<AddToCartResponse>> get() = _addToCartState
     private val _currenciesStateFlow = MutableStateFlow<UiState<Pair<String, Double>>>(UiState.Idle)
@@ -32,7 +35,22 @@ class SettingsViewModel @Inject constructor(
     var email : String? =null
     init {
         fetchWatchlist()
+        getAllOrders()
     }
+
+    private fun getAllOrders() {
+        _ordersState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val orders = remoteDataSource.getAllOrders(localDataSource.readToken()!!)
+                _ordersState.value = UiState.Success(orders)
+            } catch (e: Exception) {
+                _ordersState.value = UiState.Error(e)
+            }
+        }
+    }
+
     private fun fetchWatchlist() {
         _watchlist.value = UiState.Loading
         viewModelScope.launch {
