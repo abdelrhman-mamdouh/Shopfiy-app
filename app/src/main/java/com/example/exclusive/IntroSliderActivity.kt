@@ -1,6 +1,6 @@
 package com.example.exclusive
 
-import SliderAdapter
+
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.exclusive.ui.slider.contract.SliderContract
 import com.example.exclusive.ui.slider.model.SlidelViewModel
 import com.example.exclusive.ui.slider.model.SliderModal
+import com.example.exclusive.ui.slider.view.SliderAdapter
 
 class IntroSliderActivity : AppCompatActivity(), SliderContract.View {
 

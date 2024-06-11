@@ -306,8 +306,8 @@
 
         <ImageView
             android:id="@+id/add_to_favourate_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/_32sdp"
             android:background="@drawable/round_corner"

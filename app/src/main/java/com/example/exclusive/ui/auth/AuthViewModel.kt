@@ -60,7 +60,7 @@ class AuthViewModel @Inject constructor(
                 viewModelScope.launch {
                     val isSignUp = remoteDataSource.createCustomer(email, password, name, "")
                     _signUpState.value = isSignUp
-                    createAccessToken(email, password)
+                 //   createAccessToken(email, password)
                 }
             } else {
                 Log.d(TAG, "Sign-up failed: ${task.exception.toString()}")
@@ -103,8 +103,12 @@ class AuthViewModel @Inject constructor(
                             _loginState.value = true
                             localDataSource.saveToken(result)
                             localDataSource.token.collect { token ->
-                                var cartId=  remoteDataSource.fetchCartId(email = email!!)
-                                Log.d(TAG, "cartId: $cartId")
+                                val createResponse = remoteDataSource.createCart(token = token!!)
+                                Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
+                                createResponse?.cart?.let {
+                                    remoteDataSource.saveCardId(it.id,email)
+                                }
+
                             }
                         } else {
                             _loginState.value = false

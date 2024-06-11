@@ -157,12 +157,15 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                         viewLifecycleOwner.lifecycleScope.launch {
-                            cartViewModel.deleteProductFromCart(product)
+                            if (view != null) {
+                                cartViewModel.deleteProductFromCart(product)
+                            }
                         }
                     }
                 }
             }).show()
     }
+
 
     private fun showError(message: String?) {
         // Display error message to the user

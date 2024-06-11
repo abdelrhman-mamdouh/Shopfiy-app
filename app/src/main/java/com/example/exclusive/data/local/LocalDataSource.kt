@@ -105,4 +105,10 @@ class LocalDataSource @Inject constructor(
             preferences[USER_CHECKOUT] = checkoutId
         }
     }
+    override suspend fun clearEmailAndToken() {
+        dataStore.edit { preferences ->
+            preferences.remove(Email_KEY)
+            preferences.remove(TOKEN_KEY)
+        }
+    }
 }

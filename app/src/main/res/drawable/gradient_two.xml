@@ -15,9 +15,9 @@
             <size android:height="40dp" />
             <gradient
                 android:angle="0"
-                android:centerColor="#708090 "
-                android:endColor="#708090 "
-                android:startColor="#708090 "
+                android:centerColor="@color/secondary_color"
+                android:endColor="@color/secondary_color"
+                android:startColor="@color/secondary_color"
                 android:type="linear" />
         </shape>
     </item>

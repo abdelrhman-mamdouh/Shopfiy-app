@@ -85,4 +85,9 @@ class SettingsViewModel @Inject constructor(
             fetchWatchlist()
         }
     }
+    fun clearEmailAndToken() {
+        viewModelScope.launch {
+            localDataSource.clearEmailAndToken()
+        }
+    }
 }

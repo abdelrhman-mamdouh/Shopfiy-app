@@ -16,7 +16,6 @@ class HolderActivity : AppCompatActivity() {
         binding = ActivityHolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         if (intent.getStringExtra(GO_TO).equals("CART")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.cartFragment)
         } else if(intent.getStringExtra(GO_TO).equals("ADDRESS")) {

@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_white"
     android:gravity="center"
-   >
-
+    >
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
@@ -27,10 +26,8 @@
         android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
             <include
                 android:id="@+id/title_bar"
@@ -38,7 +35,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent" />
-            <!-- Email Field -->
+
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_height="@dimen/_140sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/im_login"
+                app:layout_constraintTop_toBottomOf="@id/title_bar">
+            </ImageView>
+
             <EditText
                 android:id="@+id/et_email"
                 style="@style/TextViewStyle"
@@ -53,9 +61,8 @@
                 android:padding="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_bar" />
-            <!--    android:drawableEnd="@drawable/ic_check"-->
-            <!-- Password Field -->
+                app:layout_constraintTop_toBottomOf="@id/iv_image" />
+
             <EditText
                 android:id="@+id/et_password"
                 style="@style/TextViewStyle"
@@ -72,7 +79,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_email" />
 
-            <!-- Forgot Password -->
             <TextView
                 android:id="@+id/tv_forgot_password"
                 style="@style/TextViewStyle"
@@ -85,7 +91,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_password" />
 
-            <!-- Login Button -->
             <Button
                 android:id="@+id/btn_login"
                 style="@style/TextViewStyle"
@@ -114,7 +119,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_login" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -15,4 +15,5 @@ interface ILocalDataSource {
     suspend fun getUserCartId(): String?
     suspend fun getUserCheckOut(): String?
     suspend fun saveUserCheckOut(checkoutId: String)
+    suspend fun clearEmailAndToken()
 }

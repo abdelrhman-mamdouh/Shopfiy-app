@@ -13,9 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exclusive.AuthMain
 import com.example.exclusive.HolderActivity
 import com.example.exclusive.R
+import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
 import com.example.exclusive.model.ProductNode
@@ -28,7 +31,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "SettingsFragment"
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
-
+    private lateinit var localDataSource: LocalDataSource
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SettingsViewModel by viewModels()
@@ -45,7 +48,14 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
+        binding.outlinedButton.setOnClickListener {
+            viewModel.clearEmailAndToken()
 
+            val intent = Intent(requireContext(), AuthMain::class.java)
+            startActivity(intent)
+
+            requireActivity().finish()
+        }
         lifecycleScope.launch {
             viewModel.currenciesStateFlow.collect { uiState ->
                 when (uiState) {

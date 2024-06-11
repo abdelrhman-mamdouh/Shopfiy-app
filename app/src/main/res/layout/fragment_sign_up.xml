@@ -6,8 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/_16sdp">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/title_bar"
@@ -16,86 +15,97 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_height="@dimen/_140sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_bar"
+            android:src="@drawable/im_sginup">
+        </ImageView>
+
         <!-- Name Field -->
         <EditText
             android:id="@+id/et_name"
+            style="@style/TextViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:background="@color/white"
             android:hint="@string/inputName"
             android:inputType="textPersonName"
-            style="@style/TextViewStyle"
             android:padding="@dimen/_12sdp"
-            android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/title_bar"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_image" />
 
         <EditText
             android:id="@+id/et_email"
+            style="@style/TextViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:background="@color/white"
             android:hint="@string/inputEmail"
             android:inputType="textEmailAddress"
             android:padding="@dimen/_12sdp"
-            android:background="@color/white"
-            style="@style/TextViewStyle"
-            app:layout_constraintTop_toBottomOf="@id/et_name"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_name" />
 
         <!-- Password Field -->
         <EditText
             android:id="@+id/et_password"
+            style="@style/TextViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:background="@color/white"
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="@dimen/_12sdp"
-            android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/et_email"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/TextViewStyle"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_email" />
 
         <!-- Already have an account -->
         <TextView
             android:id="@+id/tv_already_have_account"
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
             android:text="@string/alreadyHaveAnAccount"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/TextViewStyle"
-            app:layout_constraintTop_toBottomOf="@id/et_password"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_16sdp" />
+            app:layout_constraintTop_toBottomOf="@id/et_password" />
 
         <!-- Sign Up Button -->
         <Button
             android:id="@+id/btn_sign_up"
+            style="@style/TextViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="@color/primary_color"
             android:text="@string/signUp"
             android:textAllCaps="true"
-            android:backgroundTint="@color/primary_color"
             android:textColor="@android:color/white"
-            style="@style/TextViewStyle"
-            android:background="@drawable/round_corner"
-            app:layout_constraintTop_toBottomOf="@id/tv_already_have_account"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginEnd="@dimen/_16sdp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_already_have_account" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

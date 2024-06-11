@@ -11,7 +11,7 @@ class SlidelViewModel(private val view: SliderContract.View) : SliderContract.Pr
             SliderModal(
                 "What will I find today at Exclusive?",
                 "Never stress about finding products again!",
-                "animationTwo.json",
+                "animation.json",
                 R.drawable.gradient_three
             )
         )
@@ -19,7 +19,7 @@ class SlidelViewModel(private val view: SliderContract.View) : SliderContract.Pr
             SliderModal(
                 "Exclusive Shopping Experience",
                 "Browse through categories, discover new products, and explore a wide range of options",
-                "animation.json",
+                "loader.json",
                 R.drawable.gradient_two
             )
         )
@@ -27,7 +27,7 @@ class SlidelViewModel(private val view: SliderContract.View) : SliderContract.Pr
             SliderModal(
                 "App Features",
                 "Enjoy easy shopping, Exclusive also offers recommendations and a wishlist feature",
-                "loader.json",
+                "offer.json",
                 R.drawable.wave2
             )
         )
