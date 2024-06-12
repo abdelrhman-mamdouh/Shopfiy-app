@@ -22,12 +22,16 @@ class WatchlistViewModel @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
-
+    private val _isGuest = MutableStateFlow<Boolean>(false)
+    val isGuest: StateFlow<Boolean> get() = _isGuest
     private val _addToCartState = MutableStateFlow<UiState<AddToCartResponse>>(UiState.Idle)
     val addToCartState: StateFlow<UiState<AddToCartResponse>> get() = _addToCartState
     private val _watchlist = MutableStateFlow<List<ProductNode>>(emptyList())
     val watchlist: StateFlow<List<ProductNode>> = _watchlist
     var email: String? = null
+    init {
+        getIsGuest()
+    }
     fun fetchWatchlist() {
         viewModelScope.launch {
             email = localDataSource.readEmail()
@@ -36,7 +40,11 @@ class WatchlistViewModel @Inject constructor(
             _watchlist.value = result
         }
     }
-
+    fun getIsGuest() {
+        viewModelScope.launch {
+            _isGuest.value = localDataSource.getIsGuest()
+        }
+    }
     fun removeProductFromWatchList(id: String) {
         viewModelScope.launch {
             email = localDataSource.readEmail()

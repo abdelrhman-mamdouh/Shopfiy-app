@@ -6,6 +6,7 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -23,6 +24,7 @@ class LocalDataSource @Inject constructor(
     companion object {
         val TOKEN_KEY = stringPreferencesKey("user_token")
         val Email_KEY = stringPreferencesKey("user_email")
+        val Is_Guest = booleanPreferencesKey("is_guest")
         val USER_CART = stringPreferencesKey("user_cart")
         val USER_CHECKOUT = stringPreferencesKey("user_checkout")
         val USER_CURRENCY = stringPreferencesKey("user_currency")
@@ -110,5 +112,17 @@ class LocalDataSource @Inject constructor(
             preferences.remove(Email_KEY)
             preferences.remove(TOKEN_KEY)
         }
+    }
+    override suspend fun updateIsGuest(isGuest: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[Is_Guest] = isGuest
+        }
+    }
+
+    override suspend fun getIsGuest(): Boolean {
+        return dataStore.data
+            .map { preferences ->
+                preferences[Is_Guest] ?: false
+            }.first()
     }
 }
