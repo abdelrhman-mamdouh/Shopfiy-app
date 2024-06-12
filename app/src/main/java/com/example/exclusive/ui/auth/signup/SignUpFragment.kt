@@ -20,6 +20,7 @@ import com.example.exclusive.ui.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -51,7 +52,12 @@ class SignUpFragment : Fragment() {
                 .navigate(R.id.action_signUpFragment_to_loginFragment)
         }
         binding.btnSignUp.setOnClickListener {
+
             hideKeyboard()
+            if (binding.etName.text.isEmpty() || binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
+                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             binding.progressBar.visibility = View.VISIBLE
             lifecycleScope.launch {
                 viewModel.signUp(
@@ -62,13 +68,14 @@ class SignUpFragment : Fragment() {
             }
             lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    withTimeoutOrNull(5000L){
                     viewModel.signUpState
                         .catch {
                             binding.progressBar.visibility = View.GONE
                             it.message?.let { it1 -> Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                         .collect { success ->
-                        if (success) {
+                        if (success == 1) {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
@@ -78,7 +85,15 @@ class SignUpFragment : Fragment() {
                             NavHostFragment.findNavController(this@SignUpFragment)
                                 .navigate(R.id.action_signUpFragment_to_loginFragment)
                         }
-                    }
+                            else if (success==-1) {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Sign up failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                    }}
                 }
             }
         }

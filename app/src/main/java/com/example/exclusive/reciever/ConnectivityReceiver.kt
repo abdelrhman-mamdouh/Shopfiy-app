@@ -31,7 +31,7 @@ class ConnectivityReceiver : BroadcastReceiver() {
             }
             else {
                 internet.postValue(true)
-                Toast.makeText(context, "Internet Connected", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, "Internet Connected", Toast.LENGTH_SHORT).show()
             }
         } else {
             val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo

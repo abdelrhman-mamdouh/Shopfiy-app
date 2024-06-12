@@ -25,6 +25,7 @@ import com.google.firebase.auth.auth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -84,6 +85,10 @@ class LoginFragment : Fragment() {
         }
         binding.btnLogin.setOnClickListener {
             hideKeyboard()
+            if(binding.etEmail.text.toString().isEmpty() || binding.etPassword.text.toString().isEmpty()){
+                Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             binding.progressBar.visibility = View.VISIBLE
             lifecycleScope.launch {
                 viewModel.login(
@@ -92,31 +97,42 @@ class LoginFragment : Fragment() {
                 )
             }
             lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.loginState
-                        .catch {
-                            binding.progressBar.visibility = View.INVISIBLE
-                            Toast.makeText(
-                                requireContext(),
-                                "process failed",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        .collect { success ->
-                        if (success) {
-                            binding.progressBar.visibility = View.INVISIBLE
-                            Toast.makeText(
-                                requireContext(),
-                                "Login successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.progressBar.visibility = View.INVISIBLE
-                            val intent = Intent(context, MainActivity::class.java)
-                            startActivity(intent)
-                        }
 
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                        viewModel.loginState
+                            .catch {
+                                binding.progressBar.visibility = View.INVISIBLE
+                                Toast.makeText(
+                                    requireContext(),
+                                    "process failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            .collect { success ->
+                                if (success == 1) {
+                                    binding.progressBar.visibility = View.INVISIBLE
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Login successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    binding.progressBar.visibility = View.INVISIBLE
+                                    val intent = Intent(context, MainActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                else if(success == -1){
+                                    binding.progressBar.visibility = View.INVISIBLE
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Login failed",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            }
                     }
-                }
+
             }
         }
     }

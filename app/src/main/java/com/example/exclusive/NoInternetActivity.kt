@@ -27,4 +27,9 @@ class NoInternetActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Toast.makeText(this, "No Internet please try again", Toast.LENGTH_SHORT).show()
+    }
 }

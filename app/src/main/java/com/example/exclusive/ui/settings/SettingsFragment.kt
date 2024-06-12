@@ -145,7 +145,16 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                 when (state) {
                     is UiState.Success -> {
                         Log.i("observeOrders", "observeOrders: ${state.data}")
-                        val orders = state.data.subList(0, 2)
+                        if (state.data.isEmpty()) {
+                            return@collect
+                        }
+
+                        val orders =
+                            if (state.data.size>2)
+                            state.data.subList(0, 2)
+                        else
+                            state.data
+
                         val ordersAdapter = OrderAdapter(orders, this@SettingsFragment)
                         binding.rvOrders.adapter = ordersAdapter
                     }

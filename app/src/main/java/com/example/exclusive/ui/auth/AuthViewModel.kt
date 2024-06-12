@@ -26,11 +26,11 @@ class AuthViewModel @Inject constructor(
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-    private val _signUpState = MutableStateFlow<Boolean>(false)
-    val signUpState: StateFlow<Boolean> get() = _signUpState
+    private val _signUpState = MutableStateFlow<Int>(0)
+    val signUpState: StateFlow<Int> get() = _signUpState
 
-    private val _loginState = MutableStateFlow<Boolean>(false)
-    val loginState: StateFlow<Boolean> get() = _loginState
+    private val _loginState = MutableStateFlow<Int>(0)
+    val loginState: StateFlow<Int> get() = _loginState
 
     private val _sendPasswordState = MutableStateFlow<Boolean>(false)
     val sendPasswordState: StateFlow<Boolean> get() = _sendPasswordState
@@ -50,6 +50,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signUp(name: String, email: String, password: String) {
+        _signUpState.value = 0
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 auth.currentUser?.sendEmailVerification()?.addOnSuccessListener {
@@ -59,7 +60,7 @@ class AuthViewModel @Inject constructor(
                 }
                 viewModelScope.launch {
                     val isSignUp = remoteDataSource.createCustomer(email, password, name, "")
-                    _signUpState.value = isSignUp
+                    _signUpState.value = if(isSignUp) 1 else -1
                  //   createAccessToken(email, password)
                 }
             } else {
@@ -68,7 +69,7 @@ class AuthViewModel @Inject constructor(
                     val errorCode = (task.exception as FirebaseAuthException).errorCode
                     Log.d(TAG, "FirebaseAuthException error code: $errorCode")
                 }
-                _signUpState.value = false
+                _signUpState.value = -1
             }
         }
     }
@@ -91,6 +92,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun login(email: String, password: String) {
+        _loginState.value = 0
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val verification = auth.currentUser?.isEmailVerified
@@ -100,7 +102,7 @@ class AuthViewModel @Inject constructor(
                         Log.d("email", localDataSource.readEmail().toString())
                         val result = remoteDataSource.createCustomerAccessToken(email, password)
                         if (result != null) {
-                            _loginState.value = true
+                            _loginState.value = 1
                             localDataSource.saveToken(result)
                             localDataSource.token.collect { token ->
                                 val createResponse = remoteDataSource.createCart(token = token!!)
@@ -111,11 +113,12 @@ class AuthViewModel @Inject constructor(
 
                             }
                         } else {
-                            _loginState.value = false
+                            _loginState.value = -1
                         }
                     }
                 } else {
-                    _loginState.value = false
+                    _loginState.value = -1
+                    Log.d(TAG, "you must verify your email")
                 }
             } else {
                 Log.d(TAG, "Login failed: ${task.exception.toString()}")
@@ -123,7 +126,7 @@ class AuthViewModel @Inject constructor(
                     val errorCode = (task.exception as FirebaseAuthException).errorCode
                     Log.d(TAG, "FirebaseAuthException error code: $errorCode")
                 }
-                _loginState.value = false
+                _loginState.value = -1
             }
         }
     }
