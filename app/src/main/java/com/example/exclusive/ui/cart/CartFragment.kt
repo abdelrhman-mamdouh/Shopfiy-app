@@ -128,7 +128,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
                         }
                     }.addCallback(object : Snackbar.Callback() {
                         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            if (event != Snackbar.Callback.DISMISS_EVENT_ACTION && !isFragmentDestroyed) {
+                            if (event != DISMISS_EVENT_ACTION && !isFragmentDestroyed) {
                                 removedItem?.let {
                                     viewLifecycleOwner.lifecycleScope.launch {
                                         cartViewModel.deleteProductFromCart(it)

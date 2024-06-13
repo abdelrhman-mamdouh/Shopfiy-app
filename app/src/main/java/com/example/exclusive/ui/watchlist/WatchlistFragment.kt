@@ -47,34 +47,43 @@ class WatchlistFragment : Fragment() {
                 requireActivity().finish()
             }
         })
-        val adapter = WatchListAdapter(removeItem,onItemClick,addItemToCart)
+
+        val adapter = WatchListAdapter(removeItem, onItemClick, addItemToCart)
         binding.rvWatchlist.adapter = adapter
         binding.rvWatchlist.layoutManager = LinearLayoutManager(requireContext())
+
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.watchlist.collect{
-                    adapter.submitList(it)
+                viewModel.watchlist.collect { watchlist ->
+                    adapter.submitList(watchlist)
+                    if (watchlist.isEmpty()) {
+                        binding.rvWatchlist.visibility = View.GONE
+                        binding.animationView.visibility = View.VISIBLE
+                        binding.animationView.playAnimation()
+                    } else {
+                        binding.rvWatchlist.visibility = View.VISIBLE
+                        binding.animationView.visibility = View.GONE
+                    }
                 }
             }
         }
-
     }
-    val removeItem: (ProductNode) -> Unit = { product ->
 
-            val dialog = DailogFramgent(
+    private val removeItem: (ProductNode) -> Unit = { product ->
+        val dialog = DailogFramgent(
             onDialogPositiveClick = {
                 viewModel.removeProductFromWatchList(product.id.substring(22))
             },
-            onDialogNegativeClick = {
-
-            }
+            onDialogNegativeClick = {}
         )
         dialog.show(requireActivity().supportFragmentManager, "dialog")
     }
-    val addItemToCart = {product: ProductNode ->
-        viewModel.addToCart(product.variants.edges[0].node.id,product.variants.edges[0].node.quantityAvailable)
+
+    private val addItemToCart = { product: ProductNode ->
+        viewModel.addToCart(product.variants.edges[0].node.id, product.variants.edges[0].node.quantityAvailable)
     }
-    val onItemClick = {product: ProductNode ->
+
+    private val onItemClick = { product: ProductNode ->
         NavHostFragment.findNavController(this@WatchlistFragment).navigate(WatchlistFragmentDirections.actionWatchlistFragmentToProductInfoFragment(product))
     }
 }

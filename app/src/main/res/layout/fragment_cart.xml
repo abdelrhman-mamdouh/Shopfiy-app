@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_white">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/title_bar"
@@ -39,7 +38,8 @@
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
         app:layout_constraintBottom_toTopOf="@id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/title_bar"
-        tools:itemCount="8" />
+        tools:itemCount="8"
+        tools:listitem="@layout/item_cart"/>
 
 
 
