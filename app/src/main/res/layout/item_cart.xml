@@ -68,8 +68,8 @@
 
         <ImageButton
             android:id="@+id/btn_increase"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_add"
@@ -82,7 +82,7 @@
         <TextView
             android:id="@+id/tv_quantity"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="38dp"
             tools:text="10"
             android:paddingHorizontal="16dp"
             android:background="@drawable/round_corner"
@@ -97,8 +97,8 @@
 
         <ImageButton
             android:id="@+id/btn_decrease"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:src="@drawable/ic_remove"
             android:background="@drawable/bg_btn_quantity"
             app:layout_constraintBottom_toBottomOf="@+id/tv_quantity"

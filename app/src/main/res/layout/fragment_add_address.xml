@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_white"
+
     tools:context=".ui.settings.address.addAddress.AddAddressFragment">
 
     <include
@@ -27,6 +27,7 @@
             <EditText
                 android:id="@+id/et_title"
                 style="@style/TextViewStyle"
+                android:backgroundTint="@color/light_white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
@@ -44,6 +45,7 @@
             <EditText
                 android:id="@+id/et_details"
                 style="@style/TextViewStyle"
+                android:backgroundTint="@color/light_white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
@@ -63,6 +65,7 @@
                 style="@style/TextViewStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_white"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_32sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
@@ -80,6 +83,7 @@
                 style="@style/TextViewStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_white"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_32sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
@@ -97,6 +101,7 @@
                 style="@style/TextViewStyle"
                 android:paddingStart="@dimen/_12sdp"
                 android:hint="@string/enter_your_country"
+                android:backgroundTint="@color/light_white"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="@dimen/_16sdp"
@@ -114,6 +119,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16sdp"
+                android:backgroundTint="@color/light_white"
                 android:layout_marginTop="@dimen/_32sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@color/white"
