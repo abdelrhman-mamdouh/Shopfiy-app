@@ -52,32 +52,37 @@ class AddAddressFragment : Fragment() {
         val countryList = getAllCountries()
         val egyptIndex = countryList.indexOf("Egypt")
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, countryList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.sCountry.adapter = adapter
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countryList)
+        binding.sCountry.setAdapter(adapter)
+        binding.sCountry.threshold = 1
 
         if (egyptIndex != -1) {
-            binding.sCountry.setSelection(egyptIndex)
+            binding.sCountry.setText(countryList[egyptIndex], false)
         }
+
         binding.button.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val details = binding.etDetails.text.toString()
             val phone = binding.tvPhone.text.toString()
             val city = binding.etCity.text.toString()
-            val country = binding.sCountry.selectedItem.toString()
+            val country = binding.sCountry.text.toString()
             val zip = binding.etZip.text.toString()
             val isDefault = binding.cbDefaultAddress.isChecked
 
-            val address = AddressInput(
-                firstName = title,
-                address1 = details,
-                phone = phone,
-                city = city,
-                country = country,
-                zip = zip
-            )
-            val mailingAddressInput = address.toInput()
-            addAddressViewModel.addAddress(mailingAddressInput)
+            if (validateInputs(title, details, phone, city, country, zip)) {
+                val address = AddressInput(
+                    firstName = title,
+                    address1 = details,
+                    phone = phone,
+                    city = city,
+                    country = country,
+                    zip = zip
+                )
+                val mailingAddressInput = address.toInput()
+                addAddressViewModel.addAddress(mailingAddressInput)
+            } else {
+                SnackbarUtils.showSnackbar(requireContext(), view, "Please fill in all fields")
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -87,7 +92,7 @@ class AddAddressFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is UiState.Success -> {
-                        Toast.makeText(requireContext(), "Here ${uiState.data}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Address added successfully", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = View.GONE
                         if (uiState.data) {
                             SnackbarUtils.showSnackbar(requireContext(), view, "Address added successfully")
@@ -104,6 +109,10 @@ class AddAddressFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun validateInputs(vararg inputs: String): Boolean {
+        return inputs.all { it.isNotEmpty() }
     }
 
     private fun getAllCountries(): List<String> {

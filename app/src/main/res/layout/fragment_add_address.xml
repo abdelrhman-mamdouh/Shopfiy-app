@@ -92,9 +92,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
 
-            <Spinner
+            <AutoCompleteTextView
                 android:id="@+id/s_country"
                 style="@style/TextViewStyle"
+                android:paddingStart="@dimen/_12sdp"
+                android:hint="@string/enter_your_country"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="@dimen/_16sdp"
