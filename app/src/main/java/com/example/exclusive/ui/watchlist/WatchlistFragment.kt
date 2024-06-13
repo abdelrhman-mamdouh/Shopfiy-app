@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.watchlist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exclusive.AuthMain
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentWatchlistBinding
 import com.example.exclusive.model.ProductNode
@@ -37,36 +39,66 @@ class WatchlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchWatchlist()
-
         binding.titleBar.tvTitle.text = getString(R.string.wish_list)
         binding.titleBar.icBack.setOnClickListener{
             this.requireActivity().onBackPressed()
         }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 requireActivity().finish()
             }
         })
 
-        val adapter = WatchListAdapter(removeItem, onItemClick, addItemToCart)
-        binding.rvWatchlist.adapter = adapter
-        binding.rvWatchlist.layoutManager = LinearLayoutManager(requireContext())
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.watchlist.collect { watchlist ->
-                    adapter.submitList(watchlist)
-                    if (watchlist.isEmpty()) {
+                viewModel.isGuest.collect{
+                    if(it){
+                        binding.tvGoToLogin.visibility = View.VISIBLE
+                        binding.guestMode.visibility = View.VISIBLE
+                        binding.zeroItems.visibility = View.GONE
                         binding.rvWatchlist.visibility = View.GONE
-                        binding.animationView.visibility = View.VISIBLE
-                        binding.animationView.playAnimation()
-                    } else {
-                        binding.rvWatchlist.visibility = View.VISIBLE
-                        binding.animationView.visibility = View.GONE
+
+                    }else{
+                        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                            override fun handleOnBackPressed() {
+                                requireActivity().finish()
+                            }
+                        })
+                        val adapter = WatchListAdapter(removeItem,onItemClick,addItemToCart)
+                        binding.rvWatchlist.adapter = adapter
+                        binding.rvWatchlist.layoutManager = LinearLayoutManager(requireContext())
+                        lifecycleScope.launch {
+                            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                                viewModel.watchlist.collect{
+                                    if(it.isEmpty()){
+                                        binding.tvGoToLogin.visibility = View.GONE
+                                        binding.guestMode.visibility = View.GONE
+                                        binding.zeroItems.visibility = View.VISIBLE
+                                        binding.rvWatchlist.visibility = View.GONE
+                                    }
+                                    else{
+                                        binding.tvGoToLogin.visibility = View.GONE
+                                        binding.guestMode.visibility = View.GONE
+                                        binding.zeroItems.visibility = View.GONE
+                                        binding.rvWatchlist.visibility = View.VISIBLE
+                                    }
+                                    adapter.submitList(it)
+                                }
+                            }
+                        }
+
                     }
                 }
             }
         }
+
+    binding.tvGoToLogin.setOnClickListener {
+        val intent = Intent(requireContext(), AuthMain::class.java)
+        startActivity(intent)
+    }
+
     }
 
     private val removeItem: (ProductNode) -> Unit = { product ->

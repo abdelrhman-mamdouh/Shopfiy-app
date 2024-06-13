@@ -19,6 +19,7 @@ class ProductInfoViewModel @Inject constructor(private val remoteDataSource: Sho
     val isWatchList: StateFlow<Boolean> = _isWatchList
     var email : String? =null
 
+
     fun addProductToRealtimeDatabase(product: ProductNode){
         viewModelScope.launch {
             email=localDataSource.readEmail()

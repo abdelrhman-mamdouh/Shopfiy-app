@@ -51,11 +51,16 @@ class AuthViewModel @Inject constructor(
 
     fun signUp(name: String, email: String, password: String) {
         _signUpState.value = 0
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                if(auth.currentUser?.isEmailVerified?:true){
+                    _signUpState.value = -1
+                    return@addOnCompleteListener}
                 auth.currentUser?.sendEmailVerification()?.addOnSuccessListener {
                     Log.d(TAG, "Verification email sent.")
                 }?.addOnFailureListener { exception ->
+                    _signUpState.value = -1
                     Log.d(TAG, "Failed to send verification email: ${exception.message}")
                 }
                 viewModelScope.launch {
@@ -142,6 +147,11 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val result = remoteDataSource.resetPasswordByUrl(resetUrl, newPassword)
             _resetPasswordState.value = result
+        }
+    }
+    fun updateIsGuest(isGuest: Boolean) {
+        viewModelScope.launch {
+            localDataSource.updateIsGuest(isGuest)
         }
     }
 }

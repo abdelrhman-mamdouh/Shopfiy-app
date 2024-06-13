@@ -29,6 +29,16 @@ class ProductInfoViewModel @Inject constructor(
     private val _isWatchList = MutableStateFlow<Boolean>(false)
     val isWatchList: StateFlow<Boolean> = _isWatchList
     var accessToken: String? = null
+    private val _isGuest = MutableStateFlow<Boolean>(false)
+    val isGuest: StateFlow<Boolean> = _isGuest
+    init {
+        getIsGuest()
+    }
+    fun getIsGuest() {
+        viewModelScope.launch {
+            _isGuest.value = localDataSource.getIsGuest()
+        }
+    }
     fun addProductToRealtimeDatabase(product: ProductNode) {
         viewModelScope.launch {
             var email = localDataSource.readEmail()

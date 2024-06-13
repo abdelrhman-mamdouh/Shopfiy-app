@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.productinfo
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exclusive.AuthMain
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
@@ -99,27 +101,80 @@ class ProductInfoFragment : Fragment() {
         varientAdapter.submitList(product.variants.edges.map { it.node.title })
 
         binding.addToFavourateIcon.setOnClickListener {
-            if (!viewModel.isWatchList.value) {
-                binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
-                viewModel.addProductToRealtimeDatabase(product)
-                SnackbarUtils.showSnackbar(requireContext(), view, "Product added to favorites")
-            } else {
-                val onClickOk = {
-                    binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
-                    Log.d("idddddd", product.id)
-                    viewModel.removeProductFromWatchList(product.id.substring(22))
-                    SnackbarUtils.showSnackbar(requireContext(), view, "Product removed from favorites")
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.isGuest.collect {
+                        if (it) {
+                            val onClickOk = {
+                                val intent = Intent(requireContext(), AuthMain::class.java)
+                                startActivity(intent)
+                            }
+                            val onClickCancel = {}
+                            val dialog = DailogFramgent(
+                                title = "you are in guest mode\nDo you want to login",
+                                onDialogNegativeClick = onClickCancel,
+                                onDialogPositiveClick = onClickOk
+                            )
+                            dialog.show(requireActivity().supportFragmentManager, "dialog")
+                        } else {
+                            if (!viewModel.isWatchList.value) {
+                                binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
+                                viewModel.addProductToRealtimeDatabase(product)
+                                SnackbarUtils.showSnackbar(
+                                    requireContext(),
+                                    view,
+                                    "Product added to favorites"
+                                )
+                            } else {
+                                val onClickOk = {
+                                    binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
+                                    Log.d("idddddd", product.id)
+                                    viewModel.removeProductFromWatchList(product.id.substring(22))
+                                    SnackbarUtils.showSnackbar(
+                                        requireContext(),
+                                        view,
+                                        "Product removed from favorites"
+                                    )
+                                }
+                                val onClickCancel = {}
+                                val dialog = DailogFramgent(
+                                    onDialogNegativeClick = onClickCancel,
+                                    onDialogPositiveClick = onClickOk
+                                )
+                                dialog.show(requireActivity().supportFragmentManager, "dialog")
+                            }
+
+                        }
+                    }
                 }
-                val onClickCancel = {}
-                val dialog = DailogFramgent(onClickOk, onClickCancel)
-                dialog.show(requireActivity().supportFragmentManager, "dialog")
             }
-        }
 
-
-
-        binding.btnAddToCart.setOnClickListener {
-            viewModel.addToCart(product.variants.edges[0].node.id,product.variants.edges[0].node.quantityAvailable)
+            binding.btnAddToCart.setOnClickListener {
+                lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        viewModel.isGuest.collect {
+                            if (it) {
+                                val onClickOk = {
+                                    val intent = Intent(requireContext(), AuthMain::class.java)
+                                    startActivity(intent)
+                                }
+                                val onClickCancel = {}
+                                val dialog = DailogFramgent(
+                                    title = "you are in guest mode\nDo you want to login",
+                                    onDialogNegativeClick = onClickCancel,
+                                    onDialogPositiveClick = onClickOk
+                                )
+                                dialog.show(requireActivity().supportFragmentManager, "dialog")
+                            } else {
+                                viewModel.addToCart(
+                                    choosenVarient.id,
+                                    choosenVarient.quantityAvailable
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

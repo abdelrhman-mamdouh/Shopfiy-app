@@ -2,6 +2,7 @@ package com.example.exclusive.ui.auth.signup
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
+import com.example.exclusive.MainActivity
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentSignUpBinding
 import com.example.exclusive.ui.auth.AuthViewModel
@@ -50,6 +52,12 @@ class SignUpFragment : Fragment() {
         binding.tvAlreadyHaveAccount.setOnClickListener {
             NavHostFragment.findNavController(this@SignUpFragment)
                 .navigate(R.id.action_signUpFragment_to_loginFragment)
+        }
+        binding.continueAsGuest.setOnClickListener {
+            viewModel.updateIsGuest(true)
+            val intent = Intent(requireContext(), MainActivity::class.java)
+
+            startActivity(intent)
         }
         binding.btnSignUp.setOnClickListener {
 

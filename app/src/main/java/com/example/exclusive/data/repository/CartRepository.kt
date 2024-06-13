@@ -6,6 +6,7 @@ import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.type.CheckoutLineItemInput
 
 interface CartRepository {
+    suspend fun getIsGuest(): Boolean
     suspend fun getUserCartId(): String?
     suspend fun getProductsInCart(cartId: String): List<CartProduct>
     suspend fun removeProductFromCart(cartId: String, productId: String): AddToCartResponse?

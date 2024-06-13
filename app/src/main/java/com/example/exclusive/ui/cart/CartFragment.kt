@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.cart
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,11 +10,14 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exclusive.AuthMain
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCartBinding
@@ -22,6 +26,7 @@ import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,6 +49,23 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.cart)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                cartViewModel.isGuest.collect {
+
+                    if (it) {
+                        binding.guestMode.visibility = View.VISIBLE
+                        binding.tvGoToLogin.visibility = View.VISIBLE
+                        binding.rvCart.visibility = View.GONE
+                        binding.cardView.visibility = View.GONE
+                    }
+                }
+            }
+        }
+        binding.tvGoToLogin.setOnClickListener {
+            val intent = Intent(requireContext(), AuthMain::class.java)
+            startActivity(intent)
+        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
