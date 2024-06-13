@@ -1,6 +1,7 @@
 package com.example.exclusive.ui.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCartBinding
 import com.example.exclusive.model.CartProduct
+import com.example.exclusive.type.CheckoutLineItemInput
+import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,8 +33,6 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     private val cartViewModel: CartViewModel by viewModels()
 
     private lateinit var cartProductAdapter: CartProductAdapter
-
-    private var isFragmentDestroyed = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -53,9 +54,10 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
             requireActivity().finish()
         }
 
+
+
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartProductsResponse.collect { uiState ->
-                if (isFragmentDestroyed) return@collect
                 when (uiState) {
                     is UiState.Success -> {
                         binding.lottieAnimationView.visibility = View.GONE
@@ -85,17 +87,19 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
 
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.error.collect { error ->
-                if (isFragmentDestroyed) return@collect
                 error?.let {
+                    // Handle the error
                     showError(it)
                 }
             }
         }
 
         binding.buttonCheckout.setOnClickListener {
-            findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
+            val lineItems = getCheckoutLineItems()
+            cartViewModel.createCheckout(lineItems)
         }
         setupRecyclerView()
+        observeViewModel()
     }
 
     private fun setupRecyclerView() {
@@ -128,7 +132,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
                         }
                     }.addCallback(object : Snackbar.Callback() {
                         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            if (event != DISMISS_EVENT_ACTION && !isFragmentDestroyed) {
+                            if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                                 removedItem?.let {
                                     viewLifecycleOwner.lifecycleScope.launch {
                                         cartViewModel.deleteProductFromCart(it)
@@ -146,28 +150,23 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     private fun showUndoSnackbar(product: CartProduct) {
         val position = cartProductAdapter.currentList.indexOf(product)
         cartProductAdapter.removeItem(position)
-        Snackbar.make(requireView(), "Product removed from cart", Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.root, "Product removed from cart", Snackbar.LENGTH_LONG)
             .setAction("UNDO") {
                 cartProductAdapter.addItem(position, product)
             }.addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    if (event != DISMISS_EVENT_ACTION && !isFragmentDestroyed) {
+                    if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                         viewLifecycleOwner.lifecycleScope.launch {
-                            if (view != null) {
-                                cartViewModel.deleteProductFromCart(product)
-                            }
+                            cartViewModel.deleteProductFromCart(product)
                         }
                     }
                 }
             }).show()
     }
 
-
     private fun showError(message: String?) {
         // Display error message to the user
-        if (!isFragmentDestroyed) {
-            Toast.makeText(requireContext(), message ?: "Unknown error", Toast.LENGTH_SHORT).show()
-        }
+        Toast.makeText(requireContext(), message ?: "Unknown error", Toast.LENGTH_SHORT).show()
     }
 
     private fun showLoading() {
@@ -184,7 +183,6 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        isFragmentDestroyed = true
     }
 
     override fun onRemoveProduct(product: CartProduct) {
@@ -206,5 +204,36 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
     private fun updateTotalPrice() {
         val totalPrice = calculateTotalPrice()
         binding.textViewTotalPrice.text = String.format("%.2f", totalPrice)
+    }
+    private fun getCheckoutLineItems(): List<CheckoutLineItemInput> {
+        return cartProductAdapter.currentList.map { product ->
+            val quantity = cartProductAdapter.getCurrentQuantity(product.id)
+            CheckoutLineItemInput(
+                quantity = quantity,
+                variantId = product.variantId
+            )
+        }
+    }
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            cartViewModel.checkoutState.collect { state ->
+                when (state) {
+                    is UiState.Loading -> {
+
+                    }
+                    is UiState.Success -> {
+                        Log.i("TAG", "observeViewModel: ${state.data}")
+                        SnackbarUtils.showSnackbar(requireContext(),requireView(),"Checkout Created")
+                        findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment)
+                    }
+                    is UiState.Error -> {
+                        Toast.makeText(requireContext(), state.exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                    UiState.Idle -> {
+
+                    }
+                }
+            }
+        }
     }
 }

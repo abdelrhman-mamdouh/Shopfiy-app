@@ -131,5 +131,15 @@
         android:id="@+id/action_homeFragment_to_searchFragment"
         app:destination="@id/searchFragment"
         app:enterAnim="@anim/row_slide_in"/>
+    <fragment
+        android:id="@+id/paymentCompletedFragment"
+        android:name="com.example.exclusive.ui.checkout.view.PaymentCompletedFragment"
+        android:label="Payment Completed"
+        tools:layout="@layout/fragment_payment_completed"
+        >
+        <action
+            android:id="@+id/action_paymentCompletedFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
+    </fragment>
 
 </navigation>

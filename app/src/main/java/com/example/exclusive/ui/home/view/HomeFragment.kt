@@ -3,6 +3,7 @@ package com.example.exclusive.ui.home.view
 import HomeBrandsAdapter
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -46,6 +48,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -94,14 +97,15 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         setupCoupons()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupCoupons() {
         lifecycleScope.launch {
             viewModel.discountState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        val priceRule = uiState.data
-                        Log.d(TAG, "setupCoupons: $priceRule")
-                        couponsAdapter.submitList(priceRule)
+                        val validPriceRules = uiState.data.filter { it.isValid() }
+                        Log.i(TAG, "setupCoupons: ${validPriceRules}")
+                        couponsAdapter.submitList(validPriceRules)
                     }
                     is UiState.Error -> {
                         Log.e("PriceRuleError", uiState.exception.toString())

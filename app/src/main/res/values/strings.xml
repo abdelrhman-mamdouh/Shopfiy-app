@@ -33,6 +33,7 @@
 
 
     <string name="add_address">Add Address</string>
+    <string name="payment_success">Payment Completed</string>
     <string name="orderNumber">Order Number: </string>
     <string name="price">Price:</string>
     <string name="address">Addresses</string>

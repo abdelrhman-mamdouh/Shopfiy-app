@@ -11,7 +11,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_white"
+
         tools:context=".ui.products.view.ProductsFragment">
 
         <include
@@ -55,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:fontFamily="@font/muli_black"
@@ -103,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/round_corner"
+                style="@style/TextViewStyle"
                 android:padding="@dimen/_5sdp"
                 android:text="0 EGP"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:background="@drawable/round_corner"
+                style="@style/TextViewStyle"
                 android:padding="@dimen/_5sdp"
                 android:text="1000 EGP"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -126,8 +127,9 @@
                 android:id="@+id/brandProductsRangedSeekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:background="@color/light_white"
                 android:valueFrom="0.0"
+
                 android:valueTo="1000.0"
                 app:labelBehavior="withinBounds"
                 app:layout_constraintEnd_toEndOf="parent"

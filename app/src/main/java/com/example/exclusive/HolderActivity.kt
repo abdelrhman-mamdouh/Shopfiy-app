@@ -36,6 +36,9 @@ class HolderActivity : AppCompatActivity() {
         else if (intent.getStringExtra(GO_TO).equals("ORDERS")) {
             findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.orderFragment)
         }
+        else if (intent.getStringExtra(GO_TO).equals("SUCCESS")) {
+            findNavController(R.id.activity_holder_nav_host_fragment).navigate(R.id.paymentCompletedFragment)
+        }
 
     }
 

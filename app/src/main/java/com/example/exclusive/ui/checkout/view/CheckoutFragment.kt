@@ -1,6 +1,7 @@
 // CheckoutFragment.kt
 package com.example.exclusive.ui.checkout.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.exclusive.CheckoutWebViewActivity
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
@@ -23,11 +25,11 @@ import com.example.exclusive.model.LineItem
 import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
 import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.shopify.checkoutsheetkit.ShopifyCheckoutSheetKit
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 private const val TAG = "TAG"
+
 
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {
@@ -36,7 +38,7 @@ class CheckoutFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CheckoutViewModel by viewModels()
     private val checkoutViewModel: CheckoutViewModel by viewModels()
-    private lateinit var checkoutEventProcessor: CustomCheckoutEventProcessor
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -58,7 +60,6 @@ class CheckoutFragment : Fragment() {
                 }
             })
 
-
         binding.btnApplyCode.setOnClickListener {
             val discountCode = binding.etDiscountCode.text.toString()
             if (discountCode.isNotBlank()) {
@@ -72,10 +73,10 @@ class CheckoutFragment : Fragment() {
                     }
                 }
             } else {
-
+                // Handle empty discount code case
             }
         }
-        checkoutEventProcessor = CustomCheckoutEventProcessor(requireContext(),requireView())
+
         observeCheckOutDetails()
         observeAddressesViewModel()
     }
@@ -89,30 +90,30 @@ class CheckoutFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is UiState.Success -> {
-
                         binding.progressBar.visibility = View.GONE
                         val checkoutDetails = state.data
-                        val discountValue =
-                            checkoutDetails.discountApplications.firstOrNull()?.value
+                        val discountValue = checkoutDetails.discountApplications.firstOrNull()?.value
                         Log.i(TAG, "observeCheckOutDetails: ${state.data.webUrl}")
                         if (discountValue is DiscountValue.Percentage) {
                             binding.tvDiscountPrice.text = "${discountValue.percentage}%"
                         } else {
                             binding.tvDiscountPrice.text = "N/A"
                         }
-                        binding.tvOrderPrice.text =
-                            calculateTotalPrice(checkoutDetails.lineItems).toString() + " " + checkoutDetails.totalPrice?.currencyCode
-                        binding.tvSummaryPrice.text =
-                            checkoutDetails.totalPrice?.amount + " " + checkoutDetails.totalPrice?.currencyCode
+                        binding.tvOrderPrice.text = "${calculateTotalPrice(checkoutDetails.lineItems)} ${checkoutDetails.totalPrice?.currencyCode}"
+                        binding.tvSummaryPrice.text = "${checkoutDetails.totalPrice?.amount} ${checkoutDetails.totalPrice?.currencyCode}"
 
                         binding.btnSubmitOrder.setOnClickListener {
-                            Log.i(TAG, "onVidsdfsdfewCreated: ${convertShopifyCheckoutUrl(state.data.webUrl)}")
-                            ShopifyCheckoutSheetKit.getConfiguration()
-                            ShopifyCheckoutSheetKit.present(convertShopifyCheckoutUrl(state.data.webUrl), requireActivity(), checkoutEventProcessor)
+
+                            val intent = Intent(requireActivity(), CheckoutWebViewActivity::class.java).apply {
+                                putExtra("CHECKOUT_URL", state.data.webUrl)
+                            }
+                            startActivity(intent)
+                            requireActivity().finish()
                         }
                     }
                     is UiState.Error -> {
                         val errorMessage = state.exception.message
+                        // Handle error state
                     }
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
@@ -163,7 +164,6 @@ class CheckoutFragment : Fragment() {
         dialog.show()
     }
 
-
     private fun observeAddressesViewModel() {
         checkoutViewModel.fetchCustomerAddresses()
         viewLifecycleOwner.lifecycleScope.launch {
@@ -202,7 +202,6 @@ class CheckoutFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -215,11 +214,6 @@ class CheckoutFragment : Fragment() {
             totalPrice += lineItem.quantity * priceAmount
         }
         return totalPrice
-    }
-    private fun convertShopifyCheckoutUrl(originalUrl: String): String {
-        val regex = Regex("""\d+/checkouts/""")
-        val convertedUrl = originalUrl.replace(regex, "checkouts/co/")
-        return convertedUrl
     }
 
 
