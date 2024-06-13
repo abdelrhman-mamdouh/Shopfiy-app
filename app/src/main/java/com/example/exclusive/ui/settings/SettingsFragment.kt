@@ -47,8 +47,28 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isGuest.collect {
+                    if(it){
+                        binding.cvOrder.visibility = View.GONE
+                        binding.rvOrders.visibility = View.GONE
+                        binding.cvWish.visibility = View.GONE
+                        binding.cvAddress.visibility = View.GONE
+                        binding.rvWishlist.visibility = View.GONE
+                        binding.outlinedButton.text = "Login"
+
+                    }
+                }
+            }
+        }
         setListeners()
         binding.outlinedButton.setOnClickListener {
+            if(binding.outlinedButton.text == "Login"){
+                val intent = Intent(requireContext(), AuthMain::class.java)
+                startActivity(intent)
+                return@setOnClickListener
+            }
             viewModel.clearEmailAndToken()
 
             val intent = Intent(requireContext(), AuthMain::class.java)

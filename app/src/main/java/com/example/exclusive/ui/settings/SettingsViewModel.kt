@@ -33,11 +33,18 @@ class SettingsViewModel @Inject constructor(
     private val _watchlist = MutableStateFlow<UiState<List<ProductNode>>>(UiState.Idle)
     val watchlist: StateFlow<UiState<List<ProductNode>>> = _watchlist
     var email : String? =null
+    private val _isGuest = MutableStateFlow<Boolean>(false)
+    val isGuest: StateFlow<Boolean> = _isGuest
     init {
         fetchWatchlist()
         getAllOrders()
+        getIsGuest()
     }
-
+    fun getIsGuest() {
+        viewModelScope.launch {
+            _isGuest.value = localDataSource.getIsGuest()
+        }
+    }
     private fun getAllOrders() {
         _ordersState.value = UiState.Loading
 

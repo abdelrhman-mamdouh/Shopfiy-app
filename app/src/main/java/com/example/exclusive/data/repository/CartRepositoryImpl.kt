@@ -12,7 +12,9 @@ class CartRepositoryImpl @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : CartRepository {
-
+    override suspend fun getIsGuest(): Boolean {
+        return localDataSource.getIsGuest()
+    }
     override suspend fun getUserCartId(): String? {
         return localDataSource.getUserCartId()
     }

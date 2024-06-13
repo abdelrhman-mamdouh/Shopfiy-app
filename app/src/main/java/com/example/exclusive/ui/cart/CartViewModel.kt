@@ -18,7 +18,8 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository
 ) : ViewModel() {
-
+    private val _isGuest = MutableStateFlow<Boolean>(false)
+    val isGuest: StateFlow<Boolean> get() = _isGuest
     private val _cartProductsResponse = MutableStateFlow<UiState<List<CartProduct>>>(UiState.Idle)
     val cartProductsResponse: StateFlow<UiState<List<CartProduct>>> = _cartProductsResponse
 
@@ -27,6 +28,7 @@ class CartViewModel @Inject constructor(
     private val _checkoutState = MutableStateFlow<UiState<Checkout>>(UiState.Idle)
     val checkoutState: StateFlow<UiState<Checkout>> get() = _checkoutState
     init {
+        getIsGuest()
         viewModelScope.launch {
             val email = cartRepository.readEmail()?.replace('.', '-')
             email?.let {
@@ -36,7 +38,11 @@ class CartViewModel @Inject constructor(
             }
         }
     }
-
+    fun getIsGuest() {
+        viewModelScope.launch {
+            _isGuest.value = cartRepository.getIsGuest()
+        }
+    }
     suspend fun deleteProductFromCart(product: CartProduct) {
         try {
             val email = cartRepository.readEmail()?.replace('.', '-')
