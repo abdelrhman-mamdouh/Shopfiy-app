@@ -22,7 +22,7 @@ class CurrenciesViewModel @Inject constructor(
     val currenciesStateFlow: StateFlow<UiState<Currencies>> get() = _currenciesStateFlow
 
     fun fetchCurrencies(currencyCode: String) {
-        Log.i("TAG", "fetchCurrencies: ${currencyCode}")
+        Log.i("TAG", "fetchCurrencies: $currencyCode")
         viewModelScope.launch {
             currencyRepository.getCurrencies(currencyCode)
                 .catch { e -> _currenciesStateFlow.value = UiState.Error(e) }

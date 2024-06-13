@@ -12,14 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_currency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:queryHint="@string/search_currency" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_currency"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:layout_constraintTop_toBottomOf="@id/sv_currency"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
