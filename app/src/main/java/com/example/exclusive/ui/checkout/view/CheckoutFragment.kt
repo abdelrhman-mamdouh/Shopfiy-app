@@ -173,18 +173,16 @@ class CheckoutFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                         binding.btnSubmitOrder.isEnabled = false
                     }
-
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
                         binding.tvShippingAddressDetails.text =
-                            "${state.data[0].address1}, ${state.data[0].city}, ${state.data[0].country}"
+                            "${state.data.firstOrNull()?.address1}, ${state.data.firstOrNull()?.city}, ${state.data.firstOrNull()?.country}"
                         binding.tvPhoneNumber.text = state.data[0].phone
                         binding.btnChangeAddress.setOnClickListener {
                             showAddressSelectionDialog()
                         }
                     }
-
                     is UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
@@ -192,7 +190,6 @@ class CheckoutFragment : Fragment() {
                             requireContext(), state.exception.message, Toast.LENGTH_SHORT
                         ).show()
                     }
-
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true

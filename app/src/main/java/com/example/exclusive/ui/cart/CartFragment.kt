@@ -110,7 +110,7 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.error.collect { error ->
                 error?.let {
-                    // Handle the error
+
                     showError(it)
                 }
             }

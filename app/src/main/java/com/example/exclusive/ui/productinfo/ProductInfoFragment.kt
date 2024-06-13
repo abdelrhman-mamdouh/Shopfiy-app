@@ -148,11 +148,13 @@ class ProductInfoFragment : Fragment() {
                     }
                 }
             }
-
+        }
             binding.btnAddToCart.setOnClickListener {
+                Log.i("isGuest", "isGuest: ")
                 lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         viewModel.isGuest.collect {
+
                             if (it) {
                                 val onClickOk = {
                                     val intent = Intent(requireContext(), AuthMain::class.java)
@@ -166,6 +168,7 @@ class ProductInfoFragment : Fragment() {
                                 )
                                 dialog.show(requireActivity().supportFragmentManager, "dialog")
                             } else {
+                                Log.i("TAG", "onViewCreatedInElse: ")
                                 viewModel.addToCart(
                                     choosenVarient.id,
                                     choosenVarient.quantityAvailable
@@ -175,7 +178,7 @@ class ProductInfoFragment : Fragment() {
                     }
                 }
             }
-        }
+
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.addToCartState.collect { uiState ->
