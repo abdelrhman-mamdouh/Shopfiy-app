@@ -2,7 +2,7 @@
 
 # Exclusive Mobile Android Application
 
-Welcome to the Exclusive Mobile Android Application GitHub repository! This application facilitates online product trading, allowing users to browse, search, and purchase products seamlessly. The app is built with modern technologies like Kotlin, Firebase, Shopify API, and GraphQL.
+Welcome to the Exclusive Mobile Android Application GitHub repository! This application facilitates online product trading, allowing users to browse, search, and purchase products seamlessly. The app is built with modern technologies like Kotlin, Firebase, Shopify API, GraphQL, and Paymob for payment processing.
 
 ![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -23,7 +23,7 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 ### User Features
 - **Authentication**: Implement user registration, login functionality, password reset, and account updates.
 - **Shopping Cart**: Add and remove products from the cart, display cart summary and subtotal.
-- **Payment**: Integrate secure payment gateways.
+- **Payment**: Integrate secure payment gateways using Paymob.
 
 ### Additional Features
 - **Coupon or Discount Code**: Manage discount codes to drive sales.
@@ -43,6 +43,7 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 ![Firebase](https://img.shields.io/badge/Firebase-8.1.0-yellow)
 ![Shopify API](https://img.shields.io/badge/Shopify%20API-2021-green)
 ![GraphQL](https://img.shields.io/badge/GraphQL-15.5.0-pink)
+![Paymob](https://img.shields.io/badge/Paymob-1.0-blue)
 
 ## Getting Started
 
@@ -50,6 +51,7 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 - **Android Studio**: Ensure you have the latest version of Android Studio installed.
 - **Firebase Account**: Set up a Firebase project and add the configuration file to your project.
 - **Shopify Account**: Obtain API keys from Shopify to enable e-commerce functionalities.
+- **Paymob Account**: Set up a Paymob account and obtain API keys for payment processing.
 
 ### Installation
 1. **Clone the repository**:
