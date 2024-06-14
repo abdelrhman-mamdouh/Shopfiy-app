@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.ItemOrderBinding
 import com.example.exclusive.databinding.RowOrderBinding
 import com.example.exclusive.model.MyOrder
-import com.example.exclusive.model.OrderItem
 import java.text.SimpleDateFormat
 import java.util.Locale
 

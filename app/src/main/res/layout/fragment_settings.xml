@@ -46,9 +46,9 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
+                    android:background="@color/light_white"
                     android:gravity="center_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -84,8 +84,8 @@
 
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/round_corner"
                         android:layout_marginRight="@dimen/_8sdp"
+                        android:background="@drawable/round_corner"
                         android:contentDescription="@string/for_more"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_read_more"
@@ -96,6 +96,7 @@
                         tools:text="Dollar" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_orders"
                 android:layout_width="0dp"
@@ -108,6 +109,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cv_order"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_order" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_wish"
                 android:layout_width="0dp"
@@ -120,9 +122,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/rv_orders">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
+                    android:background="@color/light_white"
                     android:gravity="center_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -158,8 +160,8 @@
 
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/round_corner"
                         android:layout_marginRight="@dimen/_8sdp"
+                        android:background="@drawable/round_corner"
                         android:contentDescription="@string/for_more"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_read_more"
@@ -199,7 +201,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
-                    android:layout_gravity="center_vertical">
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/light_white">
 
                     <ImageView
                         android:id="@+id/image"
@@ -258,9 +261,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/cv_currency">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
+                    android:background="@color/light_white"
                     android:gravity="center_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -296,8 +299,8 @@
 
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:background="@drawable/round_corner"
                         android:layout_marginRight="@dimen/_8sdp"
+                        android:background="@drawable/round_corner"
                         android:contentDescription="@string/for_more"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_read_more"
@@ -322,9 +325,9 @@
                 android:backgroundTint="@color/primary_color"
                 android:contentDescription="@string/logout"
                 android:text="@string/logout"
-                android:textSize="@dimen/_12sdp"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="@id/right_guideline"
                 app:layout_constraintStart_toStartOf="@id/left_guideline"
                 app:layout_constraintTop_toBottomOf="@id/cv_address" />

@@ -19,28 +19,28 @@
 
         <ImageView
             android:id="@+id/orderImage"
-            android:padding="@dimen/_5sdp"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:src="@drawable/ic_order"
+            android:padding="@dimen/_5sdp"
             android:scaleType="fitXY"
+            android:src="@drawable/ic_order"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_order_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="10dp"
             style="@style/TextViewStyle"
-            android:textSize="@dimen/_14sdp"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/orderNumber"
             android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
 
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/orderImage"
@@ -48,10 +48,10 @@
 
         <TextView
             android:id="@+id/tv_order_number_value"
+            style="@style/TextViewStyleLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            style="@style/TextViewStyleLight"
             android:text="asfd"
             android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@id/tv_order_number"
@@ -60,14 +60,14 @@
 
         <TextView
             android:id="@+id/tv_order_price"
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/price"
-            style="@style/TextViewStyle"
             android:textSize="@dimen/_14sdp"
-                        android:textStyle="bold"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/orderImage"
             app:layout_constraintTop_toBottomOf="@id/tv_order_number"
@@ -75,22 +75,23 @@
 
         <TextView
             android:id="@+id/tv_order_price_value"
+            style="@style/TextViewStyleLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            style="@style/TextViewStyleLight"
             android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@id/tv_order_price"
             app:layout_constraintStart_toEndOf="@id/tv_order_price"
             app:layout_constraintTop_toTopOf="@id/tv_order_price" />
+
         <TextView
             android:id="@+id/tv_order_date"
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_marginTop="@dimen/_15sdp"
-           android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:text="@string/date"
-            style="@style/TextViewStyle"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -100,12 +101,12 @@
 
         <TextView
             android:id="@+id/tv_order_date_value"
+            style="@style/TextViewStyleLight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            style="@style/TextViewStyleLight"
-            android:textSize="@dimen/_14sdp"
             android:text="2024-06-10T07"
+            android:textSize="@dimen/_14sdp"
 
             app:layout_constraintBottom_toBottomOf="@id/tv_order_date"
             app:layout_constraintStart_toEndOf="@id/tv_order_date"

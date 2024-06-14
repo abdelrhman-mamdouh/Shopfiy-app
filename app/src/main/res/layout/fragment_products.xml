@@ -177,4 +177,15 @@
         app:lottie_autoPlay="true"
         app:lottie_fileName="animation.json"
         app:lottie_loop="true" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/zero_items"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="empty.json"
+        app:lottie_loop="true" />
 </FrameLayout>

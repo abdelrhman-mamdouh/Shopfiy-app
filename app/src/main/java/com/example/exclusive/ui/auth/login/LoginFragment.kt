@@ -19,25 +19,24 @@ import com.example.exclusive.MainActivity
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentLoginBinding
 import com.example.exclusive.ui.auth.AuthViewModel
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var auth:FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     private val viewModel: AuthViewModel by viewModels()
-
+    private var isMainActivityLaunched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth =  Firebase.auth
+        auth = Firebase.auth
     }
 
     override fun onCreateView(
@@ -52,29 +51,20 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getToken()
         binding.titleBar.tvTitle.text = getString(R.string.login)
-        binding.titleBar.icBack.apply {
-            visibility = View.GONE
-        }
+        binding.titleBar.icBack.visibility = View.GONE
 
         lifecycleScope.launch {
-
-            viewModel.tokenState
-
-                .collect {
-
-                    if (it != null&&it.isNotEmpty()) {
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-
-                        startActivity(intent)
-                        requireActivity().finish()
-                    }
-                    else if(it==null){
-                        binding.loading.visibility = View.GONE
-                        binding.clLogin.visibility = View.VISIBLE
-                    }
+            viewModel.tokenState.collect {
+                if (it != null && it.isNotEmpty() && !isMainActivityLaunched) {
+                    isMainActivityLaunched = true
+                    startMainActivity()
+                } else if (it == null) {
+                    binding.loading.visibility = View.GONE
+                    binding.clLogin.visibility = View.VISIBLE
                 }
-
+            }
         }
+
         binding.tvDontHaveAccount.setOnClickListener {
             NavHostFragment.findNavController(this@LoginFragment)
                 .navigate(R.id.action_loginFragment_to_signUpFragment)
@@ -85,7 +75,7 @@ class LoginFragment : Fragment() {
         }
         binding.btnLogin.setOnClickListener {
             hideKeyboard()
-            if(binding.etEmail.text.toString().isEmpty() || binding.etPassword.text.toString().isEmpty()){
+            if (binding.etEmail.text.toString().isEmpty() || binding.etPassword.text.toString().isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -97,46 +87,49 @@ class LoginFragment : Fragment() {
                 )
             }
             lifecycleScope.launch {
-
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                        viewModel.loginState
-                            .catch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.loginState
+                        .catch {
+                            binding.progressBar.visibility = View.INVISIBLE
+                            Toast.makeText(
+                                requireContext(),
+                                "process failed",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        .collect { success ->
+                            if (success == 1) {
                                 binding.progressBar.visibility = View.INVISIBLE
                                 Toast.makeText(
                                     requireContext(),
-                                    "process failed",
+                                    "Login successful",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                if (!isMainActivityLaunched) {
+                                    isMainActivityLaunched = true
+                                    viewModel.updateIsGuest(false)
+                                    startMainActivity()
+                                }
+                            } else if (success == -1) {
+                                binding.progressBar.visibility = View.INVISIBLE
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Login failed",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                            .collect { success ->
-                                if (success == 1) {
-                                    binding.progressBar.visibility = View.INVISIBLE
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Login successful",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    binding.progressBar.visibility = View.INVISIBLE
-                                    viewModel.updateIsGuest(false)
-                                    val intent = Intent(context, MainActivity::class.java)
-                                    startActivity(intent)
-                                }
-                                else if(success == -1){
-                                    binding.progressBar.visibility = View.INVISIBLE
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Login failed",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                            }
-                    }
-
+                        }
+                }
             }
         }
     }
+
+    private fun startMainActivity() {
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
     fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }

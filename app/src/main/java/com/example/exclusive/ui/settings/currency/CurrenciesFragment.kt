@@ -89,9 +89,11 @@ class CurrenciesFragment : Fragment() {
                 .collect { uiState ->
                     when (uiState) {
                         is UiState.Success -> {
-                            Log.d(TAG, "Success${uiState.data.results}")
-                            val currencies = uiState.data.results.map { Pair(it.key, it.value.toString()) }
-                            adapter.updateCurrencies(currencies)
+                            val currencies = uiState.data
+                            viewModel.saveCurrency(Pair(currencies.base, currencies.results["EGP"]!!))
+                            SnackbarUtils.showSnackbar(requireContext(), requireView(), "Current Currency is: ${currencies.base}")
+                            Log.d(TAG, "${currencies.base} ${currencies.results["EGP"]}")
+                            Log.d("CurrenciesFragment", "Currencies: $currencies")
                         }
                         is UiState.Error -> {
                             Log.e(TAG, "Error fetching currencies", uiState.exception)

@@ -78,15 +78,7 @@ data class PriceV2(
 ) : Parcelable
 
 
-@Parcelize
-data class OrderItem(
-    val orderNumber: String,
-    val date: String,
-    val trackingNumber: String,
-    val quantity: Int,
-    val totalAmount: String,
-    val status: String
-) : Parcelable
+
 data class ProductItem(
     val title: String,
     val color: String,
@@ -105,10 +97,6 @@ data class Cart(
     val id: String
 )
 
-data class CartProductResponse(
-    val products: List<CartProduct>,
-    val userErrors: List<UserError>
-)
 
 data class UserError(
     val field: List<String>?,
@@ -143,10 +131,6 @@ data class CartProduct(
     val variantTitle: String,
     var variantPrice: String,
     var variantPriceCode: String = "EGP"
-)
-
-data class MyCreateCartResponse(
-    val cartCreate: MyCartCreate?
 )
 
 data class MyCartCreate(

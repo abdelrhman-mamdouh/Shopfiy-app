@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentOrderBinding
-import com.example.exclusive.model.OrderItem
 import com.example.exclusive.ui.orders.viewmodel.OrdersViewModel
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.MyOrder

@@ -3,12 +3,7 @@
     android:height="500dp"
     android:viewportWidth="375"
     android:viewportHeight="375">
-  <path
-      android:pathData="M-37.5,-37.5h450v450h-450z"
-      android:fillColor="#ffffff"/>
-  <path
-      android:pathData="M-37.5,-37.5h450v450h-450z"
-      android:fillColor="#ffffff"/>
+
   <group>
     <clip-path
         android:pathData="M153.4,169.5L163,169.5L163,180.75L153.4,180.75ZM153.4,169.5"/>

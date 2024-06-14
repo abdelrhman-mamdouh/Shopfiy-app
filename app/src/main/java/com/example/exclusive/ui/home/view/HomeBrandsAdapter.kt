@@ -1,6 +1,8 @@
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exclusive.R
 
 import com.example.exclusive.databinding.RowBrandBinding
 import com.example.exclusive.model.Brand
@@ -27,7 +29,12 @@ class HomeBrandsAdapter(
         fun bind(brand: Brand) {
             binding.tvBrandName.text = brand.name
             if (!brand.imageUrl.isNullOrEmpty()) {
-                Picasso.get().load(brand.imageUrl).into(binding.ivBrandImage)
+                Picasso.get()
+                    .load(brand.imageUrl)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(binding.ivBrandImage)
+                Log.i("TAG", "bind: ${brand.imageUrl}")
+
             }
         }
     }

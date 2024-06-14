@@ -74,7 +74,10 @@ class ProductInfoViewModel @Inject constructor(
 
     fun addToCart(productId: String, quantity: Int) {
         _addToCartState.value = UiState.Loading
+
         viewModelScope.launch {
+            val token = localDataSource.readToken()
+            Log.i(TAG, "addToCart: ${token}")
             try {
                 val cartLineInput = CartLineInput(
                     attributes = Optional.Absent,

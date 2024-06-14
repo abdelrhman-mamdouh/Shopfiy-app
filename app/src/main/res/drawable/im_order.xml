@@ -3,12 +3,7 @@
     android:height="500dp"
     android:viewportWidth="375"
     android:viewportHeight="375">
-  <path
-      android:pathData="M-37.5,-37.5h450v450h-450z"
-      android:fillColor="#ffffff"/>
-  <path
-      android:pathData="M-37.5,-37.5h450v450h-450z"
-      android:fillColor="#ffffff"/>
+
   <path
       android:pathData="M185.15,17.72L43.98,101.82L42.13,268.81L187.13,349.24L208.3,337.39L241.66,321.34C241.66,321.34 221.47,274.55 218.72,262.46C215.98,250.44 230.02,231.07 230.14,230.9C246.02,221.2 269.02,219.82 283.46,223.43C291.46,232.24 303.91,246.55 304.22,250.7C304.68,256.81 299.48,286.63 299.48,286.63L330.84,268.89L329.94,237.86L330.46,101.24ZM185.15,17.72"
       android:fillColor="#f8bc32"

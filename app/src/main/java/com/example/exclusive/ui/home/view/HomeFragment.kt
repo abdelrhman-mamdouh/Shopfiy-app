@@ -80,12 +80,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.GONE
                     }
-
                     UiState.Loading -> {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.VISIBLE
                     }
-
                     UiState.Idle -> {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.GONE

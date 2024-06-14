@@ -33,7 +33,6 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_32sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:background="@color/white"
             android:hint="@string/inputName"
             android:inputType="textPersonName"
             android:padding="@dimen/_12sdp"
@@ -68,7 +67,7 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-        
+
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="@dimen/_12sdp"
@@ -112,8 +111,8 @@
             style="@style/TextViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-          android:background="@drawable/round_corner"
-            android:backgroundTint="@color/white"
+             android:background="@drawable/round_corner"
+            android:backgroundTint="@color/light_white"
             android:elevation="16dp"
             android:text="Guest"
             app:cornerRadius="0dp"

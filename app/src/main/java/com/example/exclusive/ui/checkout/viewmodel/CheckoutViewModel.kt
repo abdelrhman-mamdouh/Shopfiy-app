@@ -77,8 +77,7 @@ class CheckoutViewModel @Inject constructor(
         return try {
             val success = checkoutRepository.applyShippingAddress(checkoutId!!, shippingAddress)
             if (success) {
-
-
+                
             }
             success
         } catch (e: Exception) {

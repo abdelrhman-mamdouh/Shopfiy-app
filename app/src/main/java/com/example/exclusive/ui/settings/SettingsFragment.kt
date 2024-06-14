@@ -57,7 +57,6 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                         binding.cvAddress.visibility = View.GONE
                         binding.rvWishlist.visibility = View.GONE
                         binding.outlinedButton.text = "Login"
-
                     }
                 }
             }
@@ -133,7 +132,9 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
 
                         is UiState.Success -> {
                             hideLoading()
-                            adapter.submitList(uiState.data)
+                            val watchlist = uiState.data
+                            val limitedWatchlist = if (watchlist.size > 2) watchlist.take(2) else watchlist
+                            adapter.submitList(limitedWatchlist)
                         }
 
                         is UiState.Error -> {
@@ -171,9 +172,9 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
 
                         val orders =
                             if (state.data.size>2)
-                            state.data.subList(0, 2)
-                        else
-                            state.data
+                                state.data.subList(0, 2)
+                            else
+                                state.data
 
                         val ordersAdapter = OrderAdapter(orders, this@SettingsFragment)
                         binding.rvOrders.adapter = ordersAdapter
@@ -208,7 +209,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                     requireActivity().finish()
                 }
             })
-        binding.tvAddress.setOnClickListener {
+        binding.cvAddress.setOnClickListener {
             val intent = Intent(requireContext(), HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "ADDRESS")
             }
@@ -221,9 +222,15 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
             }
             startActivity(intent)
         }
-        binding.tvOrders.setOnClickListener {
+        binding.cvOrder.setOnClickListener {
             val intent = Intent(requireContext(), HolderActivity::class.java).apply {
                 putExtra(HolderActivity.GO_TO, "ORDERS")
+            }
+            startActivity(intent)
+        }
+        binding.cvWish.setOnClickListener {
+            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
+                putExtra(HolderActivity.GO_TO, "FAV")
             }
             startActivity(intent)
         }
