@@ -129,6 +129,36 @@ dependencies {
     //datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("org.robolectric:robolectric:4.5.1")
+
+
+    // AndroidX Test - JVM testing
+    testImplementation("androidx.test:core-ktx:1.4.0")
+    //testImplementation("androidx.test.ext:junit:1.1.3")
+
+    // AndroidX Test - Instrumented testing //Added Item here
+    androidTestImplementation("androidx.test:runner:1.1.3")
+    androidTestImplementation("androidx.test:rules:1.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    //Timber
+    implementation("com.jakewharton.timber:timber:4.7.1")
+
+    // hamcrest
+    testImplementation("org.hamcrest:hamcrest:2.2")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
+
+    // AndroidX and Robolectric
+    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation ("org.robolectric:robolectric:4.8")
+
+    // InstantTaskExecutorRule
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
 
 
 }
