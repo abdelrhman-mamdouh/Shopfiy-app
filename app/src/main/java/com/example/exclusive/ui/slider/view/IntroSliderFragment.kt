@@ -1,22 +1,26 @@
-package com.example.exclusive
+package com.example.exclusive.ui.slider.view
 
 
-import android.content.Intent
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
+import com.example.exclusive.R
 
 import com.example.exclusive.ui.slider.contract.SliderContract
 import com.example.exclusive.ui.slider.model.SlidelViewModel
 import com.example.exclusive.ui.slider.model.SliderModal
-import com.example.exclusive.ui.slider.view.SliderAdapter
 
-class IntroSliderActivity : AppCompatActivity(), SliderContract.View {
+class IntroSliderFragment : Fragment(), SliderContract.View {
 
     private lateinit var presenter: SliderContract.Presenter
     private lateinit var skip: Button
@@ -24,11 +28,13 @@ class IntroSliderActivity : AppCompatActivity(), SliderContract.View {
     private lateinit var dotsLL: LinearLayout
     private lateinit var dots: Array<TextView>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.intro_slider)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_intro_slider, container, false)
 
-        val preferences: SharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+        val preferences: SharedPreferences = requireActivity().getSharedPreferences("PREFERENCE", MODE_PRIVATE)
         val firstTime: String? = preferences.getString("FirstInstall", "")
         if (firstTime == "no") {
             navigateToMain()
@@ -38,11 +44,11 @@ class IntroSliderActivity : AppCompatActivity(), SliderContract.View {
             editor.apply()
         }
 
-        viewPager = findViewById(R.id.idViewPager)
-        dotsLL = findViewById(R.id.idLLDots)
+        viewPager = view.findViewById(R.id.idViewPager)
+        dotsLL = view.findViewById(R.id.idLLDots)
         presenter = SlidelViewModel(this)
         presenter.loadSliderData()
-        skip = findViewById(R.id.idBtnSkip)
+        skip = view.findViewById(R.id.idBtnSkip)
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
@@ -69,26 +75,26 @@ class IntroSliderActivity : AppCompatActivity(), SliderContract.View {
         skip.setOnClickListener {
             presenter.onSkipClicked()
         }
+
+        return view
     }
 
     override fun showSlider(sliders: ArrayList<SliderModal>) {
-        val adapter = SliderAdapter(this, sliders)
+        val adapter = SliderAdapter(requireContext(), sliders)
         viewPager.adapter = adapter
         addDots(sliders.size, 0)
     }
 
     override fun navigateToMain() {
-        val intent = Intent(this, AuthMain::class.java)
-        startActivity(intent)
-        finish()
+        findNavController().navigate(R.id.action_introSliderFragment_to_authMainFragment)
     }
 
     private fun addDots(size: Int, pos: Int) {
-        dots = Array(size) { TextView(this) }
+        dots = Array(size) { TextView(context) }
         dotsLL.removeAllViews()
         dotsLL.gravity = Gravity.CENTER_HORIZONTAL
         for (i in 0 until size) {
-            dots[i] = TextView(this)
+            dots[i] = TextView(context)
             dots[i].text = "●"
             dots[i].textSize = 30F
             dots[i].setTextColor(resources.getColor(R.color.primary_color))

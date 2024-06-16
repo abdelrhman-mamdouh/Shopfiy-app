@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.exclusive.AuthMain
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
@@ -106,8 +106,7 @@ class ProductInfoFragment : Fragment() {
                     viewModel.isGuest.collect {
                         if (it) {
                             val onClickOk = {
-                                val intent = Intent(requireContext(), AuthMain::class.java)
-                                startActivity(intent)
+                                findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
                             }
                             val onClickCancel = {}
                             val dialog = DailogFramgent(
@@ -157,8 +156,7 @@ class ProductInfoFragment : Fragment() {
 
                             if (it) {
                                 val onClickOk = {
-                                    val intent = Intent(requireContext(), AuthMain::class.java)
-                                    startActivity(intent)
+                                    findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
                                 }
                                 val onClickCancel = {}
                                 val dialog = DailogFramgent(

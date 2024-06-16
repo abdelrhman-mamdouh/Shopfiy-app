@@ -18,14 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Exclusive"
         tools:targetApi="31">
-        <activity
-            android:name=".CheckoutWebViewActivity"
-            android:exported="false" />
+
         <activity
             android:name=".NoInternetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AuthMain"
             android:exported="false" />
 
         <receiver
@@ -42,23 +37,18 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".HolderActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".IntroSliderActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> />
+
+
     </application>
 
 </manifest>

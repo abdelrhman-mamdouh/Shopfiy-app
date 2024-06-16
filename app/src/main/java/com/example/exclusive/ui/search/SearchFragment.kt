@@ -1,37 +1,25 @@
 package com.example.exclusive.ui.search
 
-import HomeBrandsAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.exclusive.HolderActivity
-import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSearchBinding
-import com.example.exclusive.model.Brand
 import com.example.exclusive.model.ProductNode
-import com.example.exclusive.ui.home.view.OnItemClickListener
-import com.example.exclusive.ui.home.viewmodel.HomeViewModel
-import com.example.exclusive.ui.productinfo.ProductInfoFragmentDirections
 import com.example.exclusive.ui.products.view.OnProductClickListener
 import com.example.exclusive.ui.products.view.ProductsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -47,6 +35,7 @@ class SearchFragment : Fragment(), OnProductClickListener {
         super.onResume()
         binding.txtInputEditTextSearch.setText("")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -57,20 +46,17 @@ class SearchFragment : Fragment(), OnProductClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+
         val recyclerView = binding.rvBrands
         viewModel.getProducts()
 
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        adapter = ProductsAdapter(emptyList(),this)
+        adapter = ProductsAdapter(emptyList(), this)
         recyclerView.adapter = adapter
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.products.collect {
@@ -107,14 +93,14 @@ class SearchFragment : Fragment(), OnProductClickListener {
         })
 
 
-
-
     }
 
     override fun onProductClick(product: ProductNode) {
-    findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToProductInfoFragment(product
-    ))
-    //  findNavController().navigate(ProductInfoFragmentDirections.action_searchFragment_to_productInfoFragment(product))
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToProductInfoFragment(
+                product
+            )
+        )
     }
 
     override fun onFavClick(product: ProductNode) {

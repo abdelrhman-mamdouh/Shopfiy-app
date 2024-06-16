@@ -11,12 +11,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.exclusive.HolderActivity
+import com.example.exclusive.R
 import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
@@ -51,7 +53,11 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
         setViewsVisibility(View.GONE)
         binding.progressBar.visibility = View.VISIBLE
 
@@ -144,9 +150,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     }
 
     override fun onItemClick(brand: Brand) {
-        val intent = Intent(context, HolderActivity::class.java)
-        intent.putExtra("brand_name", brand.name)
-        startActivity(intent)
+        val bundle = Bundle().apply {
+            putString("brand", brand.name)
+        }
+        findNavController().navigate(R.id.action_homeFragment_to_productFragment, bundle)
     }
 
     override fun onImageClick(priceRuleSummary: PriceRuleSummary) {

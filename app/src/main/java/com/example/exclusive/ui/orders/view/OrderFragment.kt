@@ -38,14 +38,9 @@ class OrderFragment : Fragment(), OnOrderClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    requireActivity().finish()
-                }
-            })
+
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().finish()
+            parentFragmentManager.popBackStack()
         }
         binding.titleBar.tvTitle.text = getString(R.string.orders)
         recyclerView = binding.rvOrders

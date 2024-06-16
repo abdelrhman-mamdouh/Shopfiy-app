@@ -33,7 +33,7 @@ class OrderDetailsFragment : Fragment() {
         binding.tvPhone.text ="Phone: "+ order?.billingAddress?.phone.toString()
         setupRecyclerView(order!!)
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
         }
     }
 

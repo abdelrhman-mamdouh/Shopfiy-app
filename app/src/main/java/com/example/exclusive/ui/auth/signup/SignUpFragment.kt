@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
-import com.example.exclusive.MainActivity
+import androidx.navigation.fragment.findNavController
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentSignUpBinding
 import com.example.exclusive.ui.auth.AuthViewModel
@@ -55,9 +55,7 @@ class SignUpFragment : Fragment() {
         }
         binding.continueAsGuest.setOnClickListener {
             viewModel.updateIsGuest(true)
-            val intent = Intent(requireContext(), MainActivity::class.java)
-
-            startActivity(intent)
+            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
         binding.btnSignUp.setOnClickListener {
 

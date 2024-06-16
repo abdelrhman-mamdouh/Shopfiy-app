@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.exclusive.HolderActivity
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCategoryBinding
 import com.example.exclusive.model.Brand
 import com.example.exclusive.ui.category.viewmodel.CategoryViewModel
+import com.example.exclusive.ui.checkout.view.CheckoutFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -69,8 +70,7 @@ class CategoryFragment : Fragment(), OnCategoryClickListener {
     }
 
     override fun onCategoryClick(brand: Brand) {
-        val intent = Intent(context, HolderActivity::class.java)
-        intent.putExtra("brand_name", brand.name)
-        startActivity(intent)
+        val action = CategoryFragmentDirections.actionCategoryFragmentToProductsFragment(brand.name)
+        findNavController().navigate(action)
     }
 }

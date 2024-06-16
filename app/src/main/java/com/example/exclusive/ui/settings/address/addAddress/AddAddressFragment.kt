@@ -41,13 +41,8 @@ class AddAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.add_address)
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
 
         val countryList = getAllCountries()
         val egyptIndex = countryList.indexOf("Egypt")

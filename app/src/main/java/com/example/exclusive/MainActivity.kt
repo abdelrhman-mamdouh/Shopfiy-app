@@ -1,12 +1,10 @@
 package com.example.exclusive
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.exclusive.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,39 +12,47 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private var authNavController: NavController? = null
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navController = Navigation.findNavController(this, R.id.activity_main_nav_host_fragment)
-        binding.bottomNavigationView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            findViewById<TextView>(R.id.tv_title).text = destination.label
-        }
+        val authNavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.auth_nav_host_fragment) as NavHostFragment?
+        authNavController = authNavHostFragment?.navController
+        authNavController?.let { binding.bottomNavigationView.setupWithNavController(it) }
 
-        binding.appBarHome.cardViewShoppingCart.setOnClickListener {
-            val intent = Intent(this, HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "CART")
-            }
-            startActivity(intent)
-        }
-        binding.appBarHome.imgViewFavorite.setOnClickListener {
-            val intent = Intent(this, HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "FAV")
-            }
-            startActivity(intent)
-        }
+        authNavController?.addOnDestinationChangedListener { _, destination, _ ->
+            binding.appBarHome.tvTitle.text = destination.label
+            when (destination.id) {
 
-        binding.appBarHome.imgViewSearch.setOnClickListener {
-            val intent = Intent(this, HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "Search")
+                R.id.homeFragment, R.id.categoryFragment, R.id.settingsFragment -> {
+                    binding.appBarHome.container.visibility = View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+
+                    binding.appBarHome.cardViewShoppingCart.setOnClickListener {
+                        authNavController?.navigate(R.id.cartFragment)
+                    }
+                    binding.appBarHome.imgViewFavorite.setOnClickListener {
+                        authNavController?.navigate(R.id.watchlistFragment)
+                    }
+                    binding.appBarHome.imgViewSearch.setOnClickListener {
+                        authNavController?.navigate(R.id.searchFragment)
+                    }
+                }
+
+                else -> {
+                    binding.appBarHome.container.visibility = View.GONE
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
             }
-            startActivity(intent)
         }
     }
+
+
+
 }

@@ -12,8 +12,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.exclusive.CheckoutWebViewActivity
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
@@ -50,13 +50,17 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.check_out)
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
+            findNavController().navigate(R.id.action_checkoutFragment_to_homeFragment)
+
         }
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().finish()
+                    parentFragmentManager.popBackStack()
+                    findNavController().navigate(R.id.action_checkoutFragment_to_homeFragment)
+
                 }
             })
 
@@ -104,11 +108,8 @@ class CheckoutFragment : Fragment() {
 
                         binding.btnSubmitOrder.setOnClickListener {
 
-                            val intent = Intent(requireActivity(), CheckoutWebViewActivity::class.java).apply {
-                                putExtra("CHECKOUT_URL", state.data.webUrl)
-                            }
-                            startActivity(intent)
-                            requireActivity().finish()
+                            val action = CheckoutFragmentDirections.actionCheckoutFragmentToCheckoutWebVieFragment(state.data.webUrl)
+                            findNavController().navigate(action)
                         }
                     }
                     is UiState.Error -> {

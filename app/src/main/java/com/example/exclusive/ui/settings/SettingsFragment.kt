@@ -12,9 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.exclusive.AuthMain
-import com.example.exclusive.HolderActivity
-import com.example.exclusive.data.local.LocalDataSource
+import androidx.navigation.fragment.findNavController
+import com.example.exclusive.R
+
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
 import com.example.exclusive.model.MyOrder
@@ -37,9 +37,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
     private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
@@ -50,7 +48,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isGuest.collect {
-                    if(it){
+                    if (it) {
                         binding.cvOrder.visibility = View.GONE
                         binding.rvOrders.visibility = View.GONE
                         binding.cvWish.visibility = View.GONE
@@ -63,15 +61,15 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         }
         setListeners()
         binding.outlinedButton.setOnClickListener {
-            if(binding.outlinedButton.text == "Login"){
-                val intent = Intent(requireContext(), AuthMain::class.java)
-                startActivity(intent)
+            if (binding.outlinedButton.text == "Login") {
+                findNavController().navigate(
+                    R.id.action_settingsFragment_to_loginFragment)
                 return@setOnClickListener
             }
             viewModel.clearEmailAndToken()
 
-            val intent = Intent(requireContext(), AuthMain::class.java)
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_settingsFragment_to_loginFragment)
 
             requireActivity().finish()
         }
@@ -102,17 +100,12 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         }
 
         val adapter = WatchListAdapter(onRemoveListner = { product ->
-            val dialog = DailogFramgent(
-                onDialogPositiveClick = {
-                    viewModel.removeProductFromWatchList(product.id.substring(22))
-                },
-                onDialogNegativeClick = {
-                    val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                        putExtra(HolderActivity.GO_TO, "INFO")
-                    }
-                    startActivity(intent)
-                }
-            )
+            val dialog = DailogFramgent(onDialogPositiveClick = {
+                viewModel.removeProductFromWatchList(product.id.substring(22))
+            }, onDialogNegativeClick = {
+                findNavController().navigate(
+                    R.id.action_settingsFragment_to_productInfoFragment)
+            })
             dialog.show(requireActivity().supportFragmentManager, "dialog")
         }, onItemClickListener = {
 
@@ -133,7 +126,8 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                         is UiState.Success -> {
                             hideLoading()
                             val watchlist = uiState.data
-                            val limitedWatchlist = if (watchlist.size > 2) watchlist.take(2) else watchlist
+                            val limitedWatchlist =
+                                if (watchlist.size > 2) watchlist.take(2) else watchlist
                             adapter.submitList(limitedWatchlist)
                         }
 
@@ -153,10 +147,8 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         observe()
 
         binding.ivMoreWishlist.setOnClickListener {
-            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "FAV")
-            }
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_settingsFragment_to_wishListFragment)
         }
     }
 
@@ -170,11 +162,8 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                             return@collect
                         }
 
-                        val orders =
-                            if (state.data.size>2)
-                                state.data.subList(0, 2)
-                            else
-                                state.data
+                        val orders = if (state.data.size > 2) state.data.subList(0, 2)
+                        else state.data
 
                         val ordersAdapter = OrderAdapter(orders, this@SettingsFragment)
                         binding.rvOrders.adapter = ordersAdapter
@@ -202,37 +191,28 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
     }
 
     private fun setListeners() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     requireActivity().finish()
                 }
             })
         binding.cvAddress.setOnClickListener {
-            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "ADDRESS")
-            }
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_settingsFragment_to_addAddressFragment)
         }
 
         binding.cvCurrency.setOnClickListener {
-            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "CURRENCY")
-            }
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_settingsFragment_to_currenciesFragment)
         }
         binding.cvOrder.setOnClickListener {
-            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "ORDERS")
-            }
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_settingsFragment_to_orderFragment)
         }
         binding.cvWish.setOnClickListener {
-            val intent = Intent(requireContext(), HolderActivity::class.java).apply {
-                putExtra(HolderActivity.GO_TO, "FAV")
-            }
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_settingsFragment_to_wishListFragment)
         }
     }
 

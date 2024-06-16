@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.exclusive.AuthMain
+
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCartBinding
@@ -63,20 +63,12 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
             }
         }
         binding.tvGoToLogin.setOnClickListener {
-            val intent = Intent(requireContext(), AuthMain::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_cartFragment_to_loginFragment)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    requireActivity().finish()
-                }
-            })
+
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().finish()
+            parentFragmentManager.popBackStack()
         }
-
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartProductsResponse.collect { uiState ->

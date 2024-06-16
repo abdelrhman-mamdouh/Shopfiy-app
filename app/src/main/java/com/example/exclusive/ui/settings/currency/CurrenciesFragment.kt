@@ -1,6 +1,8 @@
 package com.example.exclusive.ui.settings.currency
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -52,30 +54,29 @@ class CurrenciesFragment : Fragment() {
         binding.rvCurrency.setHasFixedSize(true)
         binding.rvCurrency.adapter = adapter
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
 
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().finish()
+            parentFragmentManager.popBackStack()
         }
     }
 
     private fun setupSearchView() {
-        binding.svCurrency.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+        binding.svCurrency.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return true
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+                val searchText = s.toString().trim()
+                adapter.filter.filter(searchText)
             }
         })
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.currency)

@@ -4,18 +4,19 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
-import com.example.exclusive.MainActivity
+import androidx.navigation.fragment.findNavController
+
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentLoginBinding
 import com.example.exclusive.ui.auth.AuthViewModel
@@ -75,8 +76,14 @@ class LoginFragment : Fragment() {
         }
         binding.btnLogin.setOnClickListener {
             hideKeyboard()
-            if (binding.etEmail.text.toString().isEmpty() || binding.etPassword.text.toString().isEmpty()) {
-                Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
+            if (binding.etEmail.text.toString().isEmpty() || binding.etPassword.text.toString()
+                    .isEmpty()
+            ) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please enter email and password",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
             binding.progressBar.visibility = View.VISIBLE
@@ -125,9 +132,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun startMainActivity() {
-        val intent = Intent(requireActivity(), MainActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
+       findNavController().navigate(R.id.action_loginFragment_to_homeNavGraph)
     }
 
     fun Fragment.hideKeyboard() {

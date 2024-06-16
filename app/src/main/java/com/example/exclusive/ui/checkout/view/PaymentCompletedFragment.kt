@@ -28,7 +28,7 @@ class PaymentCompletedFragment : Fragment() {
 
         binding.titleBar.tvTitle.text = getString(R.string.payment_success)
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,

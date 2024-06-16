@@ -65,8 +65,8 @@ class ProductsFragment : Fragment(), OnProductClickListener {
             adapter.notifyDataSetChanged()
         }
 
-        val intent = activity?.intent
-        val brandName = intent?.getStringExtra("brand_name")
+        val bundle = arguments
+        val brandName = bundle?.getString("brand")
         brandName?.let { viewModel.fetchProducts(it) }
 
         lifecycleScope.launchWhenStarted {
