@@ -16,7 +16,7 @@ class DailogFramgent (private val title:String="Are you sure you want to delete 
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, id ->
-            
+
                 dialog.dismiss()
             }.create()
     }

@@ -67,11 +67,9 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                 return@setOnClickListener
             }
             viewModel.clearEmailAndToken()
-
             findNavController().navigate(
                 R.id.action_settingsFragment_to_loginFragment)
 
-            requireActivity().finish()
         }
         lifecycleScope.launch {
             viewModel.currenciesStateFlow.collect { uiState ->
@@ -191,12 +189,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
     }
 
     private fun setListeners() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    requireActivity().finish()
-                }
-            })
+
         binding.cvAddress.setOnClickListener {
             findNavController().navigate(
                 R.id.action_settingsFragment_to_addAddressFragment)

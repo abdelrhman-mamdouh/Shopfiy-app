@@ -2,13 +2,11 @@ package com.example.exclusive.ui.auth.signup
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentSignUpBinding
 import com.example.exclusive.ui.auth.AuthViewModel
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -33,8 +32,7 @@ class SignUpFragment : Fragment() {
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
@@ -60,8 +58,10 @@ class SignUpFragment : Fragment() {
         binding.btnSignUp.setOnClickListener {
 
             hideKeyboard()
-            if (binding.etName.text.isEmpty() || binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            if (binding.etName.text!!.isEmpty() || binding.etEmail.text!!.isEmpty() || binding.etPassword.text!!.isEmpty()) {
+                SnackbarUtils.showSnackbar(
+                    requireContext(), requireView(), "Please fill all fields"
+                )
                 return@setOnClickListener
             }
             binding.progressBar.visibility = View.VISIBLE
@@ -74,36 +74,35 @@ class SignUpFragment : Fragment() {
             }
             lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    withTimeoutOrNull(5000L){
-                    viewModel.signUpState
-                        .catch {
-                            binding.progressBar.visibility = View.GONE
-                            it.message?.let { it1 -> Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
-                        }
-                        .collect { success ->
-                        if (success == 1) {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                "Sign up successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            NavHostFragment.findNavController(this@SignUpFragment)
-                                .navigate(R.id.action_signUpFragment_to_loginFragment)
-                        }
-                            else if (success==-1) {
+                    withTimeoutOrNull(5000L) {
+                        viewModel.signUpState.catch {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Sign up failed",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                it.message?.let { it1 ->
+                                    SnackbarUtils.showSnackbar(requireContext(), requireView(), it1)
+                                }
+                            }.collect { success ->
+                                if (success == 1) {
+                                    binding.progressBar.visibility = View.GONE
+
+                                    SnackbarUtils.showSnackbar(
+                                        requireContext(), requireView(), "Sign up successful"
+                                    )
+                                    NavHostFragment.findNavController(this@SignUpFragment)
+                                        .navigate(R.id.action_signUpFragment_to_loginFragment)
+                                } else if (success == -1) {
+                                    binding.progressBar.visibility = View.GONE
+
+                                    SnackbarUtils.showSnackbar(
+                                        requireContext(), requireView(), "Sign up failed"
+                                    )
+                                }
                             }
-                    }}
+                    }
                 }
             }
         }
     }
+
     fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }
@@ -112,6 +111,7 @@ class SignUpFragment : Fragment() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

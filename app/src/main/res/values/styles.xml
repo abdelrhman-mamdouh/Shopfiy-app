@@ -29,4 +29,9 @@
         <item name="android:fontFamily">@font/opensans_semibold</item> <!-- Font family -->
     </style>
 
+        <style name="TextInputLayoutNoUnderline" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <item name="boxBackgroundMode">none</item>
+        </style>
+
+
 </resources>

@@ -103,19 +103,23 @@ class AuthViewModel @Inject constructor(
                 val verification = auth.currentUser?.isEmailVerified
                 if (verification == true) {
                     viewModelScope.launch {
-                        localDataSource.saveEmail(auth.currentUser?.email?:"email")
+                        localDataSource.saveEmail(auth.currentUser?.email ?: "email")
                         Log.d("email", localDataSource.readEmail().toString())
                         val result = remoteDataSource.createCustomerAccessToken(email, password)
                         if (result != null) {
                             _loginState.value = 1
                             localDataSource.saveToken(result)
                             localDataSource.token.collect { token ->
-                                val createResponse = remoteDataSource.createCart(token = token!!)
-                                Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
-                                createResponse?.cart?.let {
-                                    remoteDataSource.saveCardId(it.id,email)
+                                if (token != null) {
+                                    val createResponse = remoteDataSource.createCart(token = token)
+                                    Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
+                                    createResponse?.cart?.let {
+                                        remoteDataSource.saveCardId(it.id, email)
+                                    }
+                                } else {
+                                    Log.d(TAG, "Token is null")
+                                    _loginState.value = -1
                                 }
-
                             }
                         } else {
                             _loginState.value = -1
@@ -135,6 +139,7 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
 
     fun sendPassword(email: String) {
         viewModelScope.launch {
