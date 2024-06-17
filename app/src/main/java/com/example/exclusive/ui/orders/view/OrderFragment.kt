@@ -47,9 +47,6 @@ class OrderFragment : Fragment(), OnOrderClickListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         observeOrders()
-        binding.titleBar.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
 
     }
 

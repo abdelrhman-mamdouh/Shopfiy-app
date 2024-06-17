@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentPaymentCompletedBinding
 
@@ -38,10 +39,8 @@ class PaymentCompletedFragment : Fragment() {
                 }
             })
         binding.btnContinueShopping.setOnClickListener{
-            NavHostFragment.findNavController(this@PaymentCompletedFragment)
-                .navigate(
-                    PaymentCompletedFragmentDirections.
-                actionPaymentCompletedFragmentToOrderFragment())
+            findNavController().navigate(
+                R.id.action_paymentCompletedFragment_to_orderFragment)
         }
     }
 

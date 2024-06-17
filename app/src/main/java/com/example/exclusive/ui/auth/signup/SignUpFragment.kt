@@ -53,7 +53,7 @@ class SignUpFragment : Fragment() {
         }
         binding.continueAsGuest.setOnClickListener {
             viewModel.updateIsGuest(true)
-            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
         }
         binding.btnSignUp.setOnClickListener {
 
@@ -87,8 +87,8 @@ class SignUpFragment : Fragment() {
                                     SnackbarUtils.showSnackbar(
                                         requireContext(), requireView(), "Sign up successful"
                                     )
-                                    NavHostFragment.findNavController(this@SignUpFragment)
-                                        .navigate(R.id.action_signUpFragment_to_loginFragment)
+                                    findNavController().navigate(
+                                        R.id.action_signUpFragment_to_loginFragment)
                                 } else if (success == -1) {
                                     binding.progressBar.visibility = View.GONE
 
