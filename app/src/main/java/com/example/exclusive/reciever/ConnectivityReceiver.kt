@@ -8,8 +8,8 @@ import android.net.NetworkInfo
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import com.example.exclusive.NoInternetActivity
-import com.example.exclusive.internet
+import com.example.exclusive.ui.NoInternetActivity
+import com.example.exclusive.ui.internet
 
 class ConnectivityReceiver : BroadcastReceiver() {
 

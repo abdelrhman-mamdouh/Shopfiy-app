@@ -1,6 +1,5 @@
-package com.example.exclusive.data.remote
+package com.example.exclusive.data.remote.api
 
-import android.util.Log
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.exception.ApolloException
@@ -21,7 +20,6 @@ class OrderService @Inject constructor(private val apolloClient: ApolloClient) {
         try {
             val response: ApolloResponse<GetAllOrdersQuery.Data> =
                 apolloClient.query(GetAllOrdersQuery(customerAccessToken)).execute()
-            Log.i("getAllOrders", "getAllOrders: ${customerAccessToken}+ ${response}")
             response.data?.customer?.orders?.edges?.forEach { edge ->
                 val node = edge.node
                 val id = node.id

@@ -1,6 +1,7 @@
 package com.example.exclusive.data.remote
 
 import com.example.exclusive.data.model.Currencies
+import com.example.exclusive.data.remote.api.ApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

@@ -4,7 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
+import com.example.exclusive.data.remote.interfaces.CartDataSource
+import com.example.exclusive.data.remote.interfaces.CustomerDataSource
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -19,17 +20,18 @@ private const val TAG = "AuthViewModel"
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val remoteDataSource: ShopifyRemoteDataSource,
+    private val cartDataSource: CartDataSource,
+    private val customerDataSource: CustomerDataSource,
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
 
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-    private val _signUpState = MutableStateFlow<Int>(0)
+    private val _signUpState = MutableStateFlow(0)
     val signUpState: StateFlow<Int> get() = _signUpState
 
-    private val _loginState = MutableStateFlow<Int>(0)
+    private val _loginState = MutableStateFlow(0)
     val loginState: StateFlow<Int> get() = _loginState
 
     private val _sendPasswordState = MutableStateFlow<Boolean>(false)
@@ -54,7 +56,7 @@ class AuthViewModel @Inject constructor(
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                if(auth.currentUser?.isEmailVerified?:true){
+                if(auth.currentUser?.isEmailVerified != false){
                     _signUpState.value = -1
                     return@addOnCompleteListener}
                 auth.currentUser?.sendEmailVerification()?.addOnSuccessListener {
@@ -64,7 +66,7 @@ class AuthViewModel @Inject constructor(
                     Log.d(TAG, "Failed to send verification email: ${exception.message}")
                 }
                 viewModelScope.launch {
-                    val isSignUp = remoteDataSource.createCustomer(email, password, name, "")
+                    val isSignUp = customerDataSource.createCustomer(email, password, name, "")
                     _signUpState.value = if(isSignUp) 1 else -1
                  //   createAccessToken(email, password)
                 }
@@ -81,15 +83,15 @@ class AuthViewModel @Inject constructor(
 
     private fun createAccessToken(email: String, password: String) {
         viewModelScope.launch {
-            val result = remoteDataSource.createCustomerAccessToken(email, password)
+            val result = customerDataSource.createCustomerAccessToken(email, password)
             if (result != null) {
  
                 localDataSource.token.collect { token ->
                     Log.d(TAG, "signUp: $token")
-                    val createResponse = remoteDataSource.createCart(token = token!!)
+                    val createResponse = cartDataSource.createCart(token = token!!)
                     Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
                     createResponse?.cart?.let {
-                        remoteDataSource.saveCardId(it.id,email)
+                        cartDataSource.saveCardId(it.id,email)
                     }
                 }
             }
@@ -104,20 +106,18 @@ class AuthViewModel @Inject constructor(
                 if (verification == true) {
                     viewModelScope.launch {
                         localDataSource.saveEmail(auth.currentUser?.email ?: "email")
-                        Log.d("email", localDataSource.readEmail().toString())
-                        val result = remoteDataSource.createCustomerAccessToken(email, password)
+                        val result = customerDataSource.createCustomerAccessToken(email, password)
                         if (result != null) {
                             _loginState.value = 1
                             localDataSource.saveToken(result)
                             localDataSource.token.collect { token ->
                                 if (token != null) {
-                                    val createResponse = remoteDataSource.createCart(token = token)
+                                    val createResponse = cartDataSource.createCart(token = token)
                                     Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
                                     createResponse?.cart?.let {
-                                        remoteDataSource.saveCardId(it.id, email)
+                                        cartDataSource.saveCardId(it.id, email)
                                     }
                                 } else {
-                                    Log.d(TAG, "Token is null")
                                     _loginState.value = -1
                                 }
                             }
@@ -127,7 +127,6 @@ class AuthViewModel @Inject constructor(
                     }
                 } else {
                     _loginState.value = -1
-                    Log.d(TAG, "you must verify your email")
                 }
             } else {
                 Log.d(TAG, "Login failed: ${task.exception.toString()}")
@@ -143,14 +142,14 @@ class AuthViewModel @Inject constructor(
 
     fun sendPassword(email: String) {
         viewModelScope.launch {
-            val result = remoteDataSource.sendPasswordRecoveryEmail(email)
+            val result = customerDataSource.sendPasswordRecoveryEmail(email)
             _sendPasswordState.value = result
         }
     }
 
     fun resetPassword(resetUrl: String, newPassword: String) {
         viewModelScope.launch {
-            val result = remoteDataSource.resetPasswordByUrl(resetUrl, newPassword)
+            val result = customerDataSource.resetPasswordByUrl(resetUrl, newPassword)
             _resetPasswordState.value = result
         }
     }

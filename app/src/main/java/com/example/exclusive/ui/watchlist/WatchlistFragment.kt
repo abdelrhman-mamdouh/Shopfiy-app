@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentWatchlistBinding
 import com.example.exclusive.model.ProductNode
-import com.example.exclusive.ui.productinfo.DailogFramgent
+import com.example.exclusive.ui.productinfo.view.DailogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -91,7 +91,7 @@ class WatchlistFragment : Fragment() {
     }
 
     private val removeItem: (ProductNode) -> Unit = { product ->
-        val dialog = DailogFramgent(onDialogPositiveClick = {
+        val dialog = DailogFragment(onDialogPositiveClick = {
             viewModel.removeProductFromWatchList(product.id.substring(22))
         }, onDialogNegativeClick = {})
         dialog.show(requireActivity().supportFragmentManager, "dialog")

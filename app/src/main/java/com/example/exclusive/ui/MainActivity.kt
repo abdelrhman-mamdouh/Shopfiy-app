@@ -1,4 +1,4 @@
-package com.example.exclusive
+package com.example.exclusive.ui
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.exclusive.R
 import com.example.exclusive.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

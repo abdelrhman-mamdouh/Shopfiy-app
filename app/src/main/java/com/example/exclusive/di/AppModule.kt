@@ -2,13 +2,15 @@ package com.example.exclusive.di
 
 import com.apollographql.apollo3.ApolloClient
 import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ApiService
-import com.example.exclusive.data.remote.DiscountApi
-import com.example.exclusive.data.remote.CartService
-import com.example.exclusive.data.remote.CheckoutService
-import com.example.exclusive.data.remote.OrderService
-import com.example.exclusive.data.remote.ProductService
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
+import com.example.exclusive.data.remote.api.ApiService
+import com.example.exclusive.data.remote.api.DiscountApi
+import com.example.exclusive.data.remote.api.CartService
+import com.example.exclusive.data.remote.api.CheckoutService
+import com.example.exclusive.data.remote.api.OrderService
+import com.example.exclusive.data.remote.api.ProductService
+import com.example.exclusive.data.remote.interfaces.CartDataSource
+import com.example.exclusive.data.remote.interfaces.CheckoutDataSource
+import com.example.exclusive.data.remote.interfaces.CustomerDataSource
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.data.repository.AddressRepositoryImpl
 import com.example.exclusive.data.repository.CartRepository
@@ -124,18 +126,19 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCartRepository(
-        remoteDataSource: ShopifyRemoteDataSource,
+        cartRemoteDataSource: CartDataSource,
+        checkoutDataSource: CheckoutDataSource,
         localDataSource: LocalDataSource
     ): CartRepository {
-        return CartRepositoryImpl(remoteDataSource, localDataSource)
+        return CartRepositoryImpl(cartRemoteDataSource, checkoutDataSource, localDataSource)
     }
 
     @Provides
     @Singleton
     fun provideAddressRepository(
-        remoteDataSource: ShopifyRemoteDataSource,
+        customerDataSource: CustomerDataSource,
         localDataSource: LocalDataSource
     ): AddressRepository {
-        return AddressRepositoryImpl(remoteDataSource, localDataSource)
+        return AddressRepositoryImpl(customerDataSource, localDataSource)
     }
 }

@@ -3,6 +3,7 @@ package com.example.exclusive.data.remote
 import android.util.Log
 import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.PriceRulesResponse
+import com.example.exclusive.data.remote.api.DiscountApi
 import com.example.exclusive.utilities.Constants
 import javax.inject.Inject
 

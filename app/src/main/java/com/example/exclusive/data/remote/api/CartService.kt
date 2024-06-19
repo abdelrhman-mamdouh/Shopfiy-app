@@ -1,4 +1,4 @@
-package com.example.exclusive.data.remote
+package com.example.exclusive.data.remote.api
 
 import android.util.Log
 import com.apollographql.apollo3.ApolloClient

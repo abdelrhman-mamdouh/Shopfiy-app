@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.Optional
 import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.data.remote.interfaces.CartDataSource
+import com.example.exclusive.data.remote.interfaces.RealtimeDatabaseDataSource
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.type.CartLineInput
@@ -20,16 +21,17 @@ private const val TAG = "ProductsViewModel"
 
 @HiltViewModel
 class ProductInfoViewModel @Inject constructor(
-    private val remoteDataSource: ShopifyRemoteDataSource,
+    private val realtimeDataSource: RealtimeDatabaseDataSource,
+    private val cartDataSource: CartDataSource,
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
 
     private val _addToCartState = MutableStateFlow<UiState<AddToCartResponse>>(UiState.Idle)
     val addToCartState: StateFlow<UiState<AddToCartResponse>> get() = _addToCartState
-    private val _isWatchList = MutableStateFlow<Boolean>(false)
+    private val _isWatchList = MutableStateFlow(false)
     val isWatchList: StateFlow<Boolean> = _isWatchList
     var accessToken: String? = null
-    private val _isGuest = MutableStateFlow<Boolean>(false)
+    private val _isGuest = MutableStateFlow(false)
     val isGuest: StateFlow<Boolean> = _isGuest
     init {
         getIsGuest()
@@ -44,7 +46,7 @@ class ProductInfoViewModel @Inject constructor(
             var email = localDataSource.readEmail()
             email?.replace('.', '-')
             Log.d("readEmail", email.toString())
-            remoteDataSource.addProductToRealtimeDatabase(product, email.toString())
+            realtimeDataSource.addProductToRealtimeDatabase(product, email.toString())
             _isWatchList.value = true
         }
 
@@ -53,7 +55,7 @@ class ProductInfoViewModel @Inject constructor(
     fun isInWatchList(product: ProductNode) {
         val result = viewModelScope.launch {
             var email = localDataSource.readEmail()
-            val watchlist = remoteDataSource.fetchWatchlistProducts(email.toString())
+            val watchlist = realtimeDataSource.fetchWatchlistProducts(email.toString())
             Log.d("watchlist", watchlist.toString())
             var bool = false
             watchlist.forEach {
@@ -67,7 +69,7 @@ class ProductInfoViewModel @Inject constructor(
     fun removeProductFromWatchList(id: String) {
         viewModelScope.launch {
             val email =localDataSource.readEmail()
-            remoteDataSource.deleteProduct(id,email.toString())
+            realtimeDataSource.deleteProduct(id,email.toString())
             _isWatchList.value = false
         }
     }
@@ -87,9 +89,9 @@ class ProductInfoViewModel @Inject constructor(
                 )
                 val email = localDataSource.readEmail()
                 email?.replace('.', '-')
-                val cartId = remoteDataSource.fetchCartId(email!!)
+                val cartId = cartDataSource.fetchCartId(email!!)
                 Log.d(TAG, "addToCart: $cartId")
-                val response = remoteDataSource.addProductToCart(cartId!!, listOf(cartLineInput))
+                val response = cartDataSource.addProductToCart(cartId!!, listOf(cartLineInput))
                 _addToCartState.value =
                     if (response != null) UiState.Success(response) else UiState.Error(Exception("Failed to add to cart"))
             } catch (e: Exception) {

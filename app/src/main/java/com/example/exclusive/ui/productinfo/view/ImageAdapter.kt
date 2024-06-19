@@ -1,4 +1,4 @@
-package com.example.exclusive.ui.productinfo
+package com.example.exclusive.ui.productinfo.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,7 +16,9 @@ class ImageDeffUtil: DiffUtil.ItemCallback<String>() {
         return oldItem == newItem
     }
 }
-class ImageAdapter(var imageList: List<String>): androidx.recyclerview.widget.ListAdapter<String, ImageAdapter.ImageViewHolder>(ImageDeffUtil()){
+class ImageAdapter(var imageList: List<String>): androidx.recyclerview.widget.ListAdapter<String, ImageAdapter.ImageViewHolder>(
+    ImageDeffUtil()
+){
     class ImageViewHolder(val binding:ImageItemBinding): RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         return ImageViewHolder(ImageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))

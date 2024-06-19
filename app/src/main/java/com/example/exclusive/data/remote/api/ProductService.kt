@@ -1,6 +1,5 @@
-package com.example.exclusive.data.remote
+package com.example.exclusive.data.remote.api
 
-import android.util.Log
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.exception.ApolloException
@@ -12,9 +11,11 @@ import com.example.exclusive.model.Brand
 import com.example.exclusive.model.PriceV2
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.Variants
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private const val TAG = "ProductService"
 @Singleton
 class ProductService @Inject constructor(private val apolloClient: ApolloClient) {
 
@@ -32,7 +33,7 @@ class ProductService @Inject constructor(private val apolloClient: ApolloClient)
                 brands.add(Brand(id = id, name = name, imageUrl = imageUrl.toString()))
             }
         } catch (e: ApolloException) {
-            println("ApolloException: ${e.message}")
+            Timber.tag(TAG).d("getBrands: ${e.message}")
         }
 
         return brands
@@ -60,7 +61,7 @@ class ProductService @Inject constructor(private val apolloClient: ApolloClient)
                 products.add(productNode)
             }
         } catch (e: ApolloException) {
-            println("ApolloException: ${e.message}")
+            Timber.tag(TAG).d("getBrands: ${e.message}")
         }
 
         return products
@@ -73,7 +74,6 @@ class ProductService @Inject constructor(private val apolloClient: ApolloClient)
             val response: ApolloResponse<GetAllProductsQuery.Data> =
                 apolloClient.query(GetAllProductsQuery()).execute()
             val data = response.data
-            Log.d("in aplllo", data.toString())
             data?.products?.edges?.forEach { edge ->
                 val node = edge.node
                 val productNode = ProductNode(
@@ -88,9 +88,8 @@ class ProductService @Inject constructor(private val apolloClient: ApolloClient)
                 products.add(productNode)
             }
         } catch (e: ApolloException) {
-            println("ApolloException: ${e.message}")
+            Timber.tag(TAG).d("getBrands: ${e.message}")
         }
-        Log.d("in apllo", products.toString())
         return products
     }
 
@@ -108,7 +107,7 @@ class ProductService @Inject constructor(private val apolloClient: ApolloClient)
                 brands.add(Brand(id = id, name = name, imageUrl = imageUrl.toString()))
             }
         } catch (e: ApolloException) {
-            println("ApolloException: ${e.message}")
+            Timber.tag(TAG).d("getBrands: ${e.message}")
         }
 
         return brands

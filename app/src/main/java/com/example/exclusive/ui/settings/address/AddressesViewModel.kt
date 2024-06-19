@@ -2,8 +2,6 @@ package com.example.exclusive.ui.settings.address
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.model.AddressInput

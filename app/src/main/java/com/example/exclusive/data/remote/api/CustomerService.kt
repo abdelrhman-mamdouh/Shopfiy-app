@@ -1,6 +1,5 @@
-package com.example.exclusive.data.remote
+package com.example.exclusive.data.remote.api
 
-import android.util.Log
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.example.exclusive.AddAddressToCustomerMutation
@@ -14,11 +13,15 @@ import com.example.exclusive.model.AddressInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
 import com.example.exclusive.type.MailingAddressInput
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CustomerService @Inject constructor(private val apolloClient: ApolloClient) {
+    companion object {
+        private const val TAG = "CustomerService"
+    }
     suspend fun createCustomer(
         email: String, password: String, firstName: String, secondName: String
     ): Boolean {
@@ -38,16 +41,14 @@ class CustomerService @Inject constructor(private val apolloClient: ApolloClient
 
             if (!errors.isNullOrEmpty()) {
                 for (error in errors) {
-                    Log.e("GraphQL", "Error: ${error.message}")
-
+                    Timber.tag(TAG).d("getBrands: ${error.message}")
                 }
             } else if (customer != null) {
-                Log.d("GraphQL", "Customer ID: ${customer.id}")
+                Timber.tag(TAG).d("Customer ID: ${customer.id}")
                 return true
             }
         } catch (e: Exception) {
-            Log.e("GraphQL", "Exception: ${e.message}", e)
-
+            Timber.tag(TAG).d("createCustomer: ${e.message}")
         }
         return false
     }
@@ -66,16 +67,15 @@ class CustomerService @Inject constructor(private val apolloClient: ApolloClient
 
             if (!errors.isNullOrEmpty()) {
                 for (error in errors) {
-                    Log.e("GraphQL", "Error: ${error.message}")
+                    Timber.tag(TAG).d(error.message)
                 }
             } else if (customerAccessToken != null) {
-
-                Log.d("GraphQL", "Access Token: ${customerAccessToken.accessToken}")
-                Log.d("GraphQL", "Expires At: ${customerAccessToken.expiresAt}")
+                Timber.tag(TAG).d("Access Token: ${customerAccessToken.accessToken}")
+                Timber.tag(TAG).d("Expires At: ${customerAccessToken.expiresAt}")
                 return customerAccessToken.accessToken
             }
         } catch (e: Exception) {
-            Log.e("GraphQL", "Exception: ${e.message}", e)
+            Timber.tag(TAG).d("Exception: ${e.message}")
         }
         return null
     }
@@ -91,14 +91,14 @@ class CustomerService @Inject constructor(private val apolloClient: ApolloClient
 
             if (!errors.isNullOrEmpty()) {
                 for (error in errors) {
-                    Log.e("GraphQL", "Error: ${error.message}")
+                    Timber.tag(TAG).d(error.message)
                 }
             } else {
-                Log.d("GraphQL", "Password recovery email sent successfully")
+                Timber.tag(TAG).d("Password recovery email sent successfully")
                 return true
             }
         } catch (e: Exception) {
-            Log.e("GraphQL", "Exception: ${e.message}", e)
+            Timber.tag(TAG).d("Exception: ${e.message}")
         }
         return false
     }
@@ -112,17 +112,17 @@ class CustomerService @Inject constructor(private val apolloClient: ApolloClient
             val response = apolloClient.mutation(mutation).execute()
             val errors = response.data?.customerResetByUrl?.customerUserErrors
 
-            if (errors != null && errors.isNotEmpty()) {
+            if (!errors.isNullOrEmpty()) {
                 for (error in errors) {
-                    Log.e("GraphQL", "Error: ${error.message}")
+                    Timber.tag(TAG).d(error.message)
                 }
             } else {
                 val customerId = response.data?.customerResetByUrl?.customer?.id
-                Log.d("GraphQL", "Password reset successfully for customer ID: $customerId")
+                Timber.tag(TAG).d("Password reset successfully for customer ID: $customerId")
                 return true
             }
         } catch (e: Exception) {
-            Log.e("GraphQL", "Exception: ${e.message}", e)
+            Timber.tag(TAG).d("Exception: ${e.message}")
         }
         return false
     }

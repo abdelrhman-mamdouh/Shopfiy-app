@@ -1,11 +1,8 @@
-package com.example.exclusive.ui.productinfo
+package com.example.exclusive.ui.productinfo.view
 
-import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +28,9 @@ class VarientDeffUtil: DiffUtil.ItemCallback<String>() {
         return oldItem == newItem
     }
 }
-class VarientAdapter(var onSelectListner:(String,Int)->Unit,var varientList: List<String>,var index:Int=-1): androidx.recyclerview.widget.ListAdapter<String, VarientAdapter.ViewHolder>(VarientDeffUtil()) {
+class VarientAdapter(var onSelectListner:(String,Int)->Unit,var varientList: List<String>,var index:Int=-1): androidx.recyclerview.widget.ListAdapter<String, VarientAdapter.ViewHolder>(
+    VarientDeffUtil()
+) {
     val colors = arrayOfNulls<Int>(varientList.size)
 
     class ViewHolder(val binding: VarinetItemBinding) : RecyclerView.ViewHolder(binding.root)

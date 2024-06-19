@@ -1,18 +1,10 @@
-package com.example.exclusive
+package com.example.exclusive.ui
 
-import android.content.Context
-import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.MutableLiveData
+import com.example.exclusive.R
 
 var internet:MutableLiveData<Boolean> = MutableLiveData(false)
 class NoInternetActivity : AppCompatActivity() {

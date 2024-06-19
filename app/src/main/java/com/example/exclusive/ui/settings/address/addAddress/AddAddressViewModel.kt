@@ -1,13 +1,9 @@
 package com.example.exclusive.ui.settings.address.addAddress
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.data.repository.AddressRepository
-import com.example.exclusive.model.AddressInput
 import com.example.exclusive.type.MailingAddressInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "AddAddressViewModel"
 @HiltViewModel
 class AddAddressViewModel @Inject constructor(
     private val addressRepository: AddressRepository

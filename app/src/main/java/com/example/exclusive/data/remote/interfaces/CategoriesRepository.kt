@@ -1,4 +1,4 @@
-package com.example.exclusive.ui.category.repository
+package com.example.exclusive.data.remote.interfaces
 
 import com.example.exclusive.model.Brand
 

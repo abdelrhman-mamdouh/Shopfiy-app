@@ -1,6 +1,5 @@
-package com.example.exclusive.ui.productinfo
+package com.example.exclusive.ui.productinfo.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -109,7 +108,7 @@ class ProductInfoFragment : Fragment() {
                                 findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
                             }
                             val onClickCancel = {}
-                            val dialog = DailogFramgent(
+                            val dialog = DailogFragment(
                                 title = "you are in guest mode\nDo you want to login",
                                 onDialogNegativeClick = onClickCancel,
                                 onDialogPositiveClick = onClickOk
@@ -136,7 +135,7 @@ class ProductInfoFragment : Fragment() {
                                     )
                                 }
                                 val onClickCancel = {}
-                                val dialog = DailogFramgent(
+                                val dialog = DailogFragment(
                                     onDialogNegativeClick = onClickCancel,
                                     onDialogPositiveClick = onClickOk
                                 )
@@ -159,7 +158,7 @@ class ProductInfoFragment : Fragment() {
                                     findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
                                 }
                                 val onClickCancel = {}
-                                val dialog = DailogFramgent(
+                                val dialog = DailogFragment(
                                     title = "you are in guest mode\nDo you want to login",
                                     onDialogNegativeClick = onClickCancel,
                                     onDialogPositiveClick = onClickOk

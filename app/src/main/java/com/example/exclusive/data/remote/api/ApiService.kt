@@ -1,4 +1,4 @@
-package com.example.exclusive.data.remote
+package com.example.exclusive.data.remote.api
 
 import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.model.PriceRulesResponse

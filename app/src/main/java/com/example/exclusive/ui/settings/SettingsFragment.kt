@@ -1,12 +1,10 @@
 package com.example.exclusive.ui.settings
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -21,7 +19,7 @@ import com.example.exclusive.model.MyOrder
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.ui.orders.view.OnOrderClickListener
 import com.example.exclusive.ui.orders.view.OrderAdapter
-import com.example.exclusive.ui.productinfo.DailogFramgent
+import com.example.exclusive.ui.productinfo.view.DailogFragment
 import com.example.exclusive.ui.watchlist.WatchListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -98,7 +96,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         }
 
         val adapter = WatchListAdapter(onRemoveListner = { product ->
-            val dialog = DailogFramgent(onDialogPositiveClick = {
+            val dialog = DailogFragment(onDialogPositiveClick = {
                 viewModel.removeProductFromWatchList(product.id.substring(22))
             }, onDialogNegativeClick = {
                 findNavController().navigate(

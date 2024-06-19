@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.Optional
 import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.data.remote.interfaces.CartDataSource
+import com.example.exclusive.data.remote.interfaces.OrderDataSource
+import com.example.exclusive.data.remote.interfaces.RealtimeDatabaseDataSource
 import com.example.exclusive.data.repository.CurrencyRepository
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.MyOrder
@@ -21,7 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository,
-    private val remoteDataSource: ShopifyRemoteDataSource,
+    private val realtimeDatabaseDataSource: RealtimeDatabaseDataSource,
+    private val orderDataSource: OrderDataSource,
+    private val cartDataSource: CartDataSource,
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
     private val _ordersState = MutableStateFlow<UiState<List<MyOrder>>>(UiState.Idle)
@@ -50,7 +54,7 @@ class SettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val orders = remoteDataSource.getAllOrders(localDataSource.readToken()!!)
+                val orders = orderDataSource.getAllOrders(localDataSource.readToken()!!)
                 _ordersState.value = UiState.Success(orders)
             } catch (e: Exception) {
                 _ordersState.value = UiState.Error(e)
@@ -62,7 +66,7 @@ class SettingsViewModel @Inject constructor(
         _watchlist.value = UiState.Loading
         viewModelScope.launch {
             email = localDataSource.readEmail()
-            val result = remoteDataSource.fetchWatchlistProducts(email.toString())
+            val result = realtimeDatabaseDataSource.fetchWatchlistProducts(email.toString())
             Log.d("ViewModelWatchlist", result.toString())
             _watchlist.value = if (result.size > 2) {
                 UiState.Success(result.subList(0, 2))
@@ -92,9 +96,8 @@ class SettingsViewModel @Inject constructor(
                 )
                 val email = localDataSource.readEmail()
                 email?.replace('.', '-')
-                val cartId = remoteDataSource.fetchCartId(email!!)
-                Log.d("TAG", "addToCart: $cartId")
-                val response = remoteDataSource.addProductToCart(cartId!!, listOf(cartLineInput))
+                val cartId = cartDataSource.fetchCartId(email!!)
+                val response = cartDataSource.addProductToCart(cartId, listOf(cartLineInput))
                 _addToCartState.value =
                     if (response != null) UiState.Success(response) else UiState.Error(Exception("Failed to add to cart"))
             } catch (e: Exception) {
@@ -106,7 +109,7 @@ class SettingsViewModel @Inject constructor(
     fun removeProductFromWatchList(id: String) {
         viewModelScope.launch {
             email = localDataSource.readEmail()
-            remoteDataSource.deleteProduct(id, email.toString())
+            realtimeDatabaseDataSource.deleteProduct(id, email.toString())
             fetchWatchlist()
         }
     }

@@ -231,7 +231,7 @@
 
     <fragment
         android:id="@+id/productInfoFragment"
-        android:name="com.example.exclusive.ui.productinfo.ProductInfoFragment"
+        android:name="com.example.exclusive.ui.productinfo.view.ProductInfoFragment"
         android:label="Product Info">
         <argument
             android:name="product"
