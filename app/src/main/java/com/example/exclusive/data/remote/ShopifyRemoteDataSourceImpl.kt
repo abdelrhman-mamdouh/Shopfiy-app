@@ -1,4 +1,3 @@
-// ShopifyRemoteDataSourceImpl.kt
 package com.example.exclusive.data.remote
 
 import android.util.Log
@@ -30,7 +29,11 @@ import javax.inject.Singleton
 
 @Singleton
 class ShopifyRemoteDataSourceImpl @Inject constructor(
-    private val apolloService: ApolloService
+    private val productsService: ProductService,
+    private val customerService: CustomerService,
+    private val checkoutService: CheckoutService,
+    private val orderService: OrderService,
+    private val cartService: CartService
 ) : ShopifyRemoteDataSource {
     override suspend fun saveCardId(cardId: String, email: String) {
         val database =
@@ -39,7 +42,8 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         myRef.child("cart-id").setValue(cardId)
 
     }
-    override suspend fun fetchCartId(email: String): String? {
+
+    override suspend fun fetchCartId(email: String): String {
         val database =
             FirebaseDatabase.getInstance("https://exclusice-6129d-default-rtdb.firebaseio.com/")
         val myRef = database.getReference(email.replace('.', '-'))
@@ -48,27 +52,29 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getBrands(): List<Brand> {
-        return apolloService.getBrands()
+        return productsService.getBrands()
     }
 
 
     override suspend fun getCategories(): List<Brand> {
-        return apolloService.getCategories()
+        return productsService.getCategories()
     }
 
     override suspend fun getProducts(vendor: String): List<ProductNode> {
-        return apolloService.getProducts(vendor)
+        return productsService.getProducts(vendor)
     }
+
     override suspend fun getAllProducts(): List<ProductNode> {
-        return apolloService.getAllProducts()
+        return productsService.getAllProducts()
     }
+
     override suspend fun createCustomer(
         email: String,
         password: String,
         firstName: String,
         secondName: String
     ): Boolean {
-        return apolloService.createCustomer(
+        return customerService.createCustomer(
             email = email,
             password = password,
             firstName = firstName,
@@ -77,19 +83,19 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun createCustomerAccessToken(email: String, password: String): String? {
-        return apolloService.createCustomerAccessToken(email = email, password = password)
+        return customerService.createCustomerAccessToken(email = email, password = password)
     }
 
     override suspend fun sendPasswordRecoveryEmail(email: String): Boolean {
-        return apolloService.sendPasswordRecoveryEmail(email)
+        return customerService.sendPasswordRecoveryEmail(email)
     }
 
     override suspend fun resetPasswordByUrl(resetUrl: String, newPassword: String): Boolean {
-        return apolloService.resetPasswordByUrl(resetUrl, newPassword)
+        return customerService.resetPasswordByUrl(resetUrl, newPassword)
     }
 
     override suspend fun createCart(token: String): CreateCartResponse? {
-        return apolloService.createCart(token = token)
+        return cartService.createCart(token = token)
     }
 
     override fun addProductToRealtimeDatabase(product: ProductNode, accessToken: String) {
@@ -104,7 +110,7 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         cartId: String,
         lines: List<CartLineInput>
     ): AddToCartResponse? {
-        return apolloService.addToCartById(cartId, lines)
+        return cartService.addToCartById(cartId, lines)
     }
 
     override suspend fun fetchWatchlistProducts(accessToken: String): List<ProductNode> =
@@ -161,57 +167,57 @@ class ShopifyRemoteDataSourceImpl @Inject constructor(
         }
 
     override suspend fun getProductsInCart(cartId: String): List<CartProduct> {
-        return apolloService.getProductsInCart(cartId)
+        return cartService.getProductsInCart(cartId)
     }
 
     override suspend fun createCheckout(
         lineItems: List<CheckoutLineItemInput>,
         email: String?
     ): CheckoutResponse? {
-        return apolloService.createCheckout(lineItems, email)
+        return checkoutService.createCheckout(lineItems, email)
     }
 
     override suspend fun removeFromCartById(
         cartId: String,
         lineIds: List<String>
     ): AddToCartResponse? {
-        return apolloService.removeFromCartById(cartId, lineIds)
+        return cartService.removeFromCartById(cartId, lineIds)
     }
 
     override suspend fun addAddress(
         addressInput: MailingAddressInput,
         customerAccessToken: String
     ): Boolean {
-        return apolloService.addAddressToCustomer(addressInput, customerAccessToken)
+        return customerService.addAddressToCustomer(addressInput, customerAccessToken)
     }
 
     override suspend fun getCustomerAddresses(customerAccessToken: String): List<AddressInput> {
-        return apolloService.getCustomerAddresses(customerAccessToken)
+        return customerService.getCustomerAddresses(customerAccessToken)
     }
 
     override suspend fun deleteCustomerAddress(
         customerAccessToken: String,
         addressId: String
     ): Boolean {
-        return apolloService.deleteCustomerAddress(customerAccessToken, addressId)
+        return customerService.deleteCustomerAddress(customerAccessToken, addressId)
     }
 
     override suspend fun applyDiscountCode(checkoutId: String, discountCode: String): Boolean {
-        return apolloService.applyDiscountCode(checkoutId,discountCode)
+        return checkoutService.applyDiscountCode(checkoutId, discountCode)
     }
 
     override suspend fun getCheckoutDetails(checkoutId: String): CheckoutDetails? {
-        return apolloService.getCheckoutDetails(checkoutId)
+        return checkoutService.getCheckoutDetails(checkoutId)
     }
 
     override suspend fun getAllOrders(customerAccessToken: String): List<MyOrder> {
-        return apolloService.getAllOrders(customerAccessToken)
+        return orderService.getAllOrders(customerAccessToken)
     }
 
     override suspend fun applyShippingAddress(
         checkoutId: String,
         shippingAddress: MailingAddressInput
     ): Boolean {
-        return apolloService.applyShippingAddress(checkoutId,shippingAddress)
+        return checkoutService.applyShippingAddress(checkoutId, shippingAddress)
     }
 }

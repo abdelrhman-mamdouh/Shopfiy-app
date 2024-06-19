@@ -2,9 +2,12 @@ package com.example.exclusive.di
 
 import com.apollographql.apollo3.ApolloClient
 import com.example.exclusive.data.local.LocalDataSource
-import com.example.exclusive.data.network.ApiService
-import com.example.exclusive.data.network.DiscountApi
-import com.example.exclusive.data.remote.ApolloService
+import com.example.exclusive.data.remote.ApiService
+import com.example.exclusive.data.remote.DiscountApi
+import com.example.exclusive.data.remote.CartService
+import com.example.exclusive.data.remote.CheckoutService
+import com.example.exclusive.data.remote.OrderService
+import com.example.exclusive.data.remote.ProductService
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.data.repository.AddressRepositoryImpl
@@ -96,8 +99,26 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApolloService(apolloClient: ApolloClient): ApolloService {
-        return ApolloService(apolloClient)
+    fun provideProductService(apolloClient: ApolloClient): ProductService {
+        return ProductService(apolloClient)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCartService(apolloClient: ApolloClient): CartService {
+        return CartService(apolloClient)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOrderService(apolloClient: ApolloClient): OrderService {
+        return OrderService(apolloClient)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCheckoutService(apolloClient: ApolloClient): CheckoutService {
+        return CheckoutService(apolloClient)
     }
 
     @Provides
