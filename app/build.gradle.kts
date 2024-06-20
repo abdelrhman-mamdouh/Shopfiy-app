@@ -133,6 +133,9 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.5.1")
 
 
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("org.robolectric:robolectric:4.5.1")
+
     // AndroidX Test - JVM testing
     testImplementation("androidx.test:core-ktx:1.4.0")
     //testImplementation("androidx.test.ext:junit:1.1.3")
@@ -160,8 +163,12 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
+
+    //kotlinx-coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+
 }
 kapt {
     correctErrorTypes = true

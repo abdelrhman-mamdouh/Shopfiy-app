@@ -1,8 +1,9 @@
-package com.example.exclusive.ui.settings.currency
+package com.example.exclusive.ui.settings.currency.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.remote.UiState
-import com.example.fake.FakeCurrencyRepository
+import com.example.exclusive.ui.settings.currency.CurrenciesViewModel
+import com.example.exclusive.ui.settings.currency.repository.FakeCurrencyRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

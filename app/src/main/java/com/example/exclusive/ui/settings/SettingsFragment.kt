@@ -192,7 +192,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
 
         binding.cvAddress.setOnClickListener {
             findNavController().navigate(
-                R.id.action_settingsFragment_to_addAddressFragment)
+                R.id.action_settingsFragment_to_addressesFragment)
         }
 
         binding.cvCurrency.setOnClickListener {

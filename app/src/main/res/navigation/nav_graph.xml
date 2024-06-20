@@ -115,6 +115,10 @@
             app:destination="@id/addAddressFragment"
             app:enterAnim="@anim/row_slide_in" />
         <action
+            android:id="@+id/action_settingsFragment_to_addressesFragment"
+            app:destination="@id/addressesFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
             android:id="@+id/action_settingsFragment_to_currenciesFragment"
             app:destination="@id/currenciesFragment"
             app:enterAnim="@anim/row_slide_in" />
@@ -221,6 +225,10 @@
             android:id="@+id/action_orderFragment_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment"
             app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_orderFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
     </fragment>
 
     <fragment
@@ -272,15 +280,11 @@
             android:name="webUrl"
             app:argType="string" />
         <action
-            android:id="@+id/action_checkoutWebViewFragment_to_thankYouFragment"
-            app:destination="@id/thankYouFragment"
+            android:id="@+id/action_checkoutWebViewFragment_to_paymentCompletedFragment"
+            app:destination="@id/paymentCompletedFragment"
             app:enterAnim="@anim/row_slide_in"/>
     </fragment>
-    <fragment
-        android:id="@+id/thankYouFragment"
-        android:name="com.example.exclusive.ui.checkout.view.PaymentCompletedFragment"
-        android:label="Payment Completed"
-        tools:layout="@layout/fragment_payment_completed" />
+
 
     <fragment
         android:id="@+id/paymentCompletedFragment"
@@ -291,7 +295,6 @@
             android:id="@+id/action_paymentCompletedFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
     </fragment>
-
 
 
 </navigation>

@@ -7,6 +7,7 @@ import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.Brand
+import com.example.exclusive.ui.home.repository.HomeRepository
 import com.example.exclusive.ui.home.repository.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val brandRepository: HomeRepositoryImpl) :
+class HomeViewModel @Inject constructor(private val brandRepository: HomeRepository) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Brand>>>(UiState.Idle)
@@ -31,7 +32,7 @@ class HomeViewModel @Inject constructor(private val brandRepository: HomeReposit
         fetchDiscountPrice()
     }
 
-    private fun fetchBrands() {
+    fun fetchBrands() {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
@@ -43,7 +44,7 @@ class HomeViewModel @Inject constructor(private val brandRepository: HomeReposit
         }
     }
 
-    private fun fetchDiscountPrice() {
+    fun fetchDiscountPrice() {
         _dicountState.value = UiState.Loading
         viewModelScope.launch {
             try {
