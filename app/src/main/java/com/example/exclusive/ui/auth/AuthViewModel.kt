@@ -3,6 +3,7 @@ package com.example.exclusive.ui.auth
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.exclusive.data.local.ILocalDataSource
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.google.firebase.Firebase
@@ -20,7 +21,7 @@ private const val TAG = "AuthViewModel"
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: ILocalDataSource
 ) : ViewModel() {
 
     private val auth: FirebaseAuth by lazy {
@@ -43,9 +44,7 @@ class AuthViewModel @Inject constructor(
 
     fun getToken() {
         viewModelScope.launch {
-            localDataSource.token.collect {
-                _tokenState.value = it
-            }
+            _tokenState.value = localDataSource.readToken()
         }
     }
 
@@ -83,14 +82,14 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val result = remoteDataSource.createCustomerAccessToken(email, password)
             if (result != null) {
- 
-                localDataSource.token.collect { token ->
+                 val token  = localDataSource.readToken()
+
                     Log.d(TAG, "signUp: $token")
                     val createResponse = remoteDataSource.createCart(token = token!!)
                     Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
                     createResponse?.cart?.let {
                         remoteDataSource.saveCardId(it.id,email)
-                    }
+
                 }
             }
         }
@@ -109,7 +108,8 @@ class AuthViewModel @Inject constructor(
                         if (result != null) {
                             _loginState.value = 1
                             localDataSource.saveToken(result)
-                            localDataSource.token.collect { token ->
+                            val token  = localDataSource.readToken()
+
                                 if (token != null) {
                                     val createResponse = remoteDataSource.createCart(token = token)
                                     Log.d(TAG, "signUp: ${createResponse?.cart?.id ?: "Not Found"}")
@@ -120,7 +120,7 @@ class AuthViewModel @Inject constructor(
                                     Log.d(TAG, "Token is null")
                                     _loginState.value = -1
                                 }
-                            }
+
                         } else {
                             _loginState.value = -1
                         }
