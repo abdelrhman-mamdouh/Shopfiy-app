@@ -41,7 +41,16 @@ class OrderFragment : Fragment(), OnOrderClickListener {
 
         binding.titleBar.icBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+            findNavController().navigate(R.id.action_orderFragment_to_homeFragment)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack()
+                    findNavController().navigate(R.id.action_orderFragment_to_homeFragment)
+                }
+            })
         binding.titleBar.tvTitle.text = getString(R.string.orders)
         recyclerView = binding.rvOrders
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -16,7 +16,6 @@ import com.example.exclusive.type.MailingAddressInput
 
 interface ShopifyRemoteDataSource {
     suspend fun getBrands(): List<Brand>
-
     suspend fun getCategories(): List<Brand>
     suspend fun getProducts(vendor: String): List<ProductNode>
     suspend fun getAllProducts(): List<ProductNode>

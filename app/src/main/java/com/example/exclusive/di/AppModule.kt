@@ -5,11 +5,16 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.network.ApiService
 import com.example.exclusive.data.network.DiscountApi
 import com.example.exclusive.data.remote.ApolloService
+import com.example.exclusive.data.remote.DiscountDataSourceImpl
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.data.repository.AddressRepositoryImpl
 import com.example.exclusive.data.repository.CartRepository
 import com.example.exclusive.data.repository.CartRepositoryImpl
+import com.example.exclusive.ui.home.repository.HomeRepository
+import com.example.exclusive.ui.home.repository.HomeRepositoryImpl
+import com.example.exclusive.ui.products.repository.ProductsRepository
+import com.example.exclusive.ui.products.repository.ProductsRepositoryImpl
 import com.example.exclusive.utilities.Constants
 import dagger.Module
 import dagger.Provides
@@ -117,4 +122,21 @@ object AppModule {
     ): AddressRepository {
         return AddressRepositoryImpl(remoteDataSource, localDataSource)
     }
+    @Provides
+    @Singleton
+    fun provideHomeRepository(
+        remoteDataSource: ShopifyRemoteDataSource,
+        myRemoteDataSource: DiscountDataSourceImpl
+    ): HomeRepository {
+        return HomeRepositoryImpl(remoteDataSource, myRemoteDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideProductsRepository(
+        remoteDataSource: ShopifyRemoteDataSource,
+        localDataSource: LocalDataSource
+    ): ProductsRepository {
+        return ProductsRepositoryImpl(remoteDataSource, localDataSource)
+    }
+
 }
