@@ -5,11 +5,14 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.network.ApiService
 import com.example.exclusive.data.network.DiscountApi
 import com.example.exclusive.data.remote.ApolloService
+import com.example.exclusive.data.remote.CurrencyRemoteDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.data.repository.AddressRepositoryImpl
 import com.example.exclusive.data.repository.CartRepository
 import com.example.exclusive.data.repository.CartRepositoryImpl
+import com.example.exclusive.data.repository.CurrencyRepository
+import com.example.exclusive.data.repository.CurrencyRepositoryImpl
 import com.example.exclusive.utilities.Constants
 import dagger.Module
 import dagger.Provides
@@ -116,5 +119,13 @@ object AppModule {
         localDataSource: LocalDataSource
     ): AddressRepository {
         return AddressRepositoryImpl(remoteDataSource, localDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideCurrenciesRepository(
+        currencyRemoteDataSource: CurrencyRemoteDataSource,
+        localDataSource: LocalDataSource
+    ): CurrencyRepository {
+        return CurrencyRepositoryImpl(currencyRemoteDataSource, localDataSource)
     }
 }

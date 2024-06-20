@@ -1,7 +1,5 @@
 package com.example.exclusive.data.local
 
-import com.example.exclusive.data.repository.CurrencyRepository
-
 interface ILocalDataSource {
     suspend fun saveToken(token: String)
     suspend fun clearToken()

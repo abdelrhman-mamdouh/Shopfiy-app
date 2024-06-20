@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 class CurrencyRemoteDataSource @Inject constructor(
     private val currencyApiInterface: ApiService
-) {
+) : ICurrencyRemoteDataSource {
 
-    fun getCurrencies(currencyCode: String): Flow<UiState<Currencies>> = flow {
+    override fun getCurrencies(currencyCode: String): Flow<UiState<Currencies>> = flow {
         emit(UiState.Loading)
         try {
             val response = currencyApiInterface.getCurrencies(currencyCode)

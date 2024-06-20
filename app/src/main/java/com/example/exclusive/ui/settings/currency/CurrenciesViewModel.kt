@@ -1,11 +1,11 @@
 package com.example.exclusive.ui.settings.currency
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.data.repository.CurrencyRepository
+import com.example.exclusive.data.repository.CurrencyRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,6 @@ class CurrenciesViewModel @Inject constructor(
     val currenciesStateFlow: StateFlow<UiState<Currencies>> get() = _currenciesStateFlow
 
     fun fetchCurrencies(currencyCode: String) {
-        Log.i("TAG", "fetchCurrencies: $currencyCode")
         viewModelScope.launch {
             currencyRepository.getCurrencies(currencyCode)
                 .catch { e -> _currenciesStateFlow.value = UiState.Error(e) }

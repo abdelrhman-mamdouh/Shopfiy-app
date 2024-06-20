@@ -7,7 +7,7 @@ import com.apollographql.apollo3.api.Optional
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
-import com.example.exclusive.data.repository.CurrencyRepository
+import com.example.exclusive.data.repository.CurrencyRepositoryImpl
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.MyOrder
 import com.example.exclusive.model.ProductNode
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository,
+    private val currencyRepository: CurrencyRepositoryImpl,
     private val remoteDataSource: ShopifyRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : ViewModel() {
