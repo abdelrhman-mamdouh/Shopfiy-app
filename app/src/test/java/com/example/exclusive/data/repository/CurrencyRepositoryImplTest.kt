@@ -7,6 +7,7 @@ import com.example.fake.FakeLocalDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +27,7 @@ class CurrencyRepositoryImplTest {
     }
 
     @Test
-    fun givenCurrencyCode_whenGetCurrencies_thenReturnsCorrectState() = runBlockingTest {
+    fun givenCurrencyCode_whenGetCurrencies_thenReturnsCorrectState() = runTest {
         // Given
         val currencyCode = "USD"
         val expectedUiState = UiState.Success(
@@ -42,7 +43,7 @@ class CurrencyRepositoryImplTest {
     }
 
     @Test
-    fun givenCurrencyPair_whenSaveCurrency_thenUpdatesLocalCurrency() = runBlockingTest {
+    fun givenCurrencyPair_whenSaveCurrency_thenUpdatesLocalCurrency() = runTest {
         // Given
         val pair = Pair("EUR", 0.84)
 

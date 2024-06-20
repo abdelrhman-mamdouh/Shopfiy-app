@@ -13,9 +13,4 @@ interface ApiService {
     suspend fun getCurrencies(
         @Query("from") base : String = "EGP", @Query("api_key") apiKey : String = Constants.CURRENCY_API_KEY
     ): Response<Currencies>
-
-    @GET("admin/api/2024-04/price_rules.json")
-    suspend fun getPriceRules(
-        @Header("X-Shopify-Access-Token") accessToken: String
-    ): Response<PriceRulesResponse>
 }
