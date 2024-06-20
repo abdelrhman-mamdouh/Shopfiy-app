@@ -8,8 +8,10 @@ import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.model.CheckoutResponse
 import com.example.exclusive.model.CreateCartResponse
+import com.example.exclusive.model.Images
 import com.example.exclusive.model.MyOrder
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.model.Variants
 import com.example.exclusive.type.CartLineInput
 import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.MailingAddressInput
@@ -27,11 +29,27 @@ class FakeShopifyRemoteDataSource : ShopifyRemoteDataSource {
     }
 
     override suspend fun getProducts(vendor: String): List<ProductNode> {
-        TODO("Not yet implemented")
+        return listOf(
+            ProductNode("1","Tshirt","Puma","male Tshirt","clothes"
+            , Images(emptyList()), Variants(emptyList())
+            )
+            ,
+            ProductNode("2","shoes","Nike","male shoes","clothes"
+                , Images(emptyList()), Variants(emptyList())
+            )
+        )
     }
 
     override suspend fun getAllProducts(): List<ProductNode> {
-        TODO("Not yet implemented")
+        return listOf(
+            ProductNode("1","Tshirt","Puma","male Tshirt","clothes"
+                , Images(emptyList()), Variants(emptyList())
+            )
+            ,
+            ProductNode("2","shoes","Nike","male shoes","clothes"
+                , Images(emptyList()), Variants(emptyList())
+            )
+        )
     }
 
     override suspend fun fetchCartId(email: String): String? {
@@ -72,7 +90,7 @@ class FakeShopifyRemoteDataSource : ShopifyRemoteDataSource {
     }
 
     override fun addProductToRealtimeDatabase(product: ProductNode, accessToken: String) {
-        TODO("Not yet implemented")
+
     }
 
     override suspend fun createCart(token: String): CreateCartResponse? {

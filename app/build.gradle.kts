@@ -90,7 +90,7 @@ dependencies {
 
     // Glide library
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     //Picasso
     implementation ("com.squareup.picasso:picasso:2.71828")
@@ -163,7 +163,9 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
 
-
+    //mockito
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     //kotlinx-coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")

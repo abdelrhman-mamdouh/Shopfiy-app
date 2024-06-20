@@ -23,7 +23,7 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun readToken(): String? {
-        TODO("Not yet implemented")
+        return "token"
     }
 
     override suspend fun saveUserCartId(cartId: String) {
@@ -35,7 +35,7 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun readEmail(): String? {
-        TODO("Not yet implemented")
+        return "email"
     }
 
     override suspend fun getUserCartId(): String? {
@@ -59,6 +59,6 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun getIsGuest(): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 }
