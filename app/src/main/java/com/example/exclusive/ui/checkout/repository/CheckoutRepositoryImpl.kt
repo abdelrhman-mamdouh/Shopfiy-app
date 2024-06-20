@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.checkout.repository
 
+import com.example.exclusive.data.local.ILocalDataSource
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.model.AddressInput
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 class CheckoutRepositoryImpl @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: ILocalDataSource
 ) : CheckoutRepository {
 
     override suspend fun fetchCustomerAddresses(): List<AddressInput> {

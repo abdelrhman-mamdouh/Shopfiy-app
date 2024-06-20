@@ -18,6 +18,10 @@ import com.example.exclusive.data.repository.CartRepositoryImpl
 
 import com.example.exclusive.data.repository.CurrencyRepository
 import com.example.exclusive.data.repository.CurrencyRepositoryImpl
+import com.example.exclusive.ui.category.repository.CategoriesRepository
+import com.example.exclusive.ui.category.repository.CategoriesRepositoryImpl
+import com.example.exclusive.ui.checkout.repository.CheckoutRepository
+import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
 
 import com.example.exclusive.ui.home.repository.HomeRepository
 import com.example.exclusive.ui.home.repository.HomeRepositoryImpl
@@ -144,5 +148,19 @@ object AppModule {
     ): ProductsRepository {
         return ProductsRepositoryImpl(remoteDataSource, localDataSource)
     }
-
+    @Provides
+    @Singleton
+    fun provideCategoriesRepository(
+        remoteDataSource: ShopifyRemoteDataSource
+    ): CategoriesRepository {
+        return CategoriesRepositoryImpl(remoteDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideCheckoutRepository(
+        remoteDataSource: ShopifyRemoteDataSource,
+        localDataSource: LocalDataSource
+    ): CheckoutRepository {
+        return CheckoutRepositoryImpl(remoteDataSource, localDataSource)
+    }
 }

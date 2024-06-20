@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.Brand
-import com.example.exclusive.ui.category.repository.CategoriesRepositoryImpl
+import com.example.exclusive.ui.category.repository.CategoriesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,15 +14,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val categoriesRepository: CategoriesRepositoryImpl
+    private val categoriesRepository: CategoriesRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Brand>>>(UiState.Idle)
     val uiState: StateFlow<UiState<List<Brand>>> get() = _uiState
+
     init {
         fetchCategories()
     }
-    private fun fetchCategories() {
+
+    fun fetchCategories() {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
