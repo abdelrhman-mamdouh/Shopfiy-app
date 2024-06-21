@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,9 +15,8 @@ import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentOrderBinding
 import com.example.exclusive.ui.orders.viewmodel.OrdersViewModel
 import com.example.exclusive.data.remote.UiState
-import com.example.exclusive.model.MyOrder
+import com.example.exclusive.data.model.MyOrder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class OrderFragment : Fragment(), OnOrderClickListener {

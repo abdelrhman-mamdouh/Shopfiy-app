@@ -2,7 +2,7 @@ package com.example.exclusive.data.repository
 
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.interfaces.CustomerDataSource
-import com.example.exclusive.model.AddressInput
+import com.example.exclusive.data.model.AddressInput
 import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject
 

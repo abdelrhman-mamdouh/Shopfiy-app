@@ -1,4 +1,4 @@
-package com.example.exclusive.model
+package com.example.exclusive.data.model
 
 data class Review (val name: String, val rating: Double, val comment: String)
 val fakeReviews = listOf(

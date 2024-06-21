@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductInfoBinding
-import com.example.exclusive.model.ProductNode
-import com.example.exclusive.model.VariantNode
-import com.example.exclusive.model.getRandomNineReviews
+import com.example.exclusive.data.model.ProductNode
+import com.example.exclusive.data.model.VariantNode
+import com.example.exclusive.data.model.getRandomNineReviews
 import com.example.exclusive.ui.productinfo.viewmodel.ProductInfoViewModel
 import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint

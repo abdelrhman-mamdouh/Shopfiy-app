@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.ItemCartBinding
-import com.example.exclusive.model.CartProduct
+import com.example.exclusive.data.model.CartProduct
 import com.example.exclusive.utilities.SnackbarUtils
 import com.squareup.picasso.Picasso
 

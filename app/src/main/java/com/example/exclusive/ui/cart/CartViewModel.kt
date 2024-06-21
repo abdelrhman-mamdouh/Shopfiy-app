@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.data.repository.CartRepository
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.Checkout
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.Checkout
 import com.example.exclusive.type.CheckoutLineItemInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
 
 import com.example.exclusive.databinding.RowBrandBinding
-import com.example.exclusive.model.Brand
+import com.example.exclusive.data.model.Brand
 import com.example.exclusive.ui.home.view.OnItemClickListener
 import com.squareup.picasso.Picasso
 

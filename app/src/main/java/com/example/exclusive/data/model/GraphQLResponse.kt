@@ -1,12 +1,9 @@
-package com.example.exclusive.model
+package com.example.exclusive.data.model
 
 import android.os.Parcelable
 import com.apollographql.apollo3.api.Optional
-import com.example.exclusive.GetCheckoutDetailsQuery
-import com.example.exclusive.type.Customer
 import com.example.exclusive.type.MailingAddressInput
 import kotlinx.android.parcel.Parcelize
-import java.math.BigDecimal
 
 data class Brand(val id: String, val name: String, val imageUrl: String)
 @Parcelize
@@ -209,7 +206,7 @@ data class MyOrder(
     val orderNumber: String,
     val statusUrl: String,
     val phone: String?,
-    val totalPrice :TotalPrice,
+    val totalPrice : TotalPrice,
     val billingAddress: BillingAddress?,
     val lineItems: List<LineItems>
 ):Parcelable

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.exclusive.model.SliderItem
+import com.example.exclusive.data.model.SliderItem
 
 import com.makeramen.roundedimageview.RoundedImageView
 

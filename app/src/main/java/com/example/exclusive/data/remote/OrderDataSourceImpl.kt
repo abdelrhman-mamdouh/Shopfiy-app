@@ -2,7 +2,7 @@ package com.example.exclusive.data.remote
 
 import com.example.exclusive.data.remote.api.OrderService
 import com.example.exclusive.data.remote.interfaces.OrderDataSource
-import com.example.exclusive.model.MyOrder
+import com.example.exclusive.data.model.MyOrder
 import javax.inject.Inject
 import javax.inject.Singleton
 

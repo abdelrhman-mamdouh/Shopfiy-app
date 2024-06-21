@@ -1,6 +1,6 @@
 package com.example.exclusive.data.repository
 
-import com.example.exclusive.model.AddressInput
+import com.example.exclusive.data.model.AddressInput
 import com.example.exclusive.type.MailingAddressInput
 
 interface AddressRepository {

@@ -8,8 +8,8 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.data.remote.interfaces.CartDataSource
 import com.example.exclusive.data.remote.interfaces.RealtimeDatabaseDataSource
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

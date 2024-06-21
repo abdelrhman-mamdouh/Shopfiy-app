@@ -1,6 +1,6 @@
 package com.example.exclusive.data.remote.interfaces
 
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 
 interface RealtimeDatabaseDataSource {
 

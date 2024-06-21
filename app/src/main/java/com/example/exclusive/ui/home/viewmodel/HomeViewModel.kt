@@ -2,12 +2,11 @@ package com.example.exclusive.ui.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
-import com.example.exclusive.model.Brand
-import com.example.exclusive.ui.home.repository.HomeRepositoryImpl
+import com.example.exclusive.data.model.Brand
+import com.example.exclusive.data.repository.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

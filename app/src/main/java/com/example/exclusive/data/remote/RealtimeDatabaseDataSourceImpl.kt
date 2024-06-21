@@ -2,7 +2,7 @@ package com.example.exclusive.data.remote
 
 import android.util.Log
 import com.example.exclusive.data.remote.interfaces.RealtimeDatabaseDataSource
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

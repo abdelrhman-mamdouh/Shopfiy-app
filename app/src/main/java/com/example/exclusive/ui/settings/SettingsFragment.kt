@@ -15,8 +15,8 @@ import com.example.exclusive.R
 
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
-import com.example.exclusive.model.MyOrder
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.MyOrder
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.ui.orders.view.OnOrderClickListener
 import com.example.exclusive.ui.orders.view.OrderAdapter
 import com.example.exclusive.ui.productinfo.view.DailogFragment

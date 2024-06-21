@@ -9,7 +9,7 @@ import com.example.exclusive.DeleteCustomerAddressMutation
 import com.example.exclusive.GetCustomerAddressesQuery
 import com.example.exclusive.ResetPasswordByUrlMutation
 import com.example.exclusive.SendPasswordRecoverEmailMutation
-import com.example.exclusive.model.AddressInput
+import com.example.exclusive.data.model.AddressInput
 import com.example.exclusive.type.CustomerAccessTokenCreateInput
 import com.example.exclusive.type.CustomerCreateInput
 import com.example.exclusive.type.MailingAddressInput

@@ -9,11 +9,11 @@ import com.example.exclusive.AddToCartMutation
 import com.example.exclusive.CreateCartMutation
 import com.example.exclusive.GetProductsInCartQuery
 import com.example.exclusive.RemoveProductFromCartMutation
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.Cart
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CreateCartResponse
-import com.example.exclusive.model.UserError
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.Cart
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.CreateCartResponse
+import com.example.exclusive.data.model.UserError
 import com.example.exclusive.type.CartBuyerIdentityInput
 import com.example.exclusive.type.CartLineInput
 import javax.inject.Inject

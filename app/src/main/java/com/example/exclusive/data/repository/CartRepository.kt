@@ -1,8 +1,8 @@
 package com.example.exclusive.data.repository
 
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CheckoutResponse
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.CheckoutResponse
 import com.example.exclusive.type.CheckoutLineItemInput
 
 interface CartRepository {

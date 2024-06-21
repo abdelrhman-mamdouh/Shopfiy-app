@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.RowProductBinding
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 import com.squareup.picasso.Picasso
-import kotlin.random.Random
 
 
 class ProductsAdapter(

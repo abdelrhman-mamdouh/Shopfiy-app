@@ -10,9 +10,9 @@ import com.example.exclusive.data.remote.interfaces.CartDataSource
 import com.example.exclusive.data.remote.interfaces.OrderDataSource
 import com.example.exclusive.data.remote.interfaces.RealtimeDatabaseDataSource
 import com.example.exclusive.data.repository.CurrencyRepository
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.MyOrder
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.MyOrder
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,8 +30,6 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _ordersState = MutableStateFlow<UiState<List<MyOrder>>>(UiState.Idle)
     val ordersState: StateFlow<UiState<List<MyOrder>>> = _ordersState
-    private val _addToCartState = MutableStateFlow<UiState<AddToCartResponse>>(UiState.Idle)
-    val addToCartState: StateFlow<UiState<AddToCartResponse>> get() = _addToCartState
     private val _currenciesStateFlow = MutableStateFlow<UiState<Pair<String, Double>>>(UiState.Idle)
     val currenciesStateFlow: StateFlow<UiState<Pair<String, Double>>> get() = _currenciesStateFlow
     private val _watchlist = MutableStateFlow<UiState<List<ProductNode>>>(UiState.Idle)
@@ -85,7 +83,6 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun addToCart(productId: String,quantity:Int) {
-        _addToCartState.value = UiState.Loading
         viewModelScope.launch {
             try {
                 val cartLineInput = CartLineInput(
@@ -97,11 +94,8 @@ class SettingsViewModel @Inject constructor(
                 val email = localDataSource.readEmail()
                 email?.replace('.', '-')
                 val cartId = cartDataSource.fetchCartId(email!!)
-                val response = cartDataSource.addProductToCart(cartId, listOf(cartLineInput))
-                _addToCartState.value =
-                    if (response != null) UiState.Success(response) else UiState.Error(Exception("Failed to add to cart"))
-            } catch (e: Exception) {
-                _addToCartState.value = UiState.Error(e)
+                cartDataSource.addProductToCart(cartId, listOf(cartLineInput))
+            } catch (_: Exception) {
             }
         }
     }

@@ -3,9 +3,9 @@ package com.example.exclusive.data.repository
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.interfaces.CartDataSource
 import com.example.exclusive.data.remote.interfaces.CheckoutDataSource
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CheckoutResponse
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.CheckoutResponse
 import com.example.exclusive.type.CheckoutLineItemInput
 import javax.inject.Inject
 

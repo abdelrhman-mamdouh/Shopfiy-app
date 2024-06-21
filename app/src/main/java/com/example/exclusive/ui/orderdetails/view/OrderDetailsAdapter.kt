@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.exclusive.R
 import com.example.exclusive.databinding.RowOrderProductBinding
-import com.example.exclusive.model.LineItems
-import com.example.exclusive.model.ProductItem
-
+import com.example.exclusive.data.model.LineItems
 
 
 class OrderDetailsAdapter(

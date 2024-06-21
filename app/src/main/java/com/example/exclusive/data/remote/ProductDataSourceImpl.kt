@@ -2,8 +2,8 @@ package com.example.exclusive.data.remote
 
 import com.example.exclusive.data.remote.api.ProductService
 import com.example.exclusive.data.remote.interfaces.ProductDataSource
-import com.example.exclusive.model.Brand
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.Brand
+import com.example.exclusive.data.model.ProductNode
 import javax.inject.Inject
 import javax.inject.Singleton
 

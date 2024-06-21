@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.ItemAddressBinding
-import com.example.exclusive.model.AddressInput
-import com.example.exclusive.model.CartProduct
+import com.example.exclusive.data.model.AddressInput
 
 class AddressesAdapter : ListAdapter<AddressInput, AddressesAdapter.AddressViewHolder>(AddressDiffCallback()) {
 

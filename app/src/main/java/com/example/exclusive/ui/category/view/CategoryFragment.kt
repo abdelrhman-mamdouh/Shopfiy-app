@@ -1,6 +1,5 @@
 package com.example.exclusive.ui.category.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCategoryBinding
-import com.example.exclusive.model.Brand
+import com.example.exclusive.data.model.Brand
 import com.example.exclusive.ui.category.viewmodel.CategoryViewModel
-import com.example.exclusive.ui.checkout.view.CheckoutFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

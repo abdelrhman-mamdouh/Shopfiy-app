@@ -2,14 +2,13 @@ package com.example.exclusive.data.remote
 
 import com.example.exclusive.data.remote.api.CartService
 import com.example.exclusive.data.remote.interfaces.CartDataSource
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CreateCartResponse
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.CreateCartResponse
 import com.example.exclusive.type.CartLineInput
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class CartDataSourceImpl @Inject constructor(
     private val cartService: CartService

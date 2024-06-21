@@ -1,4 +1,4 @@
-package com.example.exclusive.model
+package com.example.exclusive.data.model
 
 data class Order(
     val id: Long,

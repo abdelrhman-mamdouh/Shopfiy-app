@@ -1,7 +1,7 @@
 package com.example.exclusive.data.remote.interfaces
 
-import com.example.exclusive.model.Brand
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.Brand
+import com.example.exclusive.data.model.ProductNode
 
 interface ProductDataSource {
     suspend fun getBrands(): List<Brand>

@@ -1,13 +1,11 @@
 package com.example.exclusive.ui.cart
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -21,12 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCartBinding
-import com.example.exclusive.model.CartProduct
+import com.example.exclusive.data.model.CartProduct
 import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

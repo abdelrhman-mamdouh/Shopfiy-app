@@ -4,10 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
-import com.example.exclusive.model.AddressInput
-import com.example.exclusive.model.CheckoutDetails
+import com.example.exclusive.data.model.AddressInput
+import com.example.exclusive.data.model.CheckoutDetails
 
-import com.example.exclusive.model.Order
 import com.example.exclusive.type.MailingAddressInput
 import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel

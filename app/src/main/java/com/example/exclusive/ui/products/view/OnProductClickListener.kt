@@ -1,6 +1,6 @@
 package com.example.exclusive.ui.products.view
 
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 
 
 interface OnProductClickListener {

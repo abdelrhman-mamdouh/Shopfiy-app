@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.exclusive.databinding.WatchlistItemBinding
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 
 class WatchlistDiffUtil: DiffUtil.ItemCallback<ProductNode>() {
     override fun areItemsTheSame(oldItem: ProductNode, newItem: ProductNode): Boolean {
@@ -17,7 +17,7 @@ class WatchlistDiffUtil: DiffUtil.ItemCallback<ProductNode>() {
         return oldItem == newItem
     }
 }
-class WatchListAdapter(var onRemoveListner:(ProductNode)->Unit,var onItemClickListener:(ProductNode)->Unit,var addToCart:(ProductNode)->Unit): androidx.recyclerview.widget.ListAdapter<ProductNode, WatchListAdapter.ViewHolder>(
+class WatchListAdapter(var onRemoveListner:(ProductNode)->Unit, var onItemClickListener:(ProductNode)->Unit, var addToCart:(ProductNode)->Unit): androidx.recyclerview.widget.ListAdapter<ProductNode, WatchListAdapter.ViewHolder>(
     WatchlistDiffUtil()
 ) {
     class ViewHolder(val binding: WatchlistItemBinding) : RecyclerView.ViewHolder(binding.root)

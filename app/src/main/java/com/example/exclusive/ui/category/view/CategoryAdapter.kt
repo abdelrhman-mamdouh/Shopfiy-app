@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.databinding.RowBrandBinding
-import com.example.exclusive.model.Brand
+import com.example.exclusive.data.model.Brand
 import com.squareup.picasso.Picasso
 
 

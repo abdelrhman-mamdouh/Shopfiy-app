@@ -1,11 +1,11 @@
-package com.example.exclusive.ui.home.repository
+package com.example.exclusive.data.repository
 
 
 import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.PriceRulesResponse
 import com.example.exclusive.data.remote.DiscountDataSource
 import com.example.exclusive.data.remote.interfaces.ProductDataSource
-import com.example.exclusive.model.Brand
+import com.example.exclusive.data.model.Brand
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(

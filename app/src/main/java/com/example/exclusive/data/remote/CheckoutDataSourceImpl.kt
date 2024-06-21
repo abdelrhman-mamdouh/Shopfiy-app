@@ -2,8 +2,8 @@ package com.example.exclusive.data.remote
 
 import com.example.exclusive.data.remote.api.CheckoutService
 import com.example.exclusive.data.remote.interfaces.CheckoutDataSource
-import com.example.exclusive.model.CheckoutDetails
-import com.example.exclusive.model.CheckoutResponse
+import com.example.exclusive.data.model.CheckoutDetails
+import com.example.exclusive.data.model.CheckoutResponse
 import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.MailingAddressInput
 import javax.inject.Inject

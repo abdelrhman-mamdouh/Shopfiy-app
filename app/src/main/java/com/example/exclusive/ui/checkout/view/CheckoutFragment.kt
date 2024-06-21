@@ -1,7 +1,6 @@
 // CheckoutFragment.kt
 package com.example.exclusive.ui.checkout.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,10 +17,10 @@ import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
 import com.example.exclusive.databinding.FragmentCheckOutBinding
-import com.example.exclusive.model.AddressInput
+import com.example.exclusive.data.model.AddressInput
 
-import com.example.exclusive.model.DiscountValue
-import com.example.exclusive.model.LineItem
+import com.example.exclusive.data.model.DiscountValue
+import com.example.exclusive.data.model.LineItem
 import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
 import com.example.exclusive.utilities.SnackbarUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog

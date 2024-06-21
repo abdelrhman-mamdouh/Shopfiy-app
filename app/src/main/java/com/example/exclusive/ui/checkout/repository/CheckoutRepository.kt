@@ -1,8 +1,8 @@
 package com.example.exclusive.ui.checkout.repository
 
-import com.example.exclusive.model.AddressInput
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CheckoutDetails
+import com.example.exclusive.data.model.AddressInput
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.CheckoutDetails
 import com.example.exclusive.type.MailingAddressInput
 
 

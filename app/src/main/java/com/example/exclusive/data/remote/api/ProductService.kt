@@ -7,10 +7,15 @@ import com.example.exclusive.BrandsQuery
 import com.example.exclusive.CategoriesQuery
 import com.example.exclusive.GetAllProductsQuery
 import com.example.exclusive.ProductsQuery
-import com.example.exclusive.model.Brand
-import com.example.exclusive.model.PriceV2
-import com.example.exclusive.model.ProductNode
-import com.example.exclusive.model.Variants
+import com.example.exclusive.data.model.Brand
+import com.example.exclusive.data.model.ImageEdge
+import com.example.exclusive.data.model.ImageNode
+import com.example.exclusive.data.model.Images
+import com.example.exclusive.data.model.PriceV2
+import com.example.exclusive.data.model.ProductNode
+import com.example.exclusive.data.model.VariantEdge
+import com.example.exclusive.data.model.VariantNode
+import com.example.exclusive.data.model.Variants
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -115,28 +120,28 @@ class ProductService @Inject constructor(private val apolloClient: ApolloClient)
 
 }
 
-fun mapImages(productsQueryImages: ProductsQuery.Images): com.example.exclusive.model.Images {
+fun mapImages(productsQueryImages: ProductsQuery.Images): Images {
     val imageEdges = productsQueryImages.edges.map { imageEdge ->
-        com.example.exclusive.model.ImageEdge(
-            com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
+        ImageEdge(
+            ImageNode(imageEdge.node.src.toString())
         )
     }
-    return com.example.exclusive.model.Images(imageEdges)
+    return Images(imageEdges)
 }
 
-fun mapImages(productsQueryImages: GetAllProductsQuery.Images): com.example.exclusive.model.Images {
+fun mapImages(productsQueryImages: GetAllProductsQuery.Images): Images {
     val imageEdges = productsQueryImages.edges.map { imageEdge ->
-        com.example.exclusive.model.ImageEdge(
-            com.example.exclusive.model.ImageNode(imageEdge.node.src.toString())
+        ImageEdge(
+            ImageNode(imageEdge.node.src.toString())
         )
     }
-    return com.example.exclusive.model.Images(imageEdges)
+    return Images(imageEdges)
 }
 
 fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): Variants {
     val variantEdges = productsQueryVariants.edges.map { variantEdge ->
-        com.example.exclusive.model.VariantEdge(
-            com.example.exclusive.model.VariantNode(
+        VariantEdge(
+            VariantNode(
                 variantEdge.node.id,
                 variantEdge.node.title,
                 variantEdge.node.sku!!,
@@ -153,8 +158,8 @@ fun mapVariants(productsQueryVariants: GetAllProductsQuery.Variants): Variants {
 
 fun mapVariants(productsQueryVariants: ProductsQuery.Variants): Variants {
     val variantEdges = productsQueryVariants.edges.map { variantEdge ->
-        com.example.exclusive.model.VariantEdge(
-            com.example.exclusive.model.VariantNode(
+        VariantEdge(
+            VariantNode(
                 variantEdge.node.id,
                 variantEdge.node.title,
                 variantEdge.node.sku!!,

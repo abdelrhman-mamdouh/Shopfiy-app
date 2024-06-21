@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentWatchlistBinding
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.ui.productinfo.view.DailogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

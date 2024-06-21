@@ -75,7 +75,7 @@
             app:destination="@id/productInfoFragment">
             <argument
                 android:name="product"
-                app:argType="com.example.exclusive.model.ProductNode" />
+                app:argType="com.example.exclusive.data.model.ProductNode" />
         </action>
     </fragment>
 
@@ -145,7 +145,7 @@
             app:destination="@id/productInfoFragment">
             <argument
                 android:name="product"
-                app:argType="com.example.exclusive.model.ProductNode" />
+                app:argType="com.example.exclusive.data.model.ProductNode" />
         </action>
         <action
             android:id="@+id/action_productsFragment_to_cartFragment"
@@ -182,7 +182,7 @@
             app:destination="@id/productInfoFragment" >
             <argument
                 android:name="product"
-                app:argType="com.example.exclusive.model.ProductNode" />
+                app:argType="com.example.exclusive.data.model.ProductNode" />
 
         </action>
         <action
@@ -235,7 +235,7 @@
         android:label="Product Info">
         <argument
             android:name="product"
-            app:argType="com.example.exclusive.model.ProductNode" />
+            app:argType="com.example.exclusive.data.model.ProductNode" />
         <action
             android:id="@+id/action_productInfoFragment_to_watchlistFragment"
             app:destination="@id/watchlistFragment" />

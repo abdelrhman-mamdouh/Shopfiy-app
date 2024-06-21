@@ -4,9 +4,9 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.interfaces.CartDataSource
 import com.example.exclusive.data.remote.interfaces.CheckoutDataSource
 import com.example.exclusive.data.remote.interfaces.CustomerDataSource
-import com.example.exclusive.model.AddressInput
-import com.example.exclusive.model.CartProduct
-import com.example.exclusive.model.CheckoutDetails
+import com.example.exclusive.data.model.AddressInput
+import com.example.exclusive.data.model.CartProduct
+import com.example.exclusive.data.model.CheckoutDetails
 import com.example.exclusive.type.MailingAddressInput
 
 import javax.inject.Inject

@@ -1,12 +1,11 @@
-package com.example.exclusive.ui.products.repository
+package com.example.exclusive.data.repository
 
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.interfaces.CartDataSource
 import com.example.exclusive.data.remote.interfaces.ProductDataSource
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.type.CartLineInput
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(

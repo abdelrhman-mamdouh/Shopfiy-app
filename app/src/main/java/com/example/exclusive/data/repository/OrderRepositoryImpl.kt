@@ -1,8 +1,8 @@
-package com.example.exclusive.ui.orders.repository
+package com.example.exclusive.data.repository
 
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.interfaces.OrderDataSource
-import com.example.exclusive.model.MyOrder
+import com.example.exclusive.data.model.MyOrder
 import javax.inject.Inject
 
 class OrderRepositoryImpl @Inject constructor(

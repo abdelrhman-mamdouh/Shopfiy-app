@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentProductsBinding
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.ui.products.viewmodel.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlin.random.Random
 
 @AndroidEntryPoint

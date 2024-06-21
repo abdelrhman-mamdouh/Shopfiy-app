@@ -1,7 +1,7 @@
 package com.example.exclusive.data.remote.interfaces
 
-import com.example.exclusive.model.CheckoutDetails
-import com.example.exclusive.model.CheckoutResponse
+import com.example.exclusive.data.model.CheckoutDetails
+import com.example.exclusive.data.model.CheckoutResponse
 import com.example.exclusive.type.CheckoutLineItemInput
 import com.example.exclusive.type.MailingAddressInput
 

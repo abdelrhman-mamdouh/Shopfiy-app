@@ -4,10 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.PriceV2
-import com.example.exclusive.model.ProductNode
-import com.example.exclusive.ui.products.repository.ProductsRepositoryImpl
+import com.example.exclusive.data.model.PriceV2
+import com.example.exclusive.data.model.ProductNode
+import com.example.exclusive.data.repository.ProductsRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

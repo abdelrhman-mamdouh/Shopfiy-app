@@ -1,8 +1,6 @@
 package com.example.exclusive.ui.home.view
 
 import HomeBrandsAdapter
-import android.app.AlertDialog
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -19,11 +17,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
-import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentHomeBinding
-import com.example.exclusive.model.Brand
+import com.example.exclusive.data.model.Brand
 import com.example.exclusive.ui.home.viewmodel.HomeViewModel
 import com.example.exclusive.utilities.Constants
 import dagger.hilt.android.AndroidEntryPoint

@@ -4,11 +4,11 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.exclusive.GetAllOrdersQuery
-import com.example.exclusive.model.BillingAddress
-import com.example.exclusive.model.LineItems
-import com.example.exclusive.model.MyOrder
-import com.example.exclusive.model.Price
-import com.example.exclusive.model.TotalPrice
+import com.example.exclusive.data.model.BillingAddress
+import com.example.exclusive.data.model.LineItems
+import com.example.exclusive.data.model.MyOrder
+import com.example.exclusive.data.model.Price
+import com.example.exclusive.data.model.TotalPrice
 import javax.inject.Inject
 import javax.inject.Singleton
 

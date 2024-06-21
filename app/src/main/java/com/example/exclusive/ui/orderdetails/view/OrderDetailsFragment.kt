@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentOrderDetailsBinding
-import com.example.exclusive.model.MyOrder
-import com.example.exclusive.model.ProductItem
+import com.example.exclusive.data.model.MyOrder
 
 class OrderDetailsFragment : Fragment() {
 
@@ -37,7 +36,7 @@ class OrderDetailsFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(order:MyOrder) {
+    private fun setupRecyclerView(order: MyOrder) {
 
         adapter = OrderDetailsAdapter(order.lineItems)
         binding.rvOrders.layoutManager = LinearLayoutManager(requireContext())

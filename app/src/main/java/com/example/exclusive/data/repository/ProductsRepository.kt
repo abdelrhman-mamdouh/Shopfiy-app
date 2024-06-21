@@ -1,7 +1,7 @@
-package com.example.exclusive.ui.products.repository
+package com.example.exclusive.data.repository
 
-import com.example.exclusive.model.AddToCartResponse
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.AddToCartResponse
+import com.example.exclusive.data.model.ProductNode
 import com.example.exclusive.type.CartLineInput
 
 

@@ -1,6 +1,6 @@
-package com.example.exclusive.ui.orders.repository
+package com.example.exclusive.data.repository
 
-import com.example.exclusive.model.MyOrder
+import com.example.exclusive.data.model.MyOrder
 
 
 interface OrderRepository {

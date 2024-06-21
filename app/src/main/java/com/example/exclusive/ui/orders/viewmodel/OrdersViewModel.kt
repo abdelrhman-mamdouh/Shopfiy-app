@@ -3,8 +3,8 @@ package com.example.exclusive.ui.orders.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
-import com.example.exclusive.model.MyOrder
-import com.example.exclusive.ui.orders.repository.OrderRepositoryImpl
+import com.example.exclusive.data.model.MyOrder
+import com.example.exclusive.data.repository.OrderRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

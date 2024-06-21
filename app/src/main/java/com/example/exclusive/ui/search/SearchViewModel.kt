@@ -3,7 +3,7 @@ package com.example.exclusive.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.interfaces.ProductDataSource
-import com.example.exclusive.model.ProductNode
+import com.example.exclusive.data.model.ProductNode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
