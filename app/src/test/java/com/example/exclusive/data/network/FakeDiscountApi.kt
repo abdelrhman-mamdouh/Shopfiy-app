@@ -4,11 +4,9 @@ import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.model.PriceRulesResponse
-import com.example.exclusive.data.network.DiscountApi
-import com.example.exclusive.data.remote.DiscountDataSource
-import retrofit2.Response
+import com.example.exclusive.data.remote.AdminRemoteDataSource
 
-class FakeDiscountDataSource : DiscountDataSource {
+class FakeAdminDataSource : AdminRemoteDataSource {
 
     override suspend fun getPriceRules(): PriceRulesResponse {
         // Simulate a successful response with mock data

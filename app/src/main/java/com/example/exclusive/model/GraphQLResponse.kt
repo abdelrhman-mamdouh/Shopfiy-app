@@ -222,10 +222,14 @@ data class LineItems(
 ):Parcelable
 @Parcelize
 data class BillingAddress(
+    val first_name: String?,
+    val last_name: String? = first_name,
     val address1: String?,
     val city: String?,
-    val firstName:String?,
-    val phone:String?
+    val province: String?="",
+    val country: String?="",
+    val zip: String?="",
+    val phone: String?=""
 ):Parcelable
 @Parcelize
 data class Price(

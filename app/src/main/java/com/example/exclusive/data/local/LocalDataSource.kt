@@ -27,7 +27,6 @@ class LocalDataSource @Inject constructor(
         val USER_CURRENCY = stringPreferencesKey("user_currency")
         val USER_CURRENCY_VALUE = doublePreferencesKey("user_currency_value")
     }
-
     val token: Flow<String?> = dataStore.data
         .map { preferences ->
             preferences[TOKEN_KEY]

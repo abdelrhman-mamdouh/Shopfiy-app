@@ -3,8 +3,13 @@ package com.example.exclusive.ui.checkout.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.exclusive.data.model.LineItem
+import com.example.exclusive.data.model.Order
+import com.example.exclusive.data.model.OrderRequest
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.AddressInput
+import com.example.exclusive.model.BillingAddress
+import com.example.exclusive.model.CartProduct
 import com.example.exclusive.model.CheckoutDetails
 import com.example.exclusive.type.MailingAddressInput
 import com.example.exclusive.ui.checkout.repository.CheckoutRepository
@@ -84,5 +89,44 @@ class CheckoutViewModel @Inject constructor(
             false
         }
     }
+    suspend fun createOrder(billingAddress: BillingAddress): Boolean {
+        try {
+            val email = checkoutRepository.getUserEmail()?.replace('.', '-')
+            email?.let { userEmail ->
+                val cartId = checkoutRepository.fetchCartId(userEmail)
+                Log.i("userEmail", "User email: $userEmail, Cart ID: $cartId")
+                cartId?.let { id ->
+                    val products = checkoutRepository.getProductsInCart(id)
+                    val regex = Regex("""\d+""")
+                    val lineItems: List<LineItem> = products.map { cartProduct ->
+                        LineItem(
+                            variant_id = regex.find(cartProduct.variantId)?.value ?: "",
+                            quantity = cartProduct.quantity
+                        )
+                    }
+
+                    Log.i("CreateOrder", "LineItems: $lineItems")
+
+                    val orderRequest = OrderRequest(
+                        order = Order(
+                            email = checkoutRepository.getUserEmail()!!,
+                            send_receipt = true,
+                            line_items = lineItems,
+                            billing_address = billingAddress
+                        )
+                    )
+
+                    val orderResponse = checkoutRepository.createOrder(orderRequest)
+                    Log.i("CreateOrder", "Order created successfully: $orderResponse")
+                    return true
+                } ?: throw IllegalStateException("Cart ID is null")
+            } ?: throw IllegalStateException("User email is null")
+        } catch (e: Exception) {
+            _error.value = e.message
+            Log.e("CreateOrder", "Error creating order: ${e.message}", e)
+            return false
+        }
+    }
+
 
 }

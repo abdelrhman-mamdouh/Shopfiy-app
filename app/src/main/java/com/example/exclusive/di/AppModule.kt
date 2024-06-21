@@ -3,12 +3,13 @@ package com.example.exclusive.di
 import com.apollographql.apollo3.ApolloClient
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.network.ApiService
-import com.example.exclusive.data.network.DiscountApi
+import com.example.exclusive.data.network.AdminServiceApi
+import com.example.exclusive.data.remote.AdminRemoteDataSource
 import com.example.exclusive.data.remote.ApolloService
 
 import com.example.exclusive.data.remote.CurrencyRemoteDataSource
 
-import com.example.exclusive.data.remote.DiscountDataSourceImpl
+import com.example.exclusive.data.remote.AdminRemoteDataSourceImpl
 
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.repository.AddressRepository
@@ -92,8 +93,8 @@ object AppModule {
     }
 
     @Provides
-    fun provideDiscountApi(@BaseUrl2 retrofit: Retrofit): DiscountApi {
-        return retrofit.create(DiscountApi::class.java)
+    fun provideDiscountApi(@BaseUrl2 retrofit: Retrofit): AdminServiceApi {
+        return retrofit.create(AdminServiceApi::class.java)
     }
 
     @Singleton
@@ -136,7 +137,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideHomeRepository(
-        remoteDataSource: ShopifyRemoteDataSource, myRemoteDataSource: DiscountDataSourceImpl
+        remoteDataSource: ShopifyRemoteDataSource, myRemoteDataSource: AdminRemoteDataSourceImpl
     ): HomeRepository {
         return HomeRepositoryImpl(remoteDataSource, myRemoteDataSource)
     }
@@ -159,8 +160,14 @@ object AppModule {
     @Singleton
     fun provideCheckoutRepository(
         remoteDataSource: ShopifyRemoteDataSource,
-        localDataSource: LocalDataSource
+        localDataSource: LocalDataSource,
+         adminRemoteDataSource: AdminRemoteDataSource
     ): CheckoutRepository {
-        return CheckoutRepositoryImpl(remoteDataSource, localDataSource)
+        return CheckoutRepositoryImpl(remoteDataSource, localDataSource,adminRemoteDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideAdminRemoteDataSource(adminServiceApi: AdminServiceApi): AdminRemoteDataSource {
+        return AdminRemoteDataSourceImpl(adminServiceApi)
     }
 }

@@ -613,8 +613,12 @@ class ApolloService @Inject constructor(private val apolloClient: ApolloClient) 
                 val totalPrice = node.totalPrice?.let {
                     TotalPrice(it.amount.toString(),it.currencyCode.toString())
                 }
+
                 val billingAddress = node.billingAddress?.let {
-                    BillingAddress(it.address1, it.city,it.firstName,it.phone)
+                    BillingAddress(first_name = it.firstName,last_name = it.firstName,address1 = it.address1,
+                        city= it.city,province= "",country = "",zip = "",phone = it.phone)
+
+
                 }
                 val lineItems = node.lineItems.edges.map { itemEdge ->
                     val itemNode = itemEdge.node

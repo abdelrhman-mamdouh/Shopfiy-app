@@ -1,12 +1,12 @@
 // CheckoutFragment.kt
 package com.example.exclusive.ui.checkout.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -19,7 +19,7 @@ import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.DialogAddressSelectionBinding
 import com.example.exclusive.databinding.FragmentCheckOutBinding
 import com.example.exclusive.model.AddressInput
-
+import com.example.exclusive.model.BillingAddress
 import com.example.exclusive.model.DiscountValue
 import com.example.exclusive.model.LineItem
 import com.example.exclusive.ui.checkout.viewmodel.CheckoutViewModel
@@ -30,7 +30,6 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "TAG"
 
-
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {
 
@@ -38,7 +37,7 @@ class CheckoutFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CheckoutViewModel by viewModels()
     private val checkoutViewModel: CheckoutViewModel by viewModels()
-
+    private lateinit var billingAddress: BillingAddress
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -52,7 +51,6 @@ class CheckoutFragment : Fragment() {
         binding.titleBar.icBack.setOnClickListener {
             parentFragmentManager.popBackStack()
             findNavController().navigate(R.id.action_checkoutFragment_to_homeFragment)
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -60,7 +58,6 @@ class CheckoutFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     parentFragmentManager.popBackStack()
                     findNavController().navigate(R.id.action_checkoutFragment_to_homeFragment)
-
                 }
             })
 
@@ -77,10 +74,11 @@ class CheckoutFragment : Fragment() {
                     }
                 }
             } else {
-                // Handle empty discount code case
+                SnackbarUtils.showSnackbar(
+                    requireContext(), requireView(), "Enter Discount Code"
+                )
             }
         }
-
         observeCheckOutDetails()
         observeAddressesViewModel()
     }
@@ -93,29 +91,31 @@ class CheckoutFragment : Fragment() {
                     is UiState.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
                     }
+
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         val checkoutDetails = state.data
-                        val discountValue = checkoutDetails.discountApplications.firstOrNull()?.value
+                        val discountValue =
+                            checkoutDetails.discountApplications.firstOrNull()?.value
                         Log.i(TAG, "observeCheckOutDetails: ${state.data.webUrl}")
                         if (discountValue is DiscountValue.Percentage) {
                             binding.tvDiscountPrice.text = "${discountValue.percentage}%"
                         } else {
                             binding.tvDiscountPrice.text = "N/A"
                         }
-                        binding.tvOrderPrice.text = "${calculateTotalPrice(checkoutDetails.lineItems)} ${checkoutDetails.totalPrice?.currencyCode}"
-                        binding.tvSummaryPrice.text = "${checkoutDetails.totalPrice?.amount} ${checkoutDetails.totalPrice?.currencyCode}"
+                        binding.tvOrderPrice.text =
+                            "${calculateTotalPrice(checkoutDetails.lineItems)} ${checkoutDetails.totalPrice?.currencyCode}"
+                        binding.tvSummaryPrice.text =
+                            "${checkoutDetails.totalPrice?.amount} ${checkoutDetails.totalPrice?.currencyCode}"
 
-                        binding.btnSubmitOrder.setOnClickListener {
-
-                            val action = CheckoutFragmentDirections.actionCheckoutFragmentToCheckoutWebVieFragment(state.data.webUrl)
-                            findNavController().navigate(action)
-                        }
+                        setSubmitOrderClickListener(state.data.webUrl)
                     }
+
                     is UiState.Error -> {
                         val errorMessage = state.exception.message
                         // Handle error state
                     }
+
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                     }
@@ -124,11 +124,56 @@ class CheckoutFragment : Fragment() {
         }
     }
 
+    private fun setSubmitOrderClickListener(webUrl: String) {
+        val selectedPaymentMethod = getSelectedPaymentMethod()
+        binding.btnSubmitOrder.setOnClickListener {
+            if (selectedPaymentMethod == "Credit Card") {
+                val action =
+                    CheckoutFragmentDirections.actionCheckoutFragmentToCheckoutWebVieFragment(webUrl)
+                findNavController().navigate(action)
+            } else if (selectedPaymentMethod == "Cash On Delivery") {
+                createOrder()
+            }
+        }
+    }
+
+    private fun getSelectedPaymentMethod(): String {
+        val radioButtonId = binding.subCategoryRadioGroup.checkedRadioButtonId
+        val radioButton = binding.subCategoryRadioGroup.findViewById<RadioButton>(radioButtonId)
+        return radioButton.text.toString()
+    }
+
+    private fun createOrder() {
+        if (::billingAddress.isInitialized) {
+            lifecycleScope.launch {
+                val success = checkoutViewModel.createOrder(billingAddress = billingAddress)
+                if (success) {
+                    SnackbarUtils.showSnackbar(
+                        requireContext(),
+                        requireView(),
+                        "Order Created for Cash on Delivery"
+                    )
+                } else {
+                    SnackbarUtils.showSnackbar(
+                        requireContext(),
+                        requireView(),
+                        "Failed to create order"
+                    )
+                }
+            }
+        }else{
+            SnackbarUtils.showSnackbar(
+                requireContext(),
+                requireView(),
+                "Please Select Address"
+            )
+        }
+    }
+
     private fun showAddressSelectionDialog() {
         val dialogBinding = DialogAddressSelectionBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(requireContext())
         dialog.setContentView(dialogBinding.root)
-
         checkoutViewModel.addresses.value.let { state ->
             if (state is UiState.Success) {
                 val addressAdapter = AddressAdapter(state.data) { address ->
@@ -140,7 +185,17 @@ class CheckoutFragment : Fragment() {
                         country = address.country,
                         zip = address.zip
                     )
-                    val mailingAddressInput = address.toInput()
+                    billingAddress = BillingAddress(
+                        address1 = address.address1,
+                        city = address.city,
+                        first_name = address.firstName,
+                        phone = address.phone,
+                        last_name = address.firstName,
+                        zip = address.zip,
+                        country = address.country, province = address.province
+                    )
+                    Log.i("showAddressSelectionDialog", "showAddressSelectionDialog:${billingAddress} ")
+                    var mailingAddressInput = address.toInput()
                     lifecycleScope.launch {
                         val success = checkoutViewModel.applyShippingAddress(mailingAddressInput)
                         if (success) {
@@ -150,10 +205,15 @@ class CheckoutFragment : Fragment() {
                             SnackbarUtils.showSnackbar(
                                 requireContext(), requireView(), "Address Added"
                             )
+
                             observeCheckOutDetails()
                             dialog.dismiss()
                         } else {
-                            Toast.makeText(requireContext(), "Error applying address", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Error applying address",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
@@ -161,7 +221,6 @@ class CheckoutFragment : Fragment() {
                 dialogBinding.rvAddresses.adapter = addressAdapter
             }
         }
-
         dialog.show()
     }
 
@@ -174,6 +233,7 @@ class CheckoutFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                         binding.btnSubmitOrder.isEnabled = false
                     }
+
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
@@ -184,6 +244,7 @@ class CheckoutFragment : Fragment() {
                             showAddressSelectionDialog()
                         }
                     }
+
                     is UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
@@ -191,6 +252,7 @@ class CheckoutFragment : Fragment() {
                             requireContext(), state.exception.message, Toast.LENGTH_SHORT
                         ).show()
                     }
+
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
@@ -213,6 +275,4 @@ class CheckoutFragment : Fragment() {
         }
         return totalPrice
     }
-
-
 }

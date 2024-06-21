@@ -4,16 +4,15 @@ import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.model.PriceRulesResponse
-import com.example.exclusive.data.network.DiscountApi
-import com.example.exclusive.data.remote.DiscountDataSourceImpl
+import com.example.exclusive.data.remote.AdminRemoteDataSourceImpl
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.Response
-class FakeDiscountDataSourceImplTest {
+class FakeAdminRemoteDataSourceImplTest {
     @Test
     fun testGetPriceRules() {
-        val fakeApi = object : DiscountApi {
+        val fakeApi = object : AdminServiceApi {
             override suspend fun getPriceRules(accessToken: String): Response<PriceRulesResponse> {
                 val mockResponse = PriceRulesResponse(
                     listOf(
@@ -49,7 +48,7 @@ class FakeDiscountDataSourceImplTest {
             }
         }
 
-        val fakeDataSource = DiscountDataSourceImpl(fakeApi)
+        val fakeDataSource = AdminRemoteDataSourceImpl(fakeApi)
         val response = runBlocking { fakeDataSource.getPriceRules() }
         val priceRulesResponse = response.priceRules
         assertEquals(1, priceRulesResponse?.size)

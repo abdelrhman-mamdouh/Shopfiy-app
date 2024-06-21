@@ -32,8 +32,3 @@ data class PriceRuleSummary(
     }
 }
 
-
-data class CombinedData(
-    val priceRule: PriceRuleSummary,
-    val discountCode: DiscountCode
-)

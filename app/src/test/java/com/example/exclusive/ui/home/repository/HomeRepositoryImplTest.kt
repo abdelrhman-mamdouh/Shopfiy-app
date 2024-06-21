@@ -1,9 +1,9 @@
 package com.example.exclusive.ui.home.repository
 
 import com.example.exclusive.MainCoroutineRule
-import com.example.exclusive.data.remote.DiscountDataSource
+import com.example.exclusive.data.remote.AdminRemoteDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
-import com.example.exclusive.data.network.FakeDiscountDataSource
+import com.example.exclusive.data.network.FakeAdminDataSource
 import com.example.exclusive.data.network.FakeShopifyRemoteDataSource
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
@@ -19,12 +19,12 @@ class HomeRepositoryImplTest {
 
     private lateinit var homeRepository: HomeRepository
     private lateinit var fakeShopifyRemoteDataSource: ShopifyRemoteDataSource
-    private lateinit var fakeDiscountDataSource: DiscountDataSource
+    private lateinit var fakeDiscountDataSource: AdminRemoteDataSource
 
     @Before
     fun setup() {
         fakeShopifyRemoteDataSource = FakeShopifyRemoteDataSource()
-        fakeDiscountDataSource = FakeDiscountDataSource()
+        fakeDiscountDataSource = FakeAdminDataSource()
         homeRepository = HomeRepositoryImpl(fakeShopifyRemoteDataSource, fakeDiscountDataSource)
     }
 

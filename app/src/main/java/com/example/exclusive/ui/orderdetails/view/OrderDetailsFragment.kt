@@ -1,6 +1,7 @@
 package com.example.exclusive.ui.orderdetails.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,8 @@ class OrderDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.orderDetails)
         val order: MyOrder? = arguments?.getParcelable("order")
-        binding.tvFirstName.text = "Name: "+order?.billingAddress?.firstName.toString()
+        Log.i("MyOrder", "onViewCreated: ${order}")
+        binding.tvFirstName.text = "Name: "+order?.billingAddress?.first_name.toString()
         binding.tvAddress.text = "Address: "+order?.billingAddress?.address1.toString()
         binding.tvPhone.text ="Phone: "+ order?.billingAddress?.phone.toString()
         setupRecyclerView(order!!)
