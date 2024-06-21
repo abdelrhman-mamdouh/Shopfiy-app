@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.products.repository
 
+import com.example.exclusive.data.local.ILocalDataSource
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.model.AddToCartResponse
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource) :
+    private val localDataSource: ILocalDataSource
+) :
     ProductsRepository {
     override suspend fun getProducts(vendor: String): List<ProductNode> {
         return remoteDataSource.getProducts(vendor)

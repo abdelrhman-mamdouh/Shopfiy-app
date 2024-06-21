@@ -107,7 +107,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             viewModel.discountState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        val validPriceRules = uiState.data.filter { it.isValid() }
+                        val validPriceRules = uiState.data.filter { it.usageLimit == 1 }.filter { it.isValid() }
                         Log.i(TAG, "setupCoupons: ${validPriceRules}")
                         couponsAdapter.submitList(validPriceRules)
                     }

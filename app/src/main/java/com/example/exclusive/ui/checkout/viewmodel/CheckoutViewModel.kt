@@ -6,10 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.CheckoutDetails
-
-import com.example.exclusive.model.Order
 import com.example.exclusive.type.MailingAddressInput
-import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
+import com.example.exclusive.ui.checkout.repository.CheckoutRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
-    private val checkoutRepository: CheckoutRepositoryImpl
+    private val checkoutRepository: CheckoutRepository
 ) : ViewModel() {
 
     private val _checkoutDetailsState = MutableStateFlow<UiState<CheckoutDetails>>(UiState.Idle)
@@ -71,13 +69,14 @@ class CheckoutViewModel @Inject constructor(
             false
         }
     }
+
     suspend fun applyShippingAddress(shippingAddress: MailingAddressInput): Boolean {
 
         val checkoutId = checkoutRepository.getUserCheckOut()
         return try {
             val success = checkoutRepository.applyShippingAddress(checkoutId!!, shippingAddress)
             if (success) {
-                
+
             }
             success
         } catch (e: Exception) {

@@ -1,10 +1,12 @@
-package com.example.fake
+package com.example.exclusive.data.local
 
 import com.example.exclusive.data.local.ILocalDataSource
 
 class FakeLocalDataSource : ILocalDataSource {
 
     private var currencyPair = Pair("USD", 1.0)
+    private var checkout = "checkout123"
+    private var token = "token123"
 
     override suspend fun saveCurrency(currency: String, currencyValue: Double) {
         currencyPair = Pair(currency, currencyValue)
@@ -15,7 +17,7 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun saveToken(token: String) {
-        TODO("Not yet implemented")
+        this.token =token
     }
 
     override suspend fun clearToken() {
@@ -23,7 +25,8 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun readToken(): String? {
-        TODO("Not yet implemented")
+
+     return token
     }
 
     override suspend fun saveUserCartId(cartId: String) {
@@ -35,7 +38,7 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun readEmail(): String? {
-        TODO("Not yet implemented")
+        return "email"
     }
 
     override suspend fun getUserCartId(): String? {
@@ -43,11 +46,11 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun getUserCheckOut(): String? {
-        TODO("Not yet implemented")
+      return checkout
     }
 
     override suspend fun saveUserCheckOut(checkoutId: String) {
-        TODO("Not yet implemented")
+        checkout=checkoutId
     }
 
     override suspend fun clearEmailAndToken() {
@@ -59,6 +62,6 @@ class FakeLocalDataSource : ILocalDataSource {
     }
 
     override suspend fun getIsGuest(): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 }

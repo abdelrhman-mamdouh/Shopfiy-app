@@ -5,14 +5,29 @@ import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.network.ApiService
 import com.example.exclusive.data.network.DiscountApi
 import com.example.exclusive.data.remote.ApolloService
+
 import com.example.exclusive.data.remote.CurrencyRemoteDataSource
+
+import com.example.exclusive.data.remote.DiscountDataSourceImpl
+
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.repository.AddressRepository
 import com.example.exclusive.data.repository.AddressRepositoryImpl
 import com.example.exclusive.data.repository.CartRepository
 import com.example.exclusive.data.repository.CartRepositoryImpl
+
 import com.example.exclusive.data.repository.CurrencyRepository
 import com.example.exclusive.data.repository.CurrencyRepositoryImpl
+import com.example.exclusive.ui.category.repository.CategoriesRepository
+import com.example.exclusive.ui.category.repository.CategoriesRepositoryImpl
+import com.example.exclusive.ui.checkout.repository.CheckoutRepository
+import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
+
+import com.example.exclusive.ui.home.repository.HomeRepository
+import com.example.exclusive.ui.home.repository.HomeRepositoryImpl
+import com.example.exclusive.ui.products.repository.ProductsRepository
+import com.example.exclusive.ui.products.repository.ProductsRepositoryImpl
+
 import com.example.exclusive.utilities.Constants
 import dagger.Module
 import dagger.Provides
@@ -24,6 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
+
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class BaseUrl1
@@ -39,11 +55,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideHttpClient() : OkHttpClient {
-        return OkHttpClient.Builder()
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .build()
+    fun provideHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().readTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS).build()
     }
 
     @Singleton
@@ -56,14 +70,10 @@ object AppModule {
     @Provides
     @BaseUrl1
     fun provideRetrofitInstanceForBaseUrl1(
-        okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Constants.CURRENCY_BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
+        return Retrofit.Builder().baseUrl(Constants.CURRENCY_BASE_URL).client(okHttpClient)
+            .addConverterFactory(gsonConverterFactory).build()
     }
 
 
@@ -77,10 +87,8 @@ object AppModule {
     @Provides
     @BaseUrl2
     fun provideMyRetrofitInstance(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://mad44-android-sv-2.myshopify.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        return Retrofit.Builder().baseUrl("https://mad44-android-sv-2.myshopify.com/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     @Provides
@@ -91,10 +99,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideApolloClient(): ApolloClient {
-        return ApolloClient.Builder()
-            .serverUrl(Constants.BASE_URL)
-            .addHttpHeader("X-Shopify-Storefront-Access-Token", Constants.API_KEY)
-            .build()
+        return ApolloClient.Builder().serverUrl(Constants.BASE_URL)
+            .addHttpHeader("X-Shopify-Storefront-Access-Token", Constants.API_KEY).build()
     }
 
     @Singleton
@@ -106,8 +112,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCartRepository(
-        remoteDataSource: ShopifyRemoteDataSource,
-        localDataSource: LocalDataSource
+        remoteDataSource: ShopifyRemoteDataSource, localDataSource: LocalDataSource
     ): CartRepository {
         return CartRepositoryImpl(remoteDataSource, localDataSource)
     }
@@ -115,17 +120,47 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAddressRepository(
-        remoteDataSource: ShopifyRemoteDataSource,
-        localDataSource: LocalDataSource
+        remoteDataSource: ShopifyRemoteDataSource, localDataSource: LocalDataSource
     ): AddressRepository {
         return AddressRepositoryImpl(remoteDataSource, localDataSource)
     }
+
     @Provides
     @Singleton
+
     fun provideCurrenciesRepository(
-        currencyRemoteDataSource: CurrencyRemoteDataSource,
-        localDataSource: LocalDataSource
+        currencyRemoteDataSource: CurrencyRemoteDataSource, localDataSource: LocalDataSource
     ): CurrencyRepository {
         return CurrencyRepositoryImpl(currencyRemoteDataSource, localDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideHomeRepository(
+        remoteDataSource: ShopifyRemoteDataSource, myRemoteDataSource: DiscountDataSourceImpl
+    ): HomeRepository {
+        return HomeRepositoryImpl(remoteDataSource, myRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductsRepository(
+        remoteDataSource: ShopifyRemoteDataSource, localDataSource: LocalDataSource
+    ): ProductsRepository {
+        return ProductsRepositoryImpl(remoteDataSource, localDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideCategoriesRepository(
+        remoteDataSource: ShopifyRemoteDataSource
+    ): CategoriesRepository {
+        return CategoriesRepositoryImpl(remoteDataSource)
+    }
+    @Provides
+    @Singleton
+    fun provideCheckoutRepository(
+        remoteDataSource: ShopifyRemoteDataSource,
+        localDataSource: LocalDataSource
+    ): CheckoutRepository {
+        return CheckoutRepositoryImpl(remoteDataSource, localDataSource)
     }
 }

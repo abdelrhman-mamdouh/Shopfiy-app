@@ -7,6 +7,7 @@ import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.AddToCartResponse
 import com.example.exclusive.model.PriceV2
 import com.example.exclusive.model.ProductNode
+import com.example.exclusive.ui.products.repository.ProductsRepository
 import com.example.exclusive.ui.products.repository.ProductsRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 private const val TAG = "ProductsViewModel"
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val productRepository: ProductsRepositoryImpl
+    private val productRepository: ProductsRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<ProductNode>>>(UiState.Idle)

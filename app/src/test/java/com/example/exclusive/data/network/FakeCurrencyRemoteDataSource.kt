@@ -1,4 +1,4 @@
-package com.example.fake
+package com.example.exclusive.data.network
 
 import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.remote.ICurrencyRemoteDataSource

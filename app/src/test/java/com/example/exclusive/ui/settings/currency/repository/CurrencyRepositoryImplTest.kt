@@ -1,9 +1,10 @@
-package com.example.exclusive.data.repository
+package com.example.exclusive.ui.settings.currency.repository
 
 import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.remote.UiState
-import com.example.fake.FakeCurrencyRemoteDataSource
-import com.example.fake.FakeLocalDataSource
+import com.example.exclusive.data.repository.CurrencyRepositoryImpl
+import com.example.exclusive.data.network.FakeCurrencyRemoteDataSource
+import com.example.exclusive.data.local.FakeLocalDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest

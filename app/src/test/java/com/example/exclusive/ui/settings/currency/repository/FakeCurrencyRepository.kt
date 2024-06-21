@@ -1,4 +1,4 @@
-package com.example.fake
+package com.example.exclusive.ui.settings.currency.repository
 
 import com.example.exclusive.data.model.Currencies
 import com.example.exclusive.data.remote.UiState

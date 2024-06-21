@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.Optional
+import com.example.exclusive.data.local.ILocalDataSource
 import com.example.exclusive.data.local.LocalDataSource
 import com.example.exclusive.data.remote.ShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
@@ -21,7 +22,7 @@ private const val TAG = "ProductsViewModel"
 @HiltViewModel
 class ProductInfoViewModel @Inject constructor(
     private val remoteDataSource: ShopifyRemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: ILocalDataSource
 ) : ViewModel() {
 
     private val _addToCartState = MutableStateFlow<UiState<AddToCartResponse>>(UiState.Idle)
@@ -43,7 +44,7 @@ class ProductInfoViewModel @Inject constructor(
         viewModelScope.launch {
             var email = localDataSource.readEmail()
             email?.replace('.', '-')
-            Log.d("readEmail", email.toString())
+         //   Log.d("readEmail", email.toString())
             remoteDataSource.addProductToRealtimeDatabase(product, email.toString())
             _isWatchList.value = true
         }
