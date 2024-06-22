@@ -138,20 +138,18 @@
         app:layout_constraintTop_toBottomOf="@id/tv_payment_label">
 
         <RadioGroup
-            android:id="@+id/subCategoryRadioGroup"
+            android:id="@+id/paymentRadioGroup"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
             <RadioButton
-
-                android:id="@+id/radioBtnAll"
+                android:id="@+id/radioBtnCredit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/radio_selected"
                 android:button="@android:color/transparent"
-                android:checked="true"
                 android:drawableTop="@drawable/ic_credit_card"
                 android:fontFamily="@font/muli_black"
                 android:gravity="center"
@@ -161,7 +159,7 @@
                 android:textColor="@drawable/radio_flat_text_selector" />
 
             <RadioButton
-                android:id="@+id/radioBtnAccessories"
+                android:id="@+id/radioBtnCash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

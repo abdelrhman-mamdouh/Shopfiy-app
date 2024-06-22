@@ -125,22 +125,36 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun setSubmitOrderClickListener(webUrl: String) {
-        val selectedPaymentMethod = getSelectedPaymentMethod()
+
         binding.btnSubmitOrder.setOnClickListener {
-            if (selectedPaymentMethod == "Credit Card") {
-                val action =
-                    CheckoutFragmentDirections.actionCheckoutFragmentToCheckoutWebVieFragment(webUrl)
-                findNavController().navigate(action)
-            } else if (selectedPaymentMethod == "Cash On Delivery") {
-                createOrder()
+            val selectedPaymentMethod = getSelectedPaymentMethod()
+            if (selectedPaymentMethod == "payment not selected") {
+                SnackbarUtils.showSnackbar(
+                    requireContext(),
+                    requireView(),
+                    "Select payment way"
+                )
+            } else {
+                if (selectedPaymentMethod == "Credit Card") {
+                    val action =
+                        CheckoutFragmentDirections.actionCheckoutFragmentToCheckoutWebVieFragment(
+                            webUrl
+                        )
+                    findNavController().navigate(action)
+                } else if (selectedPaymentMethod == "Cash On Delivery") {
+                    createOrder()
+                }
             }
         }
     }
 
     private fun getSelectedPaymentMethod(): String {
-        val radioButtonId = binding.subCategoryRadioGroup.checkedRadioButtonId
-        val radioButton = binding.subCategoryRadioGroup.findViewById<RadioButton>(radioButtonId)
-        return radioButton.text.toString()
+        val radioButtonId = binding.paymentRadioGroup.checkedRadioButtonId
+        if (radioButtonId != View.NO_ID) {
+            val radioButton = binding.paymentRadioGroup.findViewById<RadioButton>(radioButtonId)
+            return radioButton.text.toString()
+        }
+        return "payment not selected"
     }
 
     private fun createOrder() {
@@ -148,11 +162,7 @@ class CheckoutFragment : Fragment() {
             lifecycleScope.launch {
                 val success = checkoutViewModel.createOrder(billingAddress = billingAddress)
                 if (success) {
-                    SnackbarUtils.showSnackbar(
-                        requireContext(),
-                        requireView(),
-                        "Order Created for Cash on Delivery"
-                    )
+                    findNavController().navigate(R.id.action_checkoutFragment_to_paymentCompletedFragment)
                 } else {
                     SnackbarUtils.showSnackbar(
                         requireContext(),
@@ -161,7 +171,7 @@ class CheckoutFragment : Fragment() {
                     )
                 }
             }
-        }else{
+        } else {
             SnackbarUtils.showSnackbar(
                 requireContext(),
                 requireView(),
@@ -194,7 +204,10 @@ class CheckoutFragment : Fragment() {
                         zip = address.zip,
                         country = address.country, province = address.province
                     )
-                    Log.i("showAddressSelectionDialog", "showAddressSelectionDialog:${billingAddress} ")
+                    Log.i(
+                        "showAddressSelectionDialog",
+                        "showAddressSelectionDialog:${billingAddress} "
+                    )
                     var mailingAddressInput = address.toInput()
                     lifecycleScope.launch {
                         val success = checkoutViewModel.applyShippingAddress(mailingAddressInput)
@@ -237,11 +250,60 @@ class CheckoutFragment : Fragment() {
                     is UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.btnSubmitOrder.isEnabled = true
-                        binding.tvShippingAddressDetails.text =
-                            "${state.data.firstOrNull()?.address1}, ${state.data.firstOrNull()?.city}, ${state.data.firstOrNull()?.country}"
-                        binding.tvPhoneNumber.text = state.data[0].phone
-                        binding.btnChangeAddress.setOnClickListener {
-                            showAddressSelectionDialog()
+
+                        val addresses = state.data
+                        if (addresses.isNotEmpty()) {
+                            val defaultAddress = addresses.first()
+                            binding.tvShippingAddressDetails.text =
+                                "${defaultAddress.address1}, ${defaultAddress.city}, ${defaultAddress.country}"
+                            binding.tvPhoneNumber.text = defaultAddress.phone
+                            binding.btnChangeAddress.setOnClickListener {
+                                showAddressSelectionDialog()
+                            }
+
+                            if (!::billingAddress.isInitialized) {
+                                billingAddress = BillingAddress(
+                                    address1 = defaultAddress.address1,
+                                    city = defaultAddress.city,
+                                    first_name = defaultAddress.firstName,
+                                    phone = defaultAddress.phone,
+                                    last_name = defaultAddress.firstName,
+                                    zip = defaultAddress.zip,
+                                    country = defaultAddress.country,
+                                    province = defaultAddress.province
+                                )
+                                val mailingAddressInput = defaultAddress.toInput()
+                                lifecycleScope.launch {
+                                    val success =
+                                        checkoutViewModel.applyShippingAddress(mailingAddressInput)
+                                    if (success) {
+                                        SnackbarUtils.showSnackbar(
+                                            requireContext(),
+                                            requireView(),
+                                            "Default Address Applied"
+                                        )
+                                    } else {
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Error applying default address",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
+                        }else{
+                            binding.btnChangeAddress.setOnClickListener{
+                                SnackbarUtils.showSnackbar(
+                                    requireContext(),
+                                    requireView(),
+                                    "No addresses available. Please add an address."
+                                )
+                            }
+                            SnackbarUtils.showSnackbar(
+                                requireContext(),
+                                requireView(),
+                                "No addresses available. Please add an address."
+                            )
                         }
                     }
 
