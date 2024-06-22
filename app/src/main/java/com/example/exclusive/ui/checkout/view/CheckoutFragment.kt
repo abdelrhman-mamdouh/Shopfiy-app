@@ -162,6 +162,7 @@ class CheckoutFragment : Fragment() {
             lifecycleScope.launch {
                 val success = checkoutViewModel.createOrder(billingAddress = billingAddress)
                 if (success) {
+                    parentFragmentManager.popBackStack()
                     findNavController().navigate(R.id.action_checkoutFragment_to_paymentCompletedFragment)
                 } else {
                     SnackbarUtils.showSnackbar(

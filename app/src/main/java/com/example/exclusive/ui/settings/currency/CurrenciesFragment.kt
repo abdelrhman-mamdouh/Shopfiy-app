@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
@@ -55,8 +56,16 @@ class CurrenciesFragment : Fragment() {
         binding.rvCurrency.adapter = adapter
 
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack()
+                    findNavController().navigate(R.id.action_currenciesFragment_to_settingsFragment)
+                }
+            })
         binding.titleBar.icBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+            findNavController().navigate(R.id.action_currenciesFragment_to_settingsFragment)
         }
     }
 

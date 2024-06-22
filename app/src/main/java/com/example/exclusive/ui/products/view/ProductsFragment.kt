@@ -42,7 +42,7 @@ class ProductsFragment : Fragment(), OnProductClickListener {
         binding.rvProducts.adapter = adapter
 
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            parentFragmentManager.popBackStack()
         }
 
         binding.subCategoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->

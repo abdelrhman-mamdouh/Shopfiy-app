@@ -39,8 +39,17 @@ class AddressesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.address)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.popBackStack()
+                    findNavController().navigate(R.id.action_addressesFragment_to_settingsFragment)
+                }
+            })
         binding.titleBar.icBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+            findNavController().navigate(R.id.action_addressesFragment_to_settingsFragment)
         }
 
         addressesAdapter = AddressesAdapter()

@@ -69,7 +69,10 @@
         android:name="com.example.exclusive.ui.search.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search">
-
+        <action
+            android:id="@+id/action_searchFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
         <action
             android:id="@+id/action_searchFragment_to_productInfoFragment"
             app:destination="@id/productInfoFragment">
@@ -192,6 +195,10 @@
         <action
             android:id="@+id/action_watchlistFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_watchlistFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/row_slide_in"/>
     </fragment>
 
     <fragment
@@ -214,6 +221,10 @@
             android:id="@+id/action_addressesFragment_to_addAddressFragment"
             app:destination="@id/addAddressFragment"
             app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_addressesFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/row_slide_in" />
     </fragment>
 
     <fragment
@@ -226,8 +237,8 @@
             app:destination="@id/orderDetailsFragment"
             app:enterAnim="@anim/row_slide_in" />
         <action
-            android:id="@+id/action_orderFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_orderFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
             app:enterAnim="@anim/row_slide_in" />
     </fragment>
 
@@ -285,8 +296,6 @@
             app:destination="@id/paymentCompletedFragment"
             app:enterAnim="@anim/row_slide_in"/>
     </fragment>
-
-
     <fragment
         android:id="@+id/paymentCompletedFragment"
         android:name="com.example.exclusive.ui.checkout.view.PaymentCompletedFragment"
@@ -296,6 +305,4 @@
             android:id="@+id/action_paymentCompletedFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
     </fragment>
-
-
 </navigation>

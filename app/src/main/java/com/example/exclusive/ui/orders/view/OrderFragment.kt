@@ -41,14 +41,14 @@ class OrderFragment : Fragment(), OnOrderClickListener {
 
         binding.titleBar.icBack.setOnClickListener {
             parentFragmentManager.popBackStack()
-            findNavController().navigate(R.id.action_orderFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_orderFragment_to_settingsFragment)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     parentFragmentManager.popBackStack()
-                    findNavController().navigate(R.id.action_orderFragment_to_homeFragment)
+                    findNavController().navigate(R.id.action_orderFragment_to_settingsFragment)
                 }
             })
         binding.titleBar.tvTitle.text = getString(R.string.orders)

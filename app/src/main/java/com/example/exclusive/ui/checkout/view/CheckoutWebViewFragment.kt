@@ -70,6 +70,7 @@ class CheckoutWebViewFragment : Fragment() {
     }
 
     private fun navigateToThankYouFragment() {
+        parentFragmentManager.popBackStack()
         findNavController().navigate(R.id.action_checkoutWebViewFragment_to_paymentCompletedFragment)
     }
 }
