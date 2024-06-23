@@ -9,6 +9,7 @@
 
         <item name="itemIconTint">@color/medium_gray</item>
         <item name="android:navigationBarColor">@color/black</item>
+
     </style>
 
     <style name="Theme.Exclusive" parent="Base.Theme.Exclusive" />

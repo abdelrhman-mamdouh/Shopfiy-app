@@ -25,9 +25,11 @@ data class PriceRuleSummary(
 ): Parcelable {
     @RequiresApi(Build.VERSION_CODES.O)
     fun isValid(): Boolean {
+
         val currentDate = OffsetDateTime.now().toLocalDate()
         val startDate = OffsetDateTime.parse(startsAt).toLocalDate()
         val endDate = OffsetDateTime.parse(endsAt).toLocalDate()
+
         return !currentDate.isBefore(startDate) && !currentDate.isAfter(endDate)
     }
 }

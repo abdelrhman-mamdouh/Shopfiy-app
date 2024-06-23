@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentForgetPasswordBinding
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,7 +49,8 @@ class ForgetPasswordFragment : Fragment() {
             lifecycleScope.launch {
                 viewModel.sendPassword(binding.etEmail.text.toString())
                 binding.progressBar.visibility = View.GONE
-                Toast.makeText(requireContext(), "Check your email", Toast.LENGTH_SHORT).show()
+                SnackbarUtils.showSnackbar(requireContext(),requireView(),"Check your email")
+                parentFragmentManager.popBackStack()
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.example.exclusive.ui.category.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentCategoryBinding
 import com.example.exclusive.model.Brand
 import com.example.exclusive.ui.category.viewmodel.CategoryViewModel
-import com.example.exclusive.ui.checkout.view.CheckoutFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,6 +36,13 @@ class CategoryFragment : Fragment(), OnCategoryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val swipeRefreshLayout = binding.swipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            findNavController().popBackStack(R.id.categoryFragment, false)
+            findNavController().navigate(R.id.categoryFragment)
+
+        }
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
@@ -50,12 +56,15 @@ class CategoryFragment : Fragment(), OnCategoryClickListener {
                         binding.progressBar.visibility = View.GONE
                         adapter.updateCategory(uiState.data)
                     }
+
                     is UiState.Error -> {
 
                     }
+
                     UiState.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
                     }
+
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                     }

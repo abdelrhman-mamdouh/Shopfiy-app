@@ -28,6 +28,7 @@ class AddressAdapter(
     inner class AddressViewHolder(private val binding: ItemAddressBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(address: AddressInput) {
+            binding.tvName.text = address.firstName
             binding.tvStreetName.text = "${address.address1}, ${address.city}, ${address.country}"
             binding.tvPhone.text = address.phone
             binding.root.setOnClickListener {

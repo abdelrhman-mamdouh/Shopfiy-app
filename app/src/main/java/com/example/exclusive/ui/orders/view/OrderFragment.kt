@@ -7,19 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
-import com.example.exclusive.databinding.FragmentOrderBinding
-import com.example.exclusive.ui.orders.viewmodel.OrdersViewModel
 import com.example.exclusive.data.remote.UiState
+import com.example.exclusive.databinding.FragmentOrderBinding
 import com.example.exclusive.model.MyOrder
+import com.example.exclusive.ui.orders.viewmodel.OrdersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class OrderFragment : Fragment(), OnOrderClickListener {
 
@@ -38,25 +39,19 @@ class OrderFragment : Fragment(), OnOrderClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-            findNavController().navigate(R.id.action_orderFragment_to_settingsFragment)
+            requireActivity().supportFragmentManager.popBackStack();
         }
-
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    parentFragmentManager.popBackStack()
-                    findNavController().navigate(R.id.action_orderFragment_to_settingsFragment)
+                    requireActivity().supportFragmentManager.popBackStack();
                 }
             })
         binding.titleBar.tvTitle.text = getString(R.string.orders)
         recyclerView = binding.rvOrders
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         observeOrders()
-
     }
 
     private fun observeOrders() {
@@ -64,20 +59,24 @@ class OrderFragment : Fragment(), OnOrderClickListener {
             viewModel.ordersState.collect { state ->
                 when (state) {
                     is UiState.Success -> {
+                        binding.progressBar.visibility = View.GONE
                         Log.i("observeOrders", "observeOrders: ${state.data}")
                         val orders = state.data
                         adapter = OrderAdapter(orders, this@OrderFragment)
                         recyclerView.adapter = adapter
                         adapter.notifyDataSetChanged()
                     }
-                    is UiState.Error -> {
 
+                    is UiState.Error -> {
+                        binding.progressBar.visibility = View.GONE
                     }
+
                     UiState.Loading -> {
-                        // Show a loading indicator
+                        binding.progressBar.visibility = View.VISIBLE
                     }
+
                     UiState.Idle -> {
-                        // Initial state, do nothing
+                        binding.progressBar.visibility = View.GONE
                     }
                 }
             }

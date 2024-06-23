@@ -9,7 +9,8 @@
     <color name="burgandy">#8b0000</color>
     <color name="gray">#9e9e9e</color>
     <color name="yellow">#fbc02d</color>
-
+    <color name="positiveButton">#FF4081</color>
+    <color name="negativeButton">#A9A7A8</color>
     <color name="primary_color">#425E52</color>
     <color name="primary_dark_color">#1b5e20</color>
     <color name="primary_light_color">#71C363</color>

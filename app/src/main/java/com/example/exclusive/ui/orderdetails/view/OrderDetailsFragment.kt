@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.exclusive.R
@@ -32,11 +33,21 @@ class OrderDetailsFragment : Fragment() {
         Log.i("MyOrder", "onViewCreated: ${order}")
         binding.tvFirstName.text = "Name: "+order?.billingAddress?.first_name.toString()
         binding.tvAddress.text = "Address: "+order?.billingAddress?.address1.toString()
-        binding.tvPhone.text ="Phone: "+ order?.billingAddress?.phone.toString()
+        if(order?.billingAddress?.phone.toString()==null){
+            binding.tvPhone.visibility = View.GONE
+        }else{
+            binding.tvPhone.text ="Phone: "+ order?.billingAddress?.phone.toString()
+        }
         setupRecyclerView(order!!)
         binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack();
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().supportFragmentManager.popBackStack();
+                }
+            })
     }
 
     private fun setupRecyclerView(order:MyOrder) {

@@ -6,7 +6,12 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 
-class DailogFramgent (private val title:String="Are you sure you want to delete it from your watchlist?" ,private val onDialogPositiveClick:()->Unit,private val onDialogNegativeClick:()->Unit): DialogFragment() {
+class DailogFramgent(
+    private val title: String = "Are you sure you want to delete it from your watchlist?",
+    private val onDialogPositiveClick: () -> Unit,
+    private val onDialogNegativeClick: () -> Unit
+) : DialogFragment() {
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
             .setTitle("Warning")
@@ -16,8 +21,9 @@ class DailogFramgent (private val title:String="Are you sure you want to delete 
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, id ->
-
+                onDialogNegativeClick()
                 dialog.dismiss()
-            }.create()
+            }
+            .create()
     }
 }

@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -162,6 +165,10 @@
             android:id="@+id/action_productsFragment_to_watchlistFragment"
             app:destination="@id/watchlistFragment"
             app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_productsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
     </fragment>
 
     <fragment
@@ -176,6 +183,10 @@
         <action
             android:id="@+id/action_cartFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_cartFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@anim/row_slide_in" />
     </fragment>
 
@@ -237,8 +248,8 @@
             app:destination="@id/orderDetailsFragment"
             app:enterAnim="@anim/row_slide_in" />
         <action
-            android:id="@+id/action_orderFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
+            android:id="@+id/action_orderFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@anim/row_slide_in" />
     </fragment>
 

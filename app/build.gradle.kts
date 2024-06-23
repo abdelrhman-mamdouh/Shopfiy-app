@@ -170,7 +170,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
-
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
 kapt {
     correctErrorTypes = true
@@ -185,5 +185,6 @@ apollo {
         }
     }
 }
+
 //safe args
 apply(plugin = "androidx.navigation.safeargs.kotlin")

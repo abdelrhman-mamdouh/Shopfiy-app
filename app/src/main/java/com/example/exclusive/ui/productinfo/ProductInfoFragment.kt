@@ -1,11 +1,11 @@
 package com.example.exclusive.ui.productinfo
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -20,6 +20,7 @@ import com.example.exclusive.model.ProductNode
 import com.example.exclusive.model.VariantNode
 import com.example.exclusive.model.getRandomNineReviews
 import com.example.exclusive.ui.productinfo.viewmodel.ProductInfoViewModel
+import com.example.exclusive.utilities.Constants.showConfirmationDialog
 import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -40,7 +41,7 @@ class ProductInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+
         product = arguments?.getParcelable("product")!!
         Log.d("product info", product.toString())
         binding = FragmentProductInfoBinding.inflate(inflater, container, false)
@@ -50,7 +51,7 @@ class ProductInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.isInWatchList(product)
-        choosenVarient=product.variants.edges[0].node
+        choosenVarient = product.variants.edges[0].node
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isWatchList.collect {
@@ -64,8 +65,15 @@ class ProductInfoFragment : Fragment() {
         }
         binding.titleBar.tvTitle.text = getString(R.string.product_info)
         binding.titleBar.icBack.setOnClickListener {
-            this.requireActivity().onBackPressed()
+            requireActivity().supportFragmentManager.popBackStack();
         }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().supportFragmentManager.popBackStack();
+                }
+            })
         binding.tvProductName.text = product.title
         binding.tvProductBrand.text = product.vendor
         binding.tvProductDescription.text = product.description
@@ -105,77 +113,56 @@ class ProductInfoFragment : Fragment() {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.isGuest.collect {
                         if (it) {
-                            val onClickOk = {
-                                findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
-                            }
-                            val onClickCancel = {}
-                            val dialog = DailogFramgent(
-                                title = "you are in guest mode\nDo you want to login",
-                                onDialogNegativeClick = onClickCancel,
-                                onDialogPositiveClick = onClickOk
-                            )
-                            dialog.show(requireActivity().supportFragmentManager, "dialog")
+                            showConfirmationDialog(requireContext(),
+                                true,
+                                title = "You are in guest mode\n",
+                                message = "Do you want to login?",
+                                positiveButtonText = "Yes",
+                                onPositiveClick = {
+                                    findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
+                                })
+
                         } else {
                             if (!viewModel.isWatchList.value) {
                                 binding.addToFavourateIcon.setImageResource(R.drawable.filled_love)
                                 viewModel.addProductToRealtimeDatabase(product)
                                 SnackbarUtils.showSnackbar(
-                                    requireContext(),
-                                    view,
-                                    "Product added to favorites"
+                                    requireContext(), view, "Product added to favorites"
                                 )
                             } else {
-                                val onClickOk = {
-                                    binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
-                                    Log.d("idddddd", product.id)
-                                    viewModel.removeProductFromWatchList(product.id.substring(22))
-                                    SnackbarUtils.showSnackbar(
-                                        requireContext(),
-                                        view,
-                                        "Product removed from favorites"
-                                    )
-                                }
-                                val onClickCancel = {}
-                                val dialog = DailogFramgent(
-                                    onDialogNegativeClick = onClickCancel,
-                                    onDialogPositiveClick = onClickOk
-                                )
-                                dialog.show(requireActivity().supportFragmentManager, "dialog")
-                            }
+                                showRemoveFromFavoritesDialog(false)
 
+                            }
                         }
                     }
                 }
             }
         }
-            binding.btnAddToCart.setOnClickListener {
-                Log.i("isGuest", "isGuest: ")
-                lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.isGuest.collect {
+        binding.btnAddToCart.setOnClickListener {
+            Log.i("isGuest", "isGuest: ")
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.isGuest.collect {
 
-                            if (it) {
-                                val onClickOk = {
+                        if (it) {
+                            showConfirmationDialog(requireContext(),
+                                true,
+                                title = "You are in guest mode\n",
+                                message = "Do you want to login?",
+                                positiveButtonText = "Yes",
+                                onPositiveClick = {
                                     findNavController().navigate(R.id.action_productInfoFragment_to_loginFragment)
-                                }
-                                val onClickCancel = {}
-                                val dialog = DailogFramgent(
-                                    title = "you are in guest mode\nDo you want to login",
-                                    onDialogNegativeClick = onClickCancel,
-                                    onDialogPositiveClick = onClickOk
-                                )
-                                dialog.show(requireActivity().supportFragmentManager, "dialog")
-                            } else {
-                                Log.i("TAG", "onViewCreatedInElse: ")
-                                viewModel.addToCart(
-                                    choosenVarient.id,
-                                    choosenVarient.quantityAvailable
-                                )
-                            }
+                                })
+                        } else {
+                            Log.i("TAG", "onViewCreatedInElse: ")
+                            viewModel.addToCart(
+                                choosenVarient.id, choosenVarient.quantityAvailable
+                            )
                         }
                     }
                 }
             }
+        }
 
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -200,10 +187,27 @@ class ProductInfoFragment : Fragment() {
 
     }
 
+    private fun showRemoveFromFavoritesDialog(isGuest: Boolean) {
+        showConfirmationDialog(requireContext(),
+            isGuest,
+            title = "Remove from Favorites",
+            message = "Are you sure you want to remove this product from favorites?",
+            positiveButtonText = "Yes",
+            onPositiveClick = {
+                binding.addToFavourateIcon.setImageResource(R.drawable.empty_love)
+                Log.d("idddddd", product.id)
+                viewModel.removeProductFromWatchList(product.id.substring(22))
+                SnackbarUtils.showSnackbar(
+                    requireContext(), requireView(), "Product removed from favorites"
+                )
+            })
+    }
+
     fun onSelectListner(item: String, index: Int) {
         varientAdapter.index = index
-        binding.tvPrice.text="${product.variants.edges[index].node.priceV2.amount} ${product.variants.edges[index].node.priceV2.currencyCode}"
-        choosenVarient=product.variants.edges[index].node
+        binding.tvPrice.text =
+            "${product.variants.edges[index].node.priceV2.amount} ${product.variants.edges[index].node.priceV2.currencyCode}"
+        choosenVarient = product.variants.edges[index].node
         varientAdapter.notifyDataSetChanged()
     }
 }

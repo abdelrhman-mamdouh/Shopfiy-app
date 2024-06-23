@@ -56,17 +56,16 @@ class CurrenciesFragment : Fragment() {
         binding.rvCurrency.adapter = adapter
 
 
+        binding.titleBar.icBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack();
+
+        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    parentFragmentManager.popBackStack()
-                    findNavController().navigate(R.id.action_currenciesFragment_to_settingsFragment)
+                    requireActivity().supportFragmentManager.popBackStack();
                 }
             })
-        binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-            findNavController().navigate(R.id.action_currenciesFragment_to_settingsFragment)
-        }
     }
 
     private fun setupSearchView() {

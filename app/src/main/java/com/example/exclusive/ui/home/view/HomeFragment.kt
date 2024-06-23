@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
@@ -53,6 +54,15 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val swipeRefreshLayout = binding.swipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            findNavController().popBackStack(R.id.homeFragment, false)
+            findNavController().navigate(R.id.homeFragment)
+        }
+
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 requireActivity().finish()
@@ -77,11 +87,10 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        adapter.updateBrands(uiState.data)
+                        adapter.updateBrands(uiState.data.subList(1,uiState.data.size))
                         setViewsVisibility(View.VISIBLE)
                         binding.progressBar.visibility = View.GONE
                     }
-
                     is UiState.Error -> {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.GONE
@@ -97,17 +106,15 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                 }
             }
         }
-
         setupCoupons()
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupCoupons() {
         lifecycleScope.launch {
             viewModel.discountState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        val validPriceRules = uiState.data.filter { it.usageLimit == 1 }.filter { it.isValid() }
+                        val validPriceRules = uiState.data.filter { it.isValid() }
                         Log.i(TAG, "setupCoupons: ${validPriceRules}")
                         couponsAdapter.submitList(validPriceRules)
                     }
@@ -185,4 +192,5 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             }
         }
     }
+
 }

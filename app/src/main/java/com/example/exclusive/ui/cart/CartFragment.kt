@@ -63,13 +63,20 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
             }
         }
         binding.tvGoToLogin.setOnClickListener {
+            parentFragmentManager.popBackStack()
             findNavController().navigate(R.id.action_cartFragment_to_loginFragment)
         }
 
         binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
+            requireActivity().supportFragmentManager.popBackStack();
 
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().supportFragmentManager.popBackStack();
+                }
+            })
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartProductsResponse.collect { uiState ->
                 when (uiState) {

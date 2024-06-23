@@ -194,16 +194,7 @@
                     android:padding="@dimen/_12sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <CheckBox
-                android:id="@+id/cb_default_address"
-                style="@style/TextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="@string/default_address"
-                app:layout_constraintStart_toStartOf="@id/tf_zip"
-                app:layout_constraintTop_toBottomOf="@id/tf_zip" />
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button"
@@ -217,7 +208,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/right_guideline"
                 app:layout_constraintStart_toStartOf="@+id/left_guideline"
-                app:layout_constraintTop_toBottomOf="@id/cb_default_address" />
+                app:layout_constraintTop_toBottomOf="@id/tf_zip" />
 
             <ProgressBar
                 android:id="@+id/progressBar"

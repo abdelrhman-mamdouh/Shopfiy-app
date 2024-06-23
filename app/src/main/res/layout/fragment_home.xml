@@ -1,74 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-    android:padding="@dimen/_8sdp"
-tools:context=".ui.home.view.HomeFragment">
-<FrameLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerAdsSlider"
+    android:layout_height="match_parent">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:padding="@dimen/_8sdp"
+        tools:context=".ui.home.view.HomeFragment">
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/muli_black"
-        android:text="@string/brands"
-
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/viewPagerAdsSlider"
-        app:layout_constraintStart_toStartOf="@+id/viewPagerAdsSlider"
-        app:layout_constraintTop_toBottomOf="@+id/viewPagerAdsSlider" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/white"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/viewPagerAdsSlider"
-        app:layout_constraintStart_toStartOf="@+id/viewPagerAdsSlider"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_cart"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/row_brand"
-            tools:itemCount="1"/>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerAdsSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/muli_black"
+                    android:text="@string/brands"
+
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="@+id/viewPagerAdsSlider"
+                    app:layout_constraintStart_toStartOf="@+id/viewPagerAdsSlider"
+                    app:layout_constraintTop_toBottomOf="@+id/viewPagerAdsSlider" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/viewPagerAdsSlider"
+                    app:layout_constraintStart_toStartOf="@+id/viewPagerAdsSlider"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/row_brand" />
+                </androidx.cardview.widget.CardView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/progressBar"
-        android:layout_width="@dimen/_150sdp"
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        android:layout_height="@dimen/_150sdp"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"
-        android:visibility="visible"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="animation.json"
-        app:lottie_loop="true" />
-</FrameLayout>
-</ScrollView>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/progressBar"
+                android:layout_width="@dimen/_150sdp"
+
+                android:layout_height="@dimen/_150sdp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:visibility="visible"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="animation.json"
+                app:lottie_loop="true" />
+        </FrameLayout>
+
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

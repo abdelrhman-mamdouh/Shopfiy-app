@@ -10,8 +10,11 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
 import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import com.bumptech.glide.Glide
 import com.example.exclusive.R
 import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
@@ -25,14 +28,53 @@ object Constants {
     const val ACCESS_TOKEN: String = "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"
     const val CURRENCY_API_KEY: String = "0430202d52-68ce7481de-sf34mp"
 
-    fun showAlert(context: Context, title: Int, message: String, icon: Int) {
-        AlertDialog.Builder(context)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(R.string.app_name) { _, _ -> }
-            .setIcon(icon)
-            .show()
+    fun showConfirmationDialog(
+        context: Context,
+        isGuest:Boolean,
+        title: String,
+        message: String,
+        positiveButtonText: String,
+        onPositiveClick: () -> Unit,
+        negativeButtonText: String = "Cancel",
+        onNegativeClick: () -> Unit = {}
+    ) {
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.custom_dialog)
+
+        val dialogGif = dialog.findViewById<ImageView>(R.id.dialog_gif)
+        val dialogTitle = dialog.findViewById<TextView>(R.id.dialog_title)
+        val dialogMessage = dialog.findViewById<TextView>(R.id.dialog_message)
+        val positiveButton = dialog.findViewById<Button>(R.id.dialog_button_positive)
+        val negativeButton = dialog.findViewById<Button>(R.id.dialog_button_negative)
+
+        if(!isGuest) {
+            Glide.with(context)
+                .load(R.drawable.gif)
+                .into(dialogGif)
+        }else{
+            Glide.with(context)
+                .load(R.drawable.gif1)
+                .into(dialogGif)
+        }
+
+        dialogTitle.text = title
+        dialogMessage.text = message
+        positiveButton.text = positiveButtonText
+        negativeButton.text = negativeButtonText
+
+        positiveButton.setOnClickListener {
+            onPositiveClick.invoke()
+            dialog.dismiss()
+        }
+
+        negativeButton.setOnClickListener {
+            onNegativeClick.invoke()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
+
 
     fun showCouponDetailDialog(
         activity: Activity,
@@ -47,7 +89,7 @@ object Constants {
         dialog.setContentView(binding.root)
         val value = -1.0 * priceRuleSummary.value
         binding.tvCouponCode.text = "Code: ${couponDetail.code}"
-        binding.tvDiscountValue.text = value.toString()+"%"
+        binding.tvDiscountValue.text = value.toString() + "%"
 
 
         binding.btnCopyCode.setOnClickListener {
@@ -71,3 +113,5 @@ object Constants {
         view.startAnimation(AnimationUtils.loadAnimation(context, animation))
     }
 }
+
+

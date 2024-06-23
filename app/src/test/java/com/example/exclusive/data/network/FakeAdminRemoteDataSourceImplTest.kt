@@ -2,9 +2,11 @@ package com.example.exclusive.data.network
 
 import com.example.exclusive.data.model.CouponsDetails
 import com.example.exclusive.data.model.DiscountCode
+import com.example.exclusive.data.model.OrderRequest
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.model.PriceRulesResponse
 import com.example.exclusive.data.remote.AdminRemoteDataSourceImpl
+import com.example.exclusive.model.MyOrder
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -45,6 +47,13 @@ class FakeAdminRemoteDataSourceImplTest {
                     )
                 )
                 return Response.success(mockResponse)
+            }
+
+            override suspend fun createOrder(
+                accessToken: String,
+                orderRequest: OrderRequest
+            ): Response<MyOrder> {
+                TODO("Not yet implemented")
             }
         }
 

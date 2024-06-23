@@ -38,14 +38,13 @@ class WatchlistFragment : Fragment() {
         viewModel.fetchWatchlist()
         binding.titleBar.tvTitle.text = getString(R.string.wish_list)
         binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-            findNavController().navigate(R.id.action_watchlistFragment_to_settingsFragment)
+            requireActivity().supportFragmentManager.popBackStack();
+
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    parentFragmentManager.popBackStack()
-                    findNavController().navigate(R.id.action_watchlistFragment_to_settingsFragment)
+                    requireActivity().supportFragmentManager.popBackStack();
                 }
             })
         lifecycleScope.launch {

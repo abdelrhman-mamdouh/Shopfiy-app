@@ -53,7 +53,10 @@ class LoginFragment : Fragment() {
         viewModel.getToken()
         binding.titleBar.tvTitle.text = getString(R.string.login)
         binding.titleBar.icBack.visibility = View.GONE
-
+        binding.continueAsGuest.setOnClickListener {
+            viewModel.updateIsGuest(true)
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        }
         lifecycleScope.launch {
             viewModel.tokenState.collect {
                 if (it != null && it.isNotEmpty() && !isMainActivityLaunched) {

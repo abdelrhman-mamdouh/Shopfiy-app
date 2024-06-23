@@ -142,7 +142,23 @@
                 app:layout_constraintEnd_toEndOf="@+id/right_guideline"
                 app:layout_constraintStart_toStartOf="@+id/left_guideline"
                 app:layout_constraintTop_toBottomOf="@id/tv_forgot_password" />
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/continue_as_guest"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/light_white"
+                android:elevation="16dp"
+                android:text="Guest"
+                app:cornerRadius="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login"
+                app:layout_constraintVertical_bias="0.0" />
             <TextView
                 android:id="@+id/tv_dont_have_account"
                 style="@style/TextViewStyle"
@@ -153,7 +169,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_login" />
+                app:layout_constraintTop_toBottomOf="@id/continue_as_guest" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

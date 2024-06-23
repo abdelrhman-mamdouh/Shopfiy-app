@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
@@ -42,9 +44,13 @@ class ProductsFragment : Fragment(), OnProductClickListener {
         binding.rvProducts.adapter = adapter
 
         binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack();
         }
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().supportFragmentManager.popBackStack();
+            }
+        })
         binding.subCategoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             val selectedCategory = when (checkedId) {
                 R.id.radioBtnAccessories -> getString(R.string.accessories)

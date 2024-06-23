@@ -41,9 +41,15 @@ class AddAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.tvTitle.text = getString(R.string.add_address)
         binding.titleBar.icBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
+            requireActivity().supportFragmentManager.popBackStack();
 
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().supportFragmentManager.popBackStack();
+                }
+            })
         val countryList = getAllCountries()
         val egyptIndex = countryList.indexOf("Egypt")
 
@@ -62,7 +68,7 @@ class AddAddressFragment : Fragment() {
             val city = binding.etCity.text.toString()
             val country = binding.sCountry.text.toString()
             val zip = binding.etZip.text.toString()
-            val isDefault = binding.cbDefaultAddress.isChecked
+
 
             if (validateInputs(title, details, phone, city, country, zip)) {
                 val address = AddressInput(
