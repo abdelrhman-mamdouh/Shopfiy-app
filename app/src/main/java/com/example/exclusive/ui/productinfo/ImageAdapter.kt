@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.exclusive.databinding.ImageItemBinding
+import com.example.exclusive.databinding.ItemImageBinding
 
 class ImageDeffUtil: DiffUtil.ItemCallback<String>() {
     override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
@@ -16,16 +18,32 @@ class ImageDeffUtil: DiffUtil.ItemCallback<String>() {
         return oldItem == newItem
     }
 }
-class ImageAdapter(var imageList: List<String>): androidx.recyclerview.widget.ListAdapter<String, ImageAdapter.ImageViewHolder>(ImageDeffUtil()){
-    class ImageViewHolder(val binding:ImageItemBinding): RecyclerView.ViewHolder(binding.root)
+class ImageAdapter(private val imageUrls: List<String>) :
+    RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        return ImageViewHolder(ImageItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImageViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.binding.apply {
-            Glide.with(ivProductImage).load(imageList[position]).into(ivProductImage)
-        }
+        val imageUrl = imageUrls[position]
+        holder.bind(imageUrl)
     }
 
+    override fun getItemCount(): Int {
+        return imageUrls.size
+    }
+
+    inner class ImageViewHolder(private val binding: ItemImageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(imageUrl: String) {
+            Glide.with(binding.root)
+                .load(imageUrl)
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(binding.imageView)
+        }
+    }
 }

@@ -114,8 +114,8 @@
     <!-- Delete Button -->
     <ImageButton
         android:id="@+id/delete_button"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/round_corner"
@@ -128,12 +128,12 @@
 
     <ImageView
         android:id="@+id/cart_button"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"
         android:textAlignment="center"
-        android:padding="@dimen/_8sdp"
+      android:padding="@dimen/_5sdp"
         android:background="@drawable/round_radius"
         app:srcCompat="@drawable/ic_cart_fav"
         tools:ignore="ContentDescription"

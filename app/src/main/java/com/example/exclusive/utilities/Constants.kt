@@ -30,7 +30,7 @@ object Constants {
 
     fun showConfirmationDialog(
         context: Context,
-        isGuest:Boolean,
+        gif: Int,
         title: String,
         message: String,
         positiveButtonText: String,
@@ -47,15 +47,14 @@ object Constants {
         val positiveButton = dialog.findViewById<Button>(R.id.dialog_button_positive)
         val negativeButton = dialog.findViewById<Button>(R.id.dialog_button_negative)
 
-        if(!isGuest) {
-            Glide.with(context)
-                .load(R.drawable.gif)
-                .into(dialogGif)
-        }else{
-            Glide.with(context)
-                .load(R.drawable.gif1)
-                .into(dialogGif)
+
+        Glide.with(context)
+            .load(gif)
+            .into(dialogGif)
+        if (gif == R.drawable.about_us) {
+            negativeButton.visibility = View.GONE
         }
+
 
         dialogTitle.text = title
         dialogMessage.text = message

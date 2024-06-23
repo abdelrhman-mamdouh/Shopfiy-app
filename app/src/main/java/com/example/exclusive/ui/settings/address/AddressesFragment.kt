@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
@@ -62,7 +63,11 @@ class AddressesFragment : Fragment() {
 
     private fun setListeners() {
         binding.btnAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_addressesFragment_to_addAddressFragment)
+            findNavController().navigate(
+                R.id.action_addressesFragment_to_addAddressFragment,
+                null,
+                NavOptions.Builder().setPopUpTo(R.id.addressesFragment, false).build()
+            )
         }
     }
 

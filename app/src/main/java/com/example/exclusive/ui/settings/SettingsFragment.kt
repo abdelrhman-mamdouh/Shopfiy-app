@@ -10,13 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.exclusive.R
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentSettingsBinding
 import com.example.exclusive.model.MyOrder
+import com.example.exclusive.model.ProductNode
 import com.example.exclusive.ui.orders.view.OnOrderClickListener
 import com.example.exclusive.ui.orders.view.OrderAdapter
+import com.example.exclusive.ui.watchlist.WatchListAdapter
+import com.example.exclusive.utilities.Constants
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,12 +45,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         _binding?.let { binding ->
-            val swipeRefreshLayout = binding.swipeRefreshLayout
-            swipeRefreshLayout.setOnRefreshListener {
-                swipeRefreshLayout.isRefreshing = false
-                findNavController().popBackStack(R.id.settingsFragment, false)
-                findNavController().navigate(R.id.settingsFragment)
-            }
+
 
             lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -61,6 +61,17 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                     }
                 }
             }
+            binding.aboutUs.setOnClickListener {
+                Constants.showConfirmationDialog(
+                    requireContext(),
+                    R.drawable.about_us,
+                    title = "Exclusive m-commerce android mobile application",
+                    message = "PREPARED BY \n Abdelrahman Mamdouhn \n AbdulHameed Mohamed \n Mahmoud Osama \n Tasneem Ibraheem",
+                    positiveButtonText = "Ok",
+                    onPositiveClick = {
+
+                    })
+            }
             setListeners(binding)
             binding.outlinedButton.setOnClickListener {
                 lifecycleScope.launch {
@@ -72,6 +83,51 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                 }
             }
             observe(binding)
+            observeWishList(binding)
+        }
+    }
+
+    private fun observeWishList(binding: FragmentSettingsBinding) {
+        val adapter = WatchListAdapter(onRemoveListner = { product ->
+            showRemoveFromFavoritesDialog(R.drawable.gif, product)
+        }, onItemClickListener = {
+
+        }, addToCart = { product: ProductNode ->
+
+            if(product.variants.edges[0].node.quantityAvailable>1){
+                viewModel.addToCart(product.variants.edges[0].node.id, 1)
+                SnackbarUtils.showSnackbar(requireContext(),requireView(),"Product Added to Cart")
+            }else{
+                SnackbarUtils.showSnackbar(requireContext(),requireView(),"Out of Stock")
+            }
+        })
+
+        binding.rvWishlist.adapter = adapter
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.watchlist.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            showLoading(binding)
+                        }
+
+                        is UiState.Success -> {
+                            hideLoading(binding)
+                            adapter.submitList(uiState.data)
+                        }
+
+                        is UiState.Error -> {
+                            hideLoading(binding)
+
+                        }
+
+                        UiState.Idle -> {
+
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -81,6 +137,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                 viewModel.ordersState.collect { state ->
                     when (state) {
                         is UiState.Success -> {
+                            hideLoading(binding)
                             Log.i("observeOrders", "observeOrders: ${state.data}")
                             if (state.data.isEmpty()) {
                                 return@collect
@@ -96,11 +153,11 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
                         is UiState.Error -> {}
 
                         UiState.Loading -> {
-                            // Show a loading indicator
+                            showLoading(binding)
                         }
 
                         UiState.Idle -> {
-                            // Initial state, do nothing
+                            hideLoading(binding)
                         }
                     }
                 }
@@ -113,28 +170,57 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
         super.onStart()
     }
 
+
     private fun setListeners(binding: FragmentSettingsBinding) {
+        val navOptions = NavOptions.Builder().setPopUpTo(R.id.settingsFragment, false).build()
+
         binding.cvAddress.setOnClickListener {
             findNavController().navigate(
-                R.id.action_settingsFragment_to_addressesFragment
+                R.id.action_settingsFragment_to_addressesFragment,
+                null,
+                navOptions
             )
         }
 
         binding.cvCurrency.setOnClickListener {
             findNavController().navigate(
-                R.id.action_settingsFragment_to_currenciesFragment
+                R.id.action_settingsFragment_to_currenciesFragment,
+                null,
+                navOptions
             )
         }
+
         binding.cvOrder.setOnClickListener {
             findNavController().navigate(
-                R.id.action_settingsFragment_to_orderFragment
+                R.id.action_settingsFragment_to_orderFragment,
+                null,
+                navOptions
             )
         }
+
         binding.cvWish.setOnClickListener {
             findNavController().navigate(
-                R.id.action_settingsFragment_to_wishListFragment
+                R.id.action_settingsFragment_to_wishListFragment,
+                null,
+                navOptions
             )
         }
+    }
+
+    private fun showRemoveFromFavoritesDialog(gif: Int, productNode: ProductNode) {
+        Constants.showConfirmationDialog(
+            requireContext(),
+            gif = gif,
+            title = "Remove from Favorites",
+            message = "Are you sure you want to remove this product from favorites?",
+            positiveButtonText = "Yes",
+            onPositiveClick = {
+
+                viewModel.removeProductFromWatchList(productNode.id.substring(22))
+                SnackbarUtils.showSnackbar(
+                    requireContext(), binding.root, "Product removed from favorites"
+                )
+            })
     }
 
     private fun showLoading(binding: FragmentSettingsBinding) {

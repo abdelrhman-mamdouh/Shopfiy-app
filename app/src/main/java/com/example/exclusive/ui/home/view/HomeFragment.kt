@@ -27,6 +27,7 @@ import com.example.exclusive.databinding.FragmentHomeBinding
 import com.example.exclusive.model.Brand
 import com.example.exclusive.ui.home.viewmodel.HomeViewModel
 import com.example.exclusive.utilities.Constants
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -62,12 +63,12 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             findNavController().navigate(R.id.homeFragment)
         }
 
-
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 requireActivity().finish()
             }
         })
+
         setViewsVisibility(View.GONE)
         binding.progressBar.visibility = View.VISIBLE
 
@@ -83,11 +84,15 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         binding.viewPagerAdsSlider.adapter = couponsAdapter
         binding.viewPagerAdsSlider.setPageTransformer(ZoomOutPageTransformer())
 
+        TabLayoutMediator(binding.tabLayout, binding.viewPagerAdsSlider) { tab, _ ->
+            tab.setCustomView(R.layout.custom_tab)
+        }.attach()
+
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        adapter.updateBrands(uiState.data.subList(1,uiState.data.size))
+                        adapter.updateBrands(uiState.data.subList(1, uiState.data.size))
                         setViewsVisibility(View.VISIBLE)
                         binding.progressBar.visibility = View.GONE
                     }
@@ -108,6 +113,7 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         }
         setupCoupons()
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupCoupons() {
         lifecycleScope.launch {
@@ -180,17 +186,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                         is UiState.Error -> {
                             isDialogShowing = false
                         }
-
                         UiState.Idle -> {
-
                         }
                         UiState.Loading -> {
-
                         }
                     }
                 }
             }
         }
     }
-
 }

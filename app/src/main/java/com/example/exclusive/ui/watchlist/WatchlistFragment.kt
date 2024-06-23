@@ -17,6 +17,8 @@ import com.example.exclusive.R
 import com.example.exclusive.databinding.FragmentWatchlistBinding
 import com.example.exclusive.model.ProductNode
 import com.example.exclusive.ui.productinfo.DailogFramgent
+import com.example.exclusive.utilities.Constants
+import com.example.exclusive.utilities.SnackbarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -97,18 +99,36 @@ class WatchlistFragment : Fragment() {
     }
 
     private val removeItem: (ProductNode) -> Unit = { product ->
-        val dialog = DailogFramgent(onDialogPositiveClick = {
-            viewModel.removeProductFromWatchList(product.id.substring(22))
-        }, onDialogNegativeClick = {})
-        dialog.show(requireActivity().supportFragmentManager, "dialog")
+        showRemoveFromFavoritesDialog(R.drawable.gif,product)
+
     }
 
     private val addItemToCart = { product: ProductNode ->
-        viewModel.addToCart(
-            product.variants.edges[0].node.id, product.variants.edges[0].node.quantityAvailable
-        )
-    }
 
+        if(product.variants.edges[0].node.quantityAvailable>1){
+            viewModel.addToCart(
+                product.variants.edges[0].node.id, 1
+            )
+            SnackbarUtils.showSnackbar(requireContext(),requireView(),"Product Added to Cart")
+        }else{
+            SnackbarUtils.showSnackbar(requireContext(),requireView(),"Out of Stock")
+        }
+    }
+    private fun showRemoveFromFavoritesDialog(gif: Int, productNode: ProductNode) {
+        Constants.showConfirmationDialog(
+            requireContext(),
+            gif = gif,
+            title = "Remove from Favorites",
+            message = "Are you sure you want to remove this product from favorites?",
+            positiveButtonText = "Yes",
+            onPositiveClick = {
+
+                viewModel.removeProductFromWatchList(productNode.id.substring(22))
+                SnackbarUtils.showSnackbar(
+                    requireContext(), binding.root, "Product removed from favorites"
+                )
+            })
+    }
     private val onItemClick = { product: ProductNode ->
         NavHostFragment.findNavController(this@WatchlistFragment).navigate(
             WatchlistFragmentDirections.actionWatchlistFragmentToProductInfoFragment(product)

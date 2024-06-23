@@ -1,353 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
 
-    <FrameLayout
+    tools:context=".ui.settings.SettingsFragment">
+
+    <ScrollView
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
 
         tools:context=".ui.settings.SettingsFragment">
 
-        <ScrollView
-            android:id="@+id/main_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content">
 
-            tools:context=".ui.settings.SettingsFragment">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/left_guideline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_order"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_8sdp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/right_guideline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_end="16dp" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:background="@color/light_white"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_order"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:elevation="@dimen/_8sdp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageView
+                        android:id="@+id/image_order"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:src="@drawable/im_order"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_orders"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
-                        android:background="@color/light_white"
-                        android:gravity="center_vertical"
+                    <TextView
+                        android:id="@+id/tv_orders"
+                        style="@style/TextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Orders"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_more_orders"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toEndOf="@+id/image_order"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_more_orders"
+
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:background="@drawable/round_corner"
+                        android:contentDescription="@string/for_more"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_read_more"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_orders"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toEndOf="@+id/tv_orders"
+                        app:layout_constraintTop_toTopOf="@+id/tv_orders"
+                        tools:text="Dollar" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                        <ImageView
-                            android:id="@+id/image_order"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:src="@drawable/im_order"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_orders"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"></ImageView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_orders"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/cv_order"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_order" />
 
-                        <TextView
-                            android:id="@+id/tv_orders"
-                            style="@style/TextViewStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Orders"
-                            android:textSize="@dimen/_14sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/iv_more_orders"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toEndOf="@+id/image_order"
-                            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_wish"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_8sdp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/rv_orders">
 
-                        <ImageView
-                            android:id="@+id/iv_more_orders"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:background="@color/light_white"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:background="@drawable/round_corner"
-                            android:contentDescription="@string/for_more"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_read_more"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_orders"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tv_orders"
-                            app:layout_constraintTop_toTopOf="@+id/tv_orders"
-                            tools:text="Dollar" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    <ImageView
+                        android:id="@+id/image_wish"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:src="@drawable/im_wish"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_wishlist"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_orders"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@id/cv_order"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_order" />
+                    <TextView
+                        android:id="@+id/tv_wishlist"
+                        style="@style/TextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Wish List"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_more_wishlist"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toEndOf="@+id/image_wish"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_wish"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:elevation="@dimen/_8sdp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_orders">
+                    <ImageView
+                        android:id="@+id/iv_more_wishlist"
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
-                        android:background="@color/light_white"
-                        android:gravity="center_vertical"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:background="@drawable/round_corner"
+                        android:contentDescription="@string/for_more"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_read_more"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_wishlist"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <ImageView
-                            android:id="@+id/image_wish"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:src="@drawable/im_wish"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_wishlist"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-                        <TextView
-                            android:id="@+id/tv_wishlist"
-                            style="@style/TextViewStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Wish List"
-                            android:textSize="@dimen/_14sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/iv_more_wishlist"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toEndOf="@+id/image_wish"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/iv_more_wishlist"
-
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:background="@drawable/round_corner"
-                            android:contentDescription="@string/for_more"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_read_more"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_wishlist"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tv_wishlist"
-                            app:layout_constraintTop_toTopOf="@+id/tv_wishlist"
-                            tools:text="Dollar" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
+                        app:layout_constraintStart_toEndOf="@+id/tv_wishlist"
+                        app:layout_constraintTop_toTopOf="@+id/tv_wishlist"
+                        tools:text="Dollar" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_wishlist"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@id/cv_wish"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_product" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_wishlist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/cv_wish"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_product" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_currency"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:elevation="@dimen/_8sdp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@id/rv_wishlist">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_currency"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_8sdp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/rv_wishlist">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/light_white">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/light_white">
 
-                        <ImageView
-                            android:id="@+id/image"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:src="@drawable/curr"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_currency"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"></ImageView>
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:src="@drawable/curr"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_currency"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-                        <TextView
-                            android:id="@+id/tv_currency"
-                            style="@style/TextViewStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Currency"
-                            android:textSize="@dimen/_14sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_code"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toEndOf="@+id/image"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/tv_currency"
+                        style="@style/TextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Currency"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_code"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toEndOf="@+id/image"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tv_code"
-                            style="@style/TextViewStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:paddingHorizontal="4dp"
-                            android:textColor="@color/primary_color"
-                            android:textSize="@dimen/_12sdp"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_currency"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tv_currency"
-                            app:layout_constraintTop_toTopOf="@+id/tv_currency"
-                            tools:text="Dollar" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:elevation="@dimen/_8sdp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/cv_currency">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
-                        android:background="@color/light_white"
-                        android:gravity="center_vertical"
+                    <TextView
+                        android:id="@+id/tv_code"
+                        style="@style/TextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:paddingHorizontal="4dp"
+                        android:textColor="@color/primary_color"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_currency"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toEndOf="@+id/tv_currency"
+                        app:layout_constraintTop_toTopOf="@+id/tv_currency"
+                        tools:text="Dollar" />
 
-                        <ImageView
-                            android:id="@+id/image_address"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:src="@drawable/im_add"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_address"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"></ImageView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                        <TextView
-                            android:id="@+id/tv_address"
-                            style="@style/TextViewStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Addresses"
-                            android:textSize="@dimen/_14sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/iv_address"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toEndOf="@+id/image_address"
-                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:id="@+id/iv_address"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_8sdp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/cv_currency">
 
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:background="@drawable/round_corner"
-                            android:contentDescription="@string/for_more"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_read_more"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_address"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tv_address"
-                            app:layout_constraintTop_toTopOf="@+id/tv_address"
-                            tools:text="Dollar" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:background="@color/light_white"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <Button
-                    android:id="@+id/outlinedButton"
-                    style="@style/TextViewStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/round_corner"
-                    android:backgroundTint="@color/primary_color"
-                    android:contentDescription="@string/logout"
-                    android:text="@string/logout"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="@id/right_guideline"
-                    app:layout_constraintStart_toStartOf="@id/left_guideline"
-                    app:layout_constraintTop_toBottomOf="@id/cv_address" />
+                    <ImageView
+                        android:id="@+id/image_address"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:src="@drawable/im_add"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_address"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+                    <TextView
+                        android:id="@+id/tv_address"
+                        style="@style/TextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Addresses"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_address"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toEndOf="@+id/image_address"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottieLoading"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:lottie_autoPlay="false"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/loading" />
-    </FrameLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <ImageView
+                        android:id="@+id/iv_address"
+
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:background="@drawable/round_corner"
+                        android:contentDescription="@string/for_more"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_read_more"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_address"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_address"
+                        app:layout_constraintTop_toTopOf="@+id/tv_address"
+                        tools:text="Dollar" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <Button
+                android:id="@+id/aboutUs"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_marginBottom="10dp"
+
+                android:backgroundTint="@color/yellow"
+                android:contentDescription="@string/logout"
+                android:text="About Us"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/cv_address" />
+            <Button
+                android:id="@+id/outlinedButton"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/primary_color"
+                android:contentDescription="@string/logout"
+                android:text="@string/logout"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="@id/right_guideline"
+                app:layout_constraintStart_toStartOf="@id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/aboutUs" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLoading"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
+</FrameLayout>

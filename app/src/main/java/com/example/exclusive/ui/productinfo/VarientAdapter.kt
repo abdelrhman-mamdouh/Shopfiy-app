@@ -1,28 +1,29 @@
 package com.example.exclusive.ui.productinfo
 
-import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
 import com.example.exclusive.databinding.VarinetItemBinding
-val colorsMap = mapOf("red" to R.color.red,
+
+// Color resource mapping for variant colors
+val colorsMap = mapOf(
+    "red" to R.color.red,
     "green" to R.color.green,
     "blue" to R.color.blue,
     "yellow" to R.color.yellow,
     "beige" to R.color.beige,
-    "burgandy" to R.color.burgandy,
+    "burgundy" to R.color.burgandy,
     "gray" to R.color.gray,
     "black" to R.color.black,
     "white" to R.color.white
 )
-class VarientDeffUtil: DiffUtil.ItemCallback<String>() {
 
+// DiffUtil class for calculating differences in the list of variants
+class VariantDiffUtil : DiffUtil.ItemCallback<String>() {
     override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
         return oldItem == newItem
     }
@@ -31,43 +32,60 @@ class VarientDeffUtil: DiffUtil.ItemCallback<String>() {
         return oldItem == newItem
     }
 }
-class VarientAdapter(var onSelectListner:(String,Int)->Unit,var varientList: List<String>,var index:Int=-1): androidx.recyclerview.widget.ListAdapter<String, VarientAdapter.ViewHolder>(VarientDeffUtil()) {
-    val colors = arrayOfNulls<Int>(varientList.size)
 
+class VariantAdapter(
+    private val onSelectListener: (String, Int) -> Unit,
+    private val variantList: List<String>,
+    private var selectedIndex: Int = -1
+) : RecyclerView.Adapter<VariantAdapter.ViewHolder>() {
+
+    // ViewHolder class for caching views
     class ViewHolder(val binding: VarinetItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            VarinetItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        val binding = VarinetItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val variant = variantList[position]
         holder.binding.apply {
-           tvVarient.text = varientList[position]
-            val varinets = varientList[position].split("/")
+            tvVarient.text = variant
 
-            val color = (if(varinets.size>1) varinets[1] else "green").replace(" ","")
-            Log.d("color of varient", color)
-            if (color == "white")
-                tvVarient.setTextColor(ContextCompat.getColor(tvVarient.context, R.color.black))
-            else
-                tvVarient.setTextColor(ContextCompat.getColor(tvVarient.context, R.color.white))
-            if(position==index){
-                root.backgroundTintList = ContextCompat.getColorStateList(root.context, R.color.primary_color)
+            // Extract color from variant (assuming format: "variant/color")
+            val parts = variant.split("/")
+            val colorName = if (parts.size > 1) parts[1].trim() else "green"
+
+            // Set text color based on the background color
+            val textColor = if (colorName.equals("white", ignoreCase = true)) {
+                ContextCompat.getColor(tvVarient.context, R.color.black)
+            } else {
+                ContextCompat.getColor(tvVarient.context, R.color.white)
             }
-            else
-            root.backgroundTintList = ContextCompat.getColorStateList(root.context, colorsMap[color]?:R.color.green)
+            tvVarient.setTextColor(textColor)
+
+            // Set background color based on the selected or default color
+            val backgroundColor = if (position == selectedIndex) {
+                ContextCompat.getColorStateList(root.context, R.color.primary_color)
+            } else {
+                ContextCompat.getColorStateList(root.context, colorsMap[colorName] ?: R.color.green)
+            }
+            root.backgroundTintList = backgroundColor
+
+            // Handle item click
             root.setOnClickListener {
-
-                onSelectListner(varientList[position],position)
-
-               // it.backgroundTintList = ContextCompat.getColorStateList(it.context, colorsMap[color]?:R.color.green)
+                onSelectListener(variant, position)
+                selectedIndex = position
+                notifyDataSetChanged() // Refresh list to reflect selection change
             }
         }
+    }
+
+    override fun getItemCount(): Int {
+        return variantList.size
     }
 }

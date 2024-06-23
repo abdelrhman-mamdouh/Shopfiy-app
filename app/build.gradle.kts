@@ -171,6 +171,11 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation ("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("com.tbuonomo:dotsindicator:4.2")
+    implementation ("com.mikhaellopez:circularimageview:4.3.0")
+    implementation ("com.github.Shashank02051997:FancyGifDialog-Android:1.5")
+
 }
 kapt {
     correctErrorTypes = true

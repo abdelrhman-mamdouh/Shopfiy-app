@@ -140,6 +140,7 @@
             android:id="@+id/action_settingsFragment_to_wishListFragment"
             app:destination="@id/watchlistFragment"
             app:enterAnim="@anim/row_slide_in" />
+
     </fragment>
 
     <fragment
