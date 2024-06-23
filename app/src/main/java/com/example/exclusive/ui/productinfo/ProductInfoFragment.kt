@@ -1,11 +1,13 @@
 package com.example.exclusive.ui.productinfo
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -63,6 +65,7 @@ class ProductInfoFragment : Fragment() {
                 }
             }
         }
+
         binding.titleBar.tvTitle.text = getString(R.string.product_info)
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
@@ -137,6 +140,12 @@ class ProductInfoFragment : Fragment() {
                     }
                 }
             }
+        }
+        if(choosenVarient.quantityAvailable == 0){
+            binding.btnAddToCart.isEnabled = false
+            binding.btnAddToCart.text = "Out of Stock"
+            binding.btnAddToCart.paintFlags = binding.btnAddToCart.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            binding.btnAddToCart.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
         binding.btnAddToCart.setOnClickListener {
             Log.i("isGuest", "isGuest: ")
