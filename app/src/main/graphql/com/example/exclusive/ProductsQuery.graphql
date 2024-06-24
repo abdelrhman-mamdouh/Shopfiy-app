@@ -1,0 +1,35 @@
+query ProductsQuery($vendor: String!) {
+    products(first: 200, query:$vendor) {
+        edges {
+            node {
+                id
+                title
+                vendor
+                description
+                productType
+                images(first: 5) {
+                    edges {
+                        node {
+                            src
+                        }
+                    }
+                }
+                variants(first: 15) {
+                    edges {
+                        node {
+                            id
+                            title
+                            sku
+                            priceV2 {
+                                amount
+                                currencyCode
+                            }
+                            quantityAvailable
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -1,143 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="wrap_content"
+ android:padding="@dimen/_16sdp"
+    android:id="@+id/container"
+    android:background="@drawable/background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:background="@drawable/background"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextViewStyleHeader"
+        android:layout_width="wrap_content"
+        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:text="@string/shoes"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+         />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewSearch"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        app:cardCornerRadius="@dimen/_30sdp"
+        app:cardElevation="@dimen/_8sdp"
+        android:layout_gravity="center_vertical"
+       >
+
+        <ImageView
+            android:id="@+id/imgViewSearch"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            app:srcCompat="@drawable/ic_search"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewFavorite"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        app:cardCornerRadius="@dimen/_30sdp"
+
+        app:cardElevation="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_gravity="center_vertical"
+        >
+
+        <ImageView
+            android:id="@+id/imgViewFavorite"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            app:srcCompat="@drawable/ic_favorite_off"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewShoppingCart"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:cardCornerRadius="@dimen/_30sdp"
+
+        app:cardElevation="@dimen/_8sdp"
+        android:layout_gravity="center_vertical"
+        >
+
+        <ImageView
+            android:id="@+id/imgViewShoppingCart"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            app:srcCompat="@drawable/ic_shopping_cart"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewShoppingCartCount"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:backgroundTint="@color/primary_color"
+        android:visibility="gone"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:cardElevation="@dimen/_8sdp"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewShoppingCart"
+        app:layout_constraintEnd_toStartOf="@+id/cardViewShoppingCart"
+        tools:layout_editor_absoluteY="32dp">
+
+        <TextView
+            android:id="@+id/txtViewCartCount"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"/>
+    </androidx.cardview.widget.CardView>
 
-            android:theme="@style/Base.Theme.Exclusive.AppBarOverlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="0dp"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardViewShoppingCart"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:popupTheme="@style/Base.Theme.Exclusive.PopupOverlay"
-                    app:titleCentered="true" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewFavorite"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    app:cardCornerRadius="@dimen/_30sdp"
-                    app:cardElevation="@dimen/_8sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imgViewFavorite"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        app:srcCompat="@drawable/ic_favorite_off"
-                        tools:ignore="ContentDescription" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewShoppingCart"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    app:cardCornerRadius="@dimen/_30sdp"
-                    app:cardElevation="@dimen/_8sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cardViewFavorite"
-                    app:layout_constraintEnd_toStartOf="@+id/cardViewFavorite"
-                    app:layout_constraintTop_toTopOf="@+id/cardViewFavorite">
-
-                    <ImageView
-                        android:id="@+id/imgViewShoppingCart"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-
-                        app:srcCompat="@drawable/ic_shopping_cart"
-                        tools:ignore="ContentDescription" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewShoppingCartCount"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_12sdp"
-                    android:backgroundTint="@color/primary_color"
-                    android:visibility="gone"
-                    app:cardCornerRadius="@dimen/_16sdp"
-                    app:cardElevation="@dimen/_8sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/cardViewShoppingCart"
-                    app:layout_constraintEnd_toStartOf="@+id/cardViewShoppingCart">
-
-                    <TextView
-                        android:id="@+id/txtViewCartCount"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12ssp"/>
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_24sdp"
-            android:layout_marginEnd="@dimen/_24sdp"
-            android:background="@drawable/round_corner"
-            android:elevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/appBarLayout"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtInputEditTextSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:background="@drawable/round_corner"
-                android:hint="Search here"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:focusable="false"
-                android:textSize="@dimen/_14ssp"
-                tools:ignore="SpeakableTextPresentCheck" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

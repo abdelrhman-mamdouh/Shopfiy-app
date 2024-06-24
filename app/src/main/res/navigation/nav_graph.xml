@@ -1,0 +1,333 @@
+<!-- auth_nav_graph.xml -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/introSliderFragment">
+
+    <fragment
+        android:id="@+id/introSliderFragment"
+        android:name="com.example.exclusive.ui.slider.view.IntroSliderFragment"
+        android:label="Intro Slider"
+        tools:layout="@layout/fragment_intro_slider">
+        <action
+            android:id="@+id/action_introSliderFragment_to_authMainFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.exclusive.ui.auth.signup.SignUpFragment"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.exclusive.ui.auth.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeNavGraph"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgetPasswordFragment"
+        android:name="com.example.exclusive.ui.auth.ForgetPasswordFragment"
+        android:label="ForgetPasswordFragment"
+        tools:layout="@layout/fragment_forget_password" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.exclusive.ui.home.view.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_productFragment"
+            app:destination="@id/productsFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+    <!-- Search Fragment -->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.exclusive.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_searchFragment_to_productInfoFragment"
+            app:destination="@id/productInfoFragment">
+            <argument
+                android:name="product"
+                app:argType="com.example.exclusive.model.ProductNode" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.exclusive.ui.category.view.CategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category">
+        <action
+            android:id="@+id/action_categoryFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+    <!-- Currencies Fragment -->
+    <fragment
+        android:id="@+id/currenciesFragment"
+        android:name="com.example.exclusive.ui.settings.currency.CurrenciesFragment"
+        android:label="Currencies"
+        tools:layout="@layout/fragment_currencies">
+        <action
+            android:id="@+id/action_currenciesFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/row_slide_in"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.exclusive.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_orderFragment"
+            app:destination="@id/orderFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_settingsFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_settingsFragment_to_addressesFragment"
+            app:destination="@id/addressesFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_settingsFragment_to_currenciesFragment"
+            app:destination="@id/currenciesFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/auth_nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_productInfoFragment"
+            app:destination="@id/productInfoFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_settingsFragment_to_wishListFragment"
+            app:destination="@id/watchlistFragment"
+            app:enterAnim="@anim/row_slide_in" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.example.exclusive.ui.products.view.ProductsFragment"
+        android:label="Products"
+        tools:layout="@layout/fragment_products">
+        <argument
+            android:name="brand"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_productsFragment_to_productInfoFragment"
+            app:destination="@id/productInfoFragment">
+            <argument
+                android:name="product"
+                app:argType="com.example.exclusive.model.ProductNode" />
+        </action>
+        <action
+            android:id="@+id/action_productsFragment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_productsFragment_to_watchlistFragment"
+            app:destination="@id/watchlistFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_productsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.exclusive.ui.cart.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_cartFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/row_slide_in"
+            app:popUpTo="@id/cartFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/watchlistFragment"
+        android:name="com.example.exclusive.ui.watchlist.WatchlistFragment"
+        android:label="Watchlist"
+        tools:layout="@layout/fragment_watchlist">
+        <action
+            android:id="@+id/action_watchlistFragment_to_productInfoFragment"
+            app:destination="@id/productInfoFragment" >
+            <argument
+                android:name="product"
+                app:argType="com.example.exclusive.model.ProductNode" />
+
+        </action>
+        <action
+            android:id="@+id/action_watchlistFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_watchlistFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/row_slide_in"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.example.exclusive.ui.settings.address.addAddress.AddAddressFragment"
+        android:label="Add Address"
+        tools:layout="@layout/fragment_add_address">
+        <argument
+            android:name="address"
+            app:argType="com.example.exclusive.model.AddressInput"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_addAddressFragment_to_addressesFragment"
+            app:destination="@id/addressesFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addressesFragment"
+        android:name="com.example.exclusive.ui.settings.address.AddressesFragment"
+        android:label="Addresses"
+        tools:layout="@layout/fragment_addresses">
+
+        <action
+            android:id="@+id/action_addressesFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_addressesFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.example.exclusive.ui.orders.view.OrderFragment"
+        android:label="Orders"
+        tools:layout="@layout/fragment_order">
+        <action
+            android:id="@+id/action_orderFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_orderFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:popUpTo="@id/auth_nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.example.exclusive.ui.orderdetails.view.OrderDetailsFragment"
+        android:label="Order Details"
+        tools:layout="@layout/fragment_order_details" />
+
+    <fragment
+        android:id="@+id/productInfoFragment"
+        android:name="com.example.exclusive.ui.productinfo.ProductInfoFragment"
+        android:label="Product Info">
+        <argument
+            android:name="product"
+            app:argType="com.example.exclusive.model.ProductNode" />
+        <action
+            android:id="@+id/action_productInfoFragment_to_watchlistFragment"
+            app:destination="@id/watchlistFragment" />
+        <action
+            android:id="@+id/action_productInfoFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.exclusive.ui.checkout.view.CheckoutFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_check_out">
+
+        <action
+            android:id="@+id/action_checkoutFragment_to_paymentCompletedFragment"
+            app:destination="@id/paymentCompletedFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_checkoutWebVieFragment"
+            app:destination="@id/checkoutWebViewFragment"
+            app:enterAnim="@anim/row_slide_in" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/row_slide_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutWebViewFragment"
+        android:name="com.example.exclusive.ui.checkout.view.CheckoutWebViewFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_web_view_checkout">
+        <argument
+            android:name="webUrl"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_checkoutWebViewFragment_to_paymentCompletedFragment"
+            app:destination="@id/paymentCompletedFragment"
+            app:popUpTo="@id/cartFragment"
+            app:enterAnim="@anim/row_slide_in"/>
+    </fragment>
+    <fragment
+        android:id="@+id/paymentCompletedFragment"
+        android:name="com.example.exclusive.ui.checkout.view.PaymentCompletedFragment"
+        android:label="Payment Completed"
+        tools:layout="@layout/fragment_payment_completed">
+        <action
+            android:id="@+id/action_paymentCompletedFragment_to_orderFragment"
+            app:destination="@id/orderFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

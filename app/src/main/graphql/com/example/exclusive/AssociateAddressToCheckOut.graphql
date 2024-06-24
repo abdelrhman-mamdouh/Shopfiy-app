@@ -1,0 +1,13 @@
+mutation ApplyShippingAddressMutation($checkoutId: ID!, $shippingAddress: MailingAddressInput!) {
+    checkoutShippingAddressUpdateV2(checkoutId: $checkoutId, shippingAddress: $shippingAddress) {
+        checkout {
+            id
+            webUrl
+        }
+        checkoutUserErrors {
+            code
+            field
+            message
+        }
+    }
+}

@@ -14,46 +14,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintTop_toTopOf="parent" />
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
+    <!-- Auth NavHostFragment -->
+    <fragment
+        android:id="@+id/auth_nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"    app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_home"
-
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <fragment
-            android:id="@+id/activity_main_nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            android:layout_margin="@dimen/_8sdp"
-           app:navGraph="@navigation/main_nav" />
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
 
 
-
+    <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/_8sdp"
-        android:elevation="@dimen/_20sdp"
-        app:menu = "@menu/item_menu"
-        android:background="@drawable/round_corner"
-        app:itemIconSize="@dimen/_25sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/item_menu" />
 
-        app:itemRippleColor="@color/light_white"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/item_selector"
-        ></com.google.android.material.bottomnavigation.BottomNavigationView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,30 @@
+{
+    "project_info": {
+    "project_number": "665828463484",
+    "firebase_url": "https://exclusice-6129d-default-rtdb.firebaseio.com",
+    "project_id": "exclusice-6129d",
+    "storage_bucket": "exclusice-6129d.appspot.com"
+},
+    "client": [
+    {
+        "client_info": {
+        "mobilesdk_app_id": "1:665828463484:android:24a003ed46264749934af9",
+        "android_client_info": {
+        "package_name": "com.example.exclusive"
+    }
+    },
+        "oauth_client": [],
+        "api_key": [
+        {
+            "current_key": "AIzaSyA8W8iNIGnwnYmiwLDiqKc_VQv8J7eH6NM"
+        }
+        ],
+        "services": {
+        "appinvite_service": {
+        "other_platform_oauth_client": []
+    }
+    }
+    }
+    ],
+    "configuration_version": "1"
+}

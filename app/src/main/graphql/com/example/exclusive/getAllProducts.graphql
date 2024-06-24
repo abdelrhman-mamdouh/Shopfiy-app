@@ -1,0 +1,34 @@
+query GetAllProductsQuery {
+    products(first: 100) {
+        edges {
+            node {
+                id
+                title
+                vendor
+                description
+                productType
+                images(first: 5) {
+                    edges {
+                        node {
+                            src
+                        }
+                    }
+                }
+                variants(first: 100) {
+                    edges {
+                        node {
+                            id
+                            title
+                            sku
+                            priceV2 {
+                                amount
+                                currencyCode
+                            }
+                            quantityAvailable
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Title Bar -->
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/top_border_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ScrollView containing the main content -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/linearContainer"
+
+        app:layout_constraintTop_toBottomOf="@+id/title_bar">
+
+        <!-- Main ConstraintLayout inside ScrollView -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- ViewPager2 for images -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_300sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/dotsIndicator"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- DotsIndicator for ViewPager2 -->
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dotsIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:dotsColor="@color/gray"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="8dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewPager" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tv_variants"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dotsIndicator"
+                tools:layout_editor_absoluteY="80dp" />
+            <!-- Size Dropdown -->
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:background="@drawable/background_two"
+                android:elevation="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_variants"> <!-- Price Text -->
+                <TextView
+                    android:id="@+id/tv_price"
+                    style="@style/TextViewStyle"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="$19.99"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_product_brand" />
+
+                <!-- Product Brand -->
+                <TextView
+                    android:id="@+id/tv_product_brand"
+                    style="@style/TextViewStyle"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:text="H M"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteY="272dp" />
+
+                <!-- Product Name -->
+                <TextView
+                    android:id="@+id/tv_product_name"
+                    style="@style/TextViewStyleLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:maxLines="2"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:textColor="@color/white"
+                    android:text="Short black dress"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_brand" />
+
+                <!-- Product Rating -->
+                <RatingBar
+                    android:id="@+id/tv_product_rating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:scaleX="1"
+                    android:scaleY="0.8"
+                    android:secondaryProgressTint="@color/white"
+                    android:progressTint="@color/quantum_yellow"
+                    app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+                <!-- Product Description -->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_product_description"
+                style="@style/TextViewStyleLight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/primary_color"
+                android:text="Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/container" />
+            <!-- Reviews Title -->
+            <TextView
+                android:id="@+id/tv_reviews_title"
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Reviews"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_description" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/linearReviewe1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_reviews_title"
+
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/imgViewCategory"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/review1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/txtViewReviewerName"
+                        android:layout_width="0dp"
+                        style="@style/TextViewStyle"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp"
+
+                        android:text="reviewer name"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/reviewRate"
+                        app:layout_constraintStart_toEndOf="@+id/imgViewCategory"
+                        app:layout_constraintTop_toTopOf="@+id/imgViewCategory" />
+
+                    <RatingBar
+                        android:id="@+id/reviewRate"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:numStars="5"
+                        android:secondaryProgressTint="@color/white"
+                        android:progressTint="@color/quantum_yellow"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtViewReviewerName"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txtViewReviewerName" />
+
+                    <TextView
+                        android:id="@+id/reviewerComment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:maxLines="2"
+                        android:text="reviewer comment reviewer comment reviewer comment"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/reviewRate"
+                        app:layout_constraintStart_toStartOf="@+id/txtViewReviewerName"
+                        app:layout_constraintTop_toBottomOf="@+id/txtViewReviewerName" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/linearReviewe2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearReviewe1"
+
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/imgViewCategory2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/review2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/txtViewReviewerName2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp"
+                        style="@style/TextViewStyle"
+                        android:text="reviewer name"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/reviewRate2"
+                        app:layout_constraintStart_toEndOf="@+id/imgViewCategory2"
+                        app:layout_constraintTop_toTopOf="@+id/imgViewCategory2" />
+
+                    <RatingBar
+                        android:id="@+id/reviewRate2"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:numStars="5"
+                        android:secondaryProgressTint="@color/white"
+                        android:progressTint="@color/quantum_yellow"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtViewReviewerName2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txtViewReviewerName2" />
+
+                    <TextView
+                        android:id="@+id/reviewerComment2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:maxLines="2"
+                        android:text="reviewer comment reviewer comment reviewer comment"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/reviewRate2"
+                        app:layout_constraintStart_toStartOf="@+id/txtViewReviewerName2"
+                        app:layout_constraintTop_toBottomOf="@+id/txtViewReviewerName2" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/linearReviewe3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearReviewe2"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/imgViewCategory3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/review3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/txtViewReviewerName3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp"
+                        style="@style/TextViewStyle"
+                        android:text="reviewer name"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/reviewRate3"
+                        app:layout_constraintStart_toEndOf="@+id/imgViewCategory3"
+                        app:layout_constraintTop_toTopOf="@+id/imgViewCategory3" />
+
+                    <RatingBar
+                        android:id="@+id/reviewRate3"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:numStars="5"
+                        android:secondaryProgressTint="@color/white"
+                        android:progressTint="@color/quantum_yellow"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtViewReviewerName3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txtViewReviewerName3" />
+
+                    <TextView
+                        android:id="@+id/reviewerComment3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:maxLines="2"
+                        android:text="reviewer comment reviewer comment reviewer comment"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/reviewRate3"
+                        app:layout_constraintStart_toStartOf="@+id/txtViewReviewerName3"
+                        app:layout_constraintTop_toBottomOf="@+id/txtViewReviewerName3" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/linearContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_check_out"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingRight="@dimen/_12sdp"
+        android:weightSum="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView">
+
+        <!-- ImageView for favorite icon -->
+        <ImageView
+            android:id="@+id/add_to_favourite_icon"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/_32sdp"
+            android:background="@drawable/round_corner"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/empty_love"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_add_to_cart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_add_to_cart" />
+
+        <!-- MaterialButton for Add to Cart -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_to_cart"
+            style="@style/TextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="4"
+            android:backgroundTint="@color/white"
+            android:paddingVertical="12dp"
+            android:text="ADD TO CART"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_color"
+            app:cornerRadius="16dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

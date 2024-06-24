@@ -1,101 +1,182 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/_16sdp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <include
+                android:id="@+id/title_bar"
+                layout="@layout/top_border_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/signUp"
-        android:textSize="@dimen/_24ssp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_16sdp"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_12sdp" />
 
-    <!-- Name Field -->
-    <EditText
-        android:id="@+id/et_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/inputName"
-        android:inputType="textPersonName"
-        android:drawableEnd="@drawable/ic_check"
-        android:padding="@dimen/_12sdp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_32sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_12sdp" />
 
-    <!-- Email Field -->
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/inputEmail"
-        android:inputType="textEmailAddress"
-        android:padding="@dimen/_12sdp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/et_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:src="@drawable/im_sginup"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
-    <!-- Password Field -->
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="@dimen/_12sdp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/et_email"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tf_name"
+                style="@style/TextInputLayoutNoUnderline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/iv_image"
+                app:startIconDrawable="@drawable/ic_person">
 
-    <!-- Already have an account -->
-    <TextView
-        android:id="@+id/tv_already_have_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/alreadyHaveAnAccount"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    style="@style/TextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_color_light"
+                    android:hint="@string/inputName"
+                    android:inputType="textPersonName"
+                    android:padding="@dimen/_12sdp"
+                    android:paddingStart="48dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Sign Up Button -->
-    <Button
-        android:id="@+id/btn_sign_up"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/signUp"
-        android:textAllCaps="true"
-        android:backgroundTint="@color/primary_color"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/tv_already_have_account"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_24sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tf_email"
+                style="@style/TextInputLayoutNoUnderline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/tf_name"
+                app:startIconDrawable="@drawable/ic_email">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    style="@style/TextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_corner"
+                    android:backgroundTint="@color/light_white"
+                    android:hint="@string/inputEmail"
+                    android:inputType="textEmailAddress"
+                    android:padding="@dimen/_12sdp"
+                    android:paddingStart="48dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tf_password"
+                style="@style/TextInputLayoutNoUnderline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                app:endIconMode="password_toggle"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/tf_email"
+                app:startIconDrawable="@drawable/ic_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_password"
+                    style="@style/TextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_corner"
+                    android:backgroundTint="@color/light_white"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="@dimen/_12sdp"
+                    android:paddingStart="48dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_already_have_account"
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:text="@string/alreadyHaveAnAccount"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintTop_toBottomOf="@id/tf_password" />
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/primary_color"
+                android:text="@string/signUp"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@id/tv_already_have_account" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/continue_as_guest"
+                style="@style/TextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/light_white"
+                android:elevation="16dp"
+                android:text="Guest"
+                app:cornerRadius="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+                app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/btn_sign_up"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="loader.json"
+        app:lottie_loop="true" />
+
+</FrameLayout>

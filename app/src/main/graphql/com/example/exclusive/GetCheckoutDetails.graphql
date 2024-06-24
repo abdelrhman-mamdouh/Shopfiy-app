@@ -1,0 +1,50 @@
+query GetCheckoutDetails($checkoutId: ID!) {
+    node(id: $checkoutId) {
+        ... on Checkout {
+            webUrl
+            id
+            createdAt
+            completedAt
+            currencyCode
+            totalPriceV2 {
+                amount
+                currencyCode
+            }
+            lineItems(first: 10) {
+                edges {
+                    node {
+                        title
+                        quantity
+                        variant {
+                            id
+                            title
+                            priceV2 {
+                                amount
+                                currencyCode
+                            }
+                        }
+                    }
+                }
+            }
+            discountApplications(first: 10) {
+                edges {
+                    node {
+                        ... on DiscountCodeApplication {
+                            code
+                            value {
+                                __typename
+                                ... on MoneyV2 {
+                                    amount
+                                    currencyCode
+                                }
+                                ... on PricingPercentageValue {
+                                    percentage
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
