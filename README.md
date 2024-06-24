@@ -1,4 +1,6 @@
-![Logo](https://your-logo-url.com/logo.png)
+![Logo]
+![Exclusive](https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/c11b86d5-fed8-4b0d-a5c0-596ec2ae0496)
+
 
 # Exclusive Mobile Android Application
 
@@ -8,7 +10,33 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 
-## Features
+# Team
+- **Abdelrahman Mamdouh
+- **AbdulHameed Mohamed
+- **Mahmoud Osama
+- **Tasneem Ibraheem
+# Features
+
+## Admin Features
+- **Product Management**: Create, Read, Update, Delete (CRUD) products; manage product information including descriptions, prices, and images.
+- **Inventory Management**: CRUD inventory levels for each product.
+- **Coupon Management**: CRUD coupons and discount codes; set expiration dates, discount amounts, and usage limits.
+
+## Product Features
+- **Product Information**: Display product details including descriptions, prices, images, reviews, and ratings.
+- **Search**: Allow users to search for products by keyword, category, or brand with filtering and sorting options.
+- **Favorites**: Allow users to mark products as favorites and display them in a dedicated section.
+
+## User Features
+- **Authentication**: Implement user registration, login functionality, password reset, and account updates.
+- **Shopping Cart**: Add and remove products from the cart, display cart summary and subtotal.
+- **Payment**: Integrate secure payment gateways using Paymob.
+
+## Additional Features
+- **Coupon or Discount Code**: Manage discount codes to drive sales.
+- **Currency**: Allow users to select their preferred currency.
+- **Catalog**: Display brand and category information, browse products by brand or category.
+- **Orders**: Display order history, track orders, and receive updates.
 
 ### Set #1: Abdelrahman Mamdouh
 - **Brands**
