@@ -63,4 +63,5 @@ class FakeAdminRemoteDataSourceImplTest {
         assertEquals(1, priceRulesResponse?.size)
         assertEquals("Rule1", priceRulesResponse?.get(0)?.title)
     }
+    
 }

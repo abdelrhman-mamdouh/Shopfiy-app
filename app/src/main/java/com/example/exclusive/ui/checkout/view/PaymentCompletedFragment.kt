@@ -52,7 +52,6 @@ class PaymentCompletedFragment : Fragment() {
                 } else {
                     "Failed to delete products from cart."
                 }
-                SnackbarUtils.showSnackbar(requireContext(), requireView(), message)
             }
         }
 

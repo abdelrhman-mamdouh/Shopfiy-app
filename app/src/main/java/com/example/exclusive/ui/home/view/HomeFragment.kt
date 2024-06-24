@@ -1,8 +1,6 @@
 package com.example.exclusive.ui.home.view
 
 import HomeBrandsAdapter
-import android.app.AlertDialog
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -16,11 +14,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.exclusive.R
-import com.example.exclusive.data.model.DiscountCode
 import com.example.exclusive.data.model.PriceRuleSummary
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.databinding.FragmentHomeBinding
@@ -33,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 private const val TAG = "HomeFragment"
+
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
     private var couponDetailsJob: Job? = null
@@ -63,11 +60,13 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             findNavController().navigate(R.id.homeFragment)
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
 
         setViewsVisibility(View.GONE)
         binding.progressBar.visibility = View.VISIBLE
@@ -92,26 +91,34 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is UiState.Success -> {
-                        adapter.updateBrands(uiState.data.subList(1, uiState.data.size))
+                        val data = uiState.data
+                        if (data != null) {
+                            val subList =
+                                if (data.size > 1) data.subList(1, data.size) else emptyList()
+                            adapter.updateBrands(subList)
+                        }
                         setViewsVisibility(View.VISIBLE)
                         binding.progressBar.visibility = View.GONE
                     }
+
                     is UiState.Error -> {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.GONE
                     }
+
                     UiState.Loading -> {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.VISIBLE
                     }
+
                     UiState.Idle -> {
                         setViewsVisibility(View.GONE)
                         binding.progressBar.visibility = View.GONE
                     }
                 }
             }
+            setupCoupons()
         }
-        setupCoupons()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -124,12 +131,15 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                         Log.i(TAG, "setupCoupons: ${validPriceRules}")
                         couponsAdapter.submitList(validPriceRules)
                     }
+
                     is UiState.Error -> {
                         Log.e("PriceRuleError", uiState.exception.toString())
                     }
+
                     UiState.Loading -> {
                         Log.d("PriceRule", "Loading...")
                     }
+
                     UiState.Idle -> {
                         Log.d("PriceRule", "Idle")
                     }
@@ -147,7 +157,8 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
         val runnable = object : Runnable {
             override fun run() {
                 if (binding.viewPagerAdsSlider.adapter?.itemCount ?: 0 > 0) {
-                    currentPage = (currentPage + 1) % binding.viewPagerAdsSlider.adapter?.itemCount!!
+                    currentPage =
+                        (currentPage + 1) % binding.viewPagerAdsSlider.adapter?.itemCount!!
                     binding.viewPagerAdsSlider.setCurrentItem(currentPage, true)
                     handler.postDelayed(this, 3000)
                 }
@@ -179,15 +190,22 @@ class HomeFragment : Fragment(), OnItemClickListener, OnImageClickListener {
                     when (uiState) {
                         is UiState.Success -> {
                             val couponDetail = uiState.data
-                            Constants.showCouponDetailDialog(requireActivity(), couponDetail, priceRuleSummary) {
+                            Constants.showCouponDetailDialog(
+                                requireActivity(),
+                                couponDetail,
+                                priceRuleSummary
+                            ) {
                                 isDialogShowing = false
                             }
                         }
+
                         is UiState.Error -> {
                             isDialogShowing = false
                         }
+
                         UiState.Idle -> {
                         }
+
                         UiState.Loading -> {
                         }
                     }

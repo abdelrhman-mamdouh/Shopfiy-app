@@ -79,7 +79,7 @@ class CartViewModel @Inject constructor(
                     val cartId = cartRepository.fetchCartId(it)
                     cartId?.let {
                         val productsResponse = cartRepository.getProductsInCart(cartId)
-                        val products = productsResponse.map { it.id } // Assuming id is unique identifier
+                        val products = productsResponse.map { it.id }
                         products.forEach { productId ->
                             val response = cartRepository.removeProductFromCart(cartId, productId)
                             if (response?.userErrors?.isNotEmpty() == true) {
@@ -87,7 +87,7 @@ class CartViewModel @Inject constructor(
                             }
                         }
                         _cartProductsResponse.value = UiState.Success(emptyList())
-                        callback(true) // Notify success
+                        callback(true)
                     }
                 }
             } catch (e: Exception) {

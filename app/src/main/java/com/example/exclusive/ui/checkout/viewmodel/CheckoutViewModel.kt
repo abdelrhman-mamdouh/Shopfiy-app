@@ -96,7 +96,7 @@ class CheckoutViewModel @Inject constructor(
         try {
             val checkoutId = checkoutRepository.getUserCheckOut()
             val checkoutDetails = checkoutRepository.getCheckoutDetails(checkoutId!!)
-            Log.i("CreateOrder", "LineItems: ${checkoutDetails?.lineItems}")
+
             val regex = Regex("""\d+""")
             val orderRequest = OrderRequest(
                 order = Order(
@@ -116,8 +116,9 @@ class CheckoutViewModel @Inject constructor(
             return true
 
         } catch (e: Exception) {
+
             _error.value = e.message
-            Log.e("CreateOrder", "Error creating order: ${e.message}", e)
+
             return false
         }
     }

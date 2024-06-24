@@ -1,11 +1,17 @@
 package com.example.exclusive.ui.checkout.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.exclusive.GetAllOrdersQuery
 import com.example.exclusive.MainCoroutineRule
 import com.example.exclusive.data.local.FakeLocalDataSource
+import com.example.exclusive.data.model.LineItem
+import com.example.exclusive.data.model.OrderRequest
+import com.example.exclusive.data.network.FakeAdminDataSource
 import com.example.exclusive.data.network.FakeShopifyRemoteDataSource
 import com.example.exclusive.data.remote.UiState
 import com.example.exclusive.model.AddressInput
+import com.example.exclusive.model.BillingAddress
+import com.example.exclusive.model.Order
 import com.example.exclusive.ui.checkout.repository.CheckoutRepository
 import com.example.exclusive.ui.checkout.repository.CheckoutRepositoryImpl
 import kotlinx.coroutines.flow.first
@@ -31,7 +37,8 @@ class CheckoutViewModelTest {
     fun setup() {
         val fakeRemoteDataSource = FakeShopifyRemoteDataSource()
         val fakeLocalDataSource = FakeLocalDataSource()
-        fakeCheckoutRepository = CheckoutRepositoryImpl(fakeRemoteDataSource, fakeLocalDataSource)
+        val fakeAdminDataSource = FakeAdminDataSource()
+        fakeCheckoutRepository = CheckoutRepositoryImpl(fakeRemoteDataSource, fakeLocalDataSource,fakeAdminDataSource)
         checkoutViewModel = CheckoutViewModel(fakeCheckoutRepository)
     }
     @Test
@@ -90,5 +97,27 @@ class CheckoutViewModelTest {
 
         // Then
         assertTrue(result)
+    }
+
+    @Test
+    fun createOrder_returnsSuccess() = mainCoroutineRule.runBlockingTest {
+        // Given
+        val billingAddress = BillingAddress(
+            first_name = "abdelrhman",
+            last_name = "Doe",
+            address1 = "address1",
+            city = "cairo",
+            province = "cairo",
+            country = "Egypt",
+            zip = "1123",
+            phone = "01153716828"
+
+        )
+
+        // When
+        val result = checkoutViewModel.createOrder(billingAddress)
+
+        // Then
+        assertEquals(true, result)
     }
 }

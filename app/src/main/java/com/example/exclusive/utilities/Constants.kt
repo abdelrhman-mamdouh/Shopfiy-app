@@ -26,7 +26,7 @@ object Constants {
     const val CURRENCY_BASE_URL: String = "https://api.fastforex.io/"
     const val API_KEY: String = "43f6205d2d0b257b652e16f5f7663414"
     const val ACCESS_TOKEN: String = "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"
-    const val CURRENCY_API_KEY: String = "0430202d52-68ce7481de-sf34mp"
+    const val CURRENCY_API_KEY: String = "66e550a795-363c830945-sflp1t"
 
     fun showConfirmationDialog(
         context: Context,
