@@ -76,7 +76,7 @@ class SettingsFragment : Fragment(), OnOrderClickListener {
             binding.outlinedButton.setOnClickListener {
                 lifecycleScope.launch {
                     viewModel.clearEmailAndToken()
-                    parentFragmentManager.popBackStack()
+
                     findNavController().navigate(
                         R.id.action_settingsFragment_to_loginFragment
                     )

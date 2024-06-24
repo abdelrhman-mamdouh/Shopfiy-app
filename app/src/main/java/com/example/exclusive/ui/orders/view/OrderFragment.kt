@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exclusive.R
@@ -40,12 +41,12 @@ class OrderFragment : Fragment(), OnOrderClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack();
+       findNavController().navigate(R.id.action_orderFragment_to_settingsFragment)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().supportFragmentManager.popBackStack();
+                    findNavController().navigate(R.id.action_orderFragment_to_settingsFragment)
                 }
             })
         binding.titleBar.tvTitle.text = getString(R.string.orders)

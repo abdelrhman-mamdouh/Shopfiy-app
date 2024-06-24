@@ -1,5 +1,6 @@
 package com.example.exclusive.model
 
+
 data class Review (val name: String, val rating: Double, val comment: String)
 val fakeReviews = listOf(
     Review("Ali Ahmed", 4.5, "Great product!"),

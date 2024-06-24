@@ -172,6 +172,7 @@ class ProductInfoFragment : Fragment() {
         binding.tvVariants.adapter = variantAdapter
         binding.tvVariants.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        onVariantSelected(variantTitles[0],0)
     }
 
     private fun setupAddToFavorites() {

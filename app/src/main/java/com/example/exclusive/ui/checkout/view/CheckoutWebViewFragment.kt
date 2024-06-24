@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.navigateUp
 import com.example.exclusive.R
 
 class CheckoutWebViewFragment : Fragment() {
@@ -70,7 +71,6 @@ class CheckoutWebViewFragment : Fragment() {
     }
 
     private fun navigateToThankYouFragment() {
-        requireActivity().supportFragmentManager.popBackStack();
         findNavController().navigate(R.id.action_checkoutWebViewFragment_to_paymentCompletedFragment)
     }
 }

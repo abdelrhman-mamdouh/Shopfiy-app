@@ -36,10 +36,9 @@ class VariantDiffUtil : DiffUtil.ItemCallback<String>() {
 class VariantAdapter(
     private val onSelectListener: (String, Int) -> Unit,
     private val variantList: List<String>,
-    private var selectedIndex: Int = -1
+    private var selectedIndex: Int = 0 // Set the default selected index to 0
 ) : RecyclerView.Adapter<VariantAdapter.ViewHolder>() {
 
-    // ViewHolder class for caching views
     class ViewHolder(val binding: VarinetItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,11 +55,10 @@ class VariantAdapter(
         holder.binding.apply {
             tvVarient.text = variant
 
-            // Extract color from variant (assuming format: "variant/color")
             val parts = variant.split("/")
             val colorName = if (parts.size > 1) parts[1].trim() else "green"
 
-            // Set text color based on the background color
+
             val textColor = if (colorName.equals("white", ignoreCase = true)) {
                 ContextCompat.getColor(tvVarient.context, R.color.black)
             } else {
@@ -68,7 +66,6 @@ class VariantAdapter(
             }
             tvVarient.setTextColor(textColor)
 
-            // Set background color based on the selected or default color
             val backgroundColor = if (position == selectedIndex) {
                 ContextCompat.getColorStateList(root.context, R.color.primary_color)
             } else {
@@ -76,7 +73,7 @@ class VariantAdapter(
             }
             root.backgroundTintList = backgroundColor
 
-            // Handle item click
+
             root.setOnClickListener {
                 onSelectListener(variant, position)
                 selectedIndex = position
