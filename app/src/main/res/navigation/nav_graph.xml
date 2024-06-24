@@ -187,7 +187,8 @@
         <action
             android:id="@+id/action_cartFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@anim/row_slide_in" />
+            app:enterAnim="@anim/row_slide_in"
+            app:popUpTo="@id/cartFragment" />
         <action
             android:id="@+id/action_cartFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -252,9 +253,10 @@
             app:destination="@id/orderDetailsFragment"
             app:enterAnim="@anim/row_slide_in" />
         <action
-            android:id="@+id/action_orderFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/row_slide_in" />
+            android:id="@+id/action_orderFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:popUpTo="@id/auth_nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -309,6 +311,7 @@
         <action
             android:id="@+id/action_checkoutWebViewFragment_to_paymentCompletedFragment"
             app:destination="@id/paymentCompletedFragment"
+            app:popUpTo="@id/cartFragment"
             app:enterAnim="@anim/row_slide_in"/>
     </fragment>
     <fragment
@@ -318,6 +321,8 @@
         tools:layout="@layout/fragment_payment_completed">
         <action
             android:id="@+id/action_paymentCompletedFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
+            app:destination="@id/orderFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -63,7 +63,6 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
             }
         }
         binding.tvGoToLogin.setOnClickListener {
-            parentFragmentManager.popBackStack()
             findNavController().navigate(R.id.action_cartFragment_to_loginFragment)
         }
 

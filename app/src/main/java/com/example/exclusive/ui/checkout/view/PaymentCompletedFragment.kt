@@ -41,7 +41,6 @@ class PaymentCompletedFragment : Fragment() {
 
             val currentDestination = findNavController().currentDestination
             if (currentDestination?.id == R.id.paymentCompletedFragment) {
-                parentFragmentManager.popBackStack()
                 findNavController().navigate(R.id.action_paymentCompletedFragment_to_orderFragment)
             } else {
                 Log.e("TAG", "Current destination is not paymentCompletedFragment")

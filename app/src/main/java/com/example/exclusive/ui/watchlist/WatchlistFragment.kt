@@ -107,7 +107,7 @@ class WatchlistFragment : Fragment() {
 
         if(product.variants.edges[0].node.quantityAvailable>1){
             viewModel.addToCart(
-                product.variants.edges[0].node.id, 1
+                product.variants.edges[0].node.id, product.variants.edges[0].node.quantityAvailable
             )
             SnackbarUtils.showSnackbar(requireContext(),requireView(),"Product Added to Cart")
         }else{
