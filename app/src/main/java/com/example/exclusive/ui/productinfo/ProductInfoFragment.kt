@@ -1,5 +1,6 @@
 package com.example.exclusive.ui.productinfo
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -38,6 +40,7 @@ class ProductInfoFragment : Fragment() {
     private lateinit var chosenVariant: VariantNode
     private lateinit var imageAdapter: ImageAdapter
     private lateinit var viewPager: ViewPager2
+
     private lateinit var dotsIndicator: DotsIndicator
     private val viewModel: ProductInfoViewModel by viewModels()
     private val handler = Handler(Looper.getMainLooper())
@@ -57,6 +60,7 @@ class ProductInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         setupTitleBar()
         setupBackButton()
         setupProductInfo()
@@ -69,6 +73,21 @@ class ProductInfoFragment : Fragment() {
     }
 
     private fun setupTitleBar() {
+
+        viewModel.isInWatchList(product)
+        chosenVariant = product.variants.edges[0].node
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isWatchList.collect {
+                    if (it) {
+                        binding.addToFavouriteIcon.setImageResource(R.drawable.filled_love)
+                    } else {
+                        binding.addToFavouriteIcon.setImageResource(R.drawable.empty_love)
+                    }
+                }
+            }
+        }
+
         binding.titleBar.tvTitle.text = getString(R.string.product_info)
     }
 
@@ -171,9 +190,18 @@ class ProductInfoFragment : Fragment() {
                 }
             }
         }
+
     }
 
     private fun setupAddToCart() {
+
+        if(chosenVariant.quantityAvailable == 0){
+            binding.btnAddToCart.isEnabled = false
+            binding.btnAddToCart.text = "Out of Stock"
+            binding.btnAddToCart.paintFlags = binding.btnAddToCart.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            binding.btnAddToCart.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+        }
+
         binding.btnAddToCart.setOnClickListener {
             handleAddToCartClick()
         }
