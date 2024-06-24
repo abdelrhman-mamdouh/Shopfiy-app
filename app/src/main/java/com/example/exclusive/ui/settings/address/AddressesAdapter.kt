@@ -9,7 +9,8 @@ import com.example.exclusive.databinding.ItemAddressBinding
 import com.example.exclusive.model.AddressInput
 import com.example.exclusive.model.CartProduct
 
-class AddressesAdapter : ListAdapter<AddressInput, AddressesAdapter.AddressViewHolder>(AddressDiffCallback()) {
+class AddressesAdapter(private val onItemClick: (AddressInput) -> Unit) :
+    ListAdapter<AddressInput, AddressesAdapter.AddressViewHolder>(AddressDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
         val binding = ItemAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +22,17 @@ class AddressesAdapter : ListAdapter<AddressInput, AddressesAdapter.AddressViewH
         holder.bind(address)
     }
 
-    inner class AddressViewHolder(private val binding: ItemAddressBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class AddressViewHolder(private val binding: ItemAddressBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick(getItem(position))
+                }
+            }
+        }
 
         fun bind(address: AddressInput) {
             binding.tvName.text = address.firstName
@@ -29,6 +40,7 @@ class AddressesAdapter : ListAdapter<AddressInput, AddressesAdapter.AddressViewH
             binding.tvPhone.text = address.phone
         }
     }
+
     fun removeItem(position: Int): AddressInput? {
         val currentList = currentList.toMutableList()
         val removedItem = currentList.removeAt(position)

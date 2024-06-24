@@ -35,4 +35,21 @@ class AddAddressViewModel @Inject constructor(
             }
         }
     }
+
+    private val _deleteAddressResult = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    val deleteAddressResult: StateFlow<UiState<Boolean>> = _deleteAddressResult
+
+    fun deleteAddress(addressId: String) {
+        viewModelScope.launch {
+            _deleteAddressResult.value = UiState.Loading
+            try {
+                val success = addressRepository.deleteCustomerAddress(addressId)
+                _deleteAddressResult.value = UiState.Success(success)
+            } catch (e: Exception) {
+                _deleteAddressResult.value = UiState.Error(e)
+            }
+        }
+    }
+
+
 }

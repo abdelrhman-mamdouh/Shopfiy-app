@@ -22,10 +22,12 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 private const val TAG = "AddAddressFragment"
+
 @AndroidEntryPoint
 class AddAddressFragment : Fragment() {
 
     private var _binding: FragmentAddAddressBinding? = null
+    private var addressId ="0"
     private val binding get() = _binding!!
     private val addAddressViewModel: AddAddressViewModel by viewModels()
 
@@ -42,7 +44,6 @@ class AddAddressFragment : Fragment() {
         binding.titleBar.tvTitle.text = getString(R.string.add_address)
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -50,6 +51,7 @@ class AddAddressFragment : Fragment() {
                     requireActivity().supportFragmentManager.popBackStack();
                 }
             })
+
         val countryList = getAllCountries()
         val egyptIndex = countryList.indexOf("Egypt")
 
@@ -61,7 +63,13 @@ class AddAddressFragment : Fragment() {
             binding.sCountry.setText(countryList[egyptIndex], false)
         }
 
+        val address = arguments?.getParcelable<AddressInput>("address")
+        address?.let { populateAddressFields(it) }
+
         binding.button.setOnClickListener {
+            if(addressId!= "0") {
+            addAddressViewModel.deleteAddress(addressId)
+            }
             val title = binding.etTitle.text.toString()
             val details = binding.etDetails.text.toString()
             val phone = binding.tvPhone.text.toString()
@@ -69,9 +77,8 @@ class AddAddressFragment : Fragment() {
             val country = binding.sCountry.text.toString()
             val zip = binding.etZip.text.toString()
 
-
             if (validateInputs(title, details, phone, city, country, zip)) {
-                val address = AddressInput(
+                val addressInput = AddressInput(
                     firstName = title,
                     address1 = details,
                     phone = phone,
@@ -79,8 +86,7 @@ class AddAddressFragment : Fragment() {
                     country = country,
                     zip = zip
                 )
-                val mailingAddressInput = address.toInput()
-                addAddressViewModel.addAddress(mailingAddressInput)
+                addAddressViewModel.addAddress(addressInput.toInput())
             } else {
                 SnackbarUtils.showSnackbar(requireContext(), view, "Please fill in all fields")
             }
@@ -93,7 +99,6 @@ class AddAddressFragment : Fragment() {
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is UiState.Success -> {
-                        Toast.makeText(requireContext(), "Address added successfully", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = View.GONE
                         if (uiState.data) {
                             SnackbarUtils.showSnackbar(requireContext(), view, "Address added successfully")
@@ -105,17 +110,29 @@ class AddAddressFragment : Fragment() {
                         SnackbarUtils.showSnackbar(requireContext(), view, "Error adding address: ${uiState.exception.message}")
                     }
                     is UiState.Idle -> {
-                        // Initial idle state, do nothing
                     }
                 }
             }
         }
     }
 
+    private fun populateAddressFields(address: AddressInput) {
+        addressId = address.id!!
+        binding.titleBar.tvTitle.text = "Edit Address"
+        binding.button.text = "Edit"
+        binding.etTitle.setText(address.firstName)
+        binding.etDetails.setText(address.address1)
+        binding.tvPhone.setText(address.phone)
+        binding.etCity.setText(address.city)
+        binding.sCountry.setText(address.country, false)
+        binding.etZip.setText(address.zip)
+
+
+    }
+
     private fun validateInputs(vararg inputs: String): Boolean {
         return inputs.all { it.isNotEmpty() }
     }
-
     private fun getAllCountries(): List<String> {
         return Locale.getISOCountries().map { code ->
             Locale("", code).displayCountry

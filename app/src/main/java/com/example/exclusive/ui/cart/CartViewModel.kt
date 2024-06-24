@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository
@@ -27,6 +29,7 @@ class CartViewModel @Inject constructor(
     val error: StateFlow<String?> = _error
     private val _checkoutState = MutableStateFlow<UiState<Checkout>>(UiState.Idle)
     val checkoutState: StateFlow<UiState<Checkout>> get() = _checkoutState
+
     init {
         getIsGuest()
         viewModelScope.launch {
@@ -38,11 +41,13 @@ class CartViewModel @Inject constructor(
             }
         }
     }
+
     fun getIsGuest() {
         viewModelScope.launch {
             _isGuest.value = cartRepository.getIsGuest()
         }
     }
+
     suspend fun deleteProductFromCart(product: CartProduct) {
         try {
             val email = cartRepository.readEmail()?.replace('.', '-')
@@ -66,6 +71,33 @@ class CartViewModel @Inject constructor(
         }
     }
 
+    suspend fun deleteAllProductsFromCart(callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val email = cartRepository.readEmail()?.replace('.', '-')
+                email?.let {
+                    val cartId = cartRepository.fetchCartId(it)
+                    cartId?.let {
+                        val productsResponse = cartRepository.getProductsInCart(cartId)
+                        val products = productsResponse.map { it.id } // Assuming id is unique identifier
+                        products.forEach { productId ->
+                            val response = cartRepository.removeProductFromCart(cartId, productId)
+                            if (response?.userErrors?.isNotEmpty() == true) {
+                                throw Exception(response.userErrors.joinToString { error -> error.message })
+                            }
+                        }
+                        _cartProductsResponse.value = UiState.Success(emptyList())
+                        callback(true) // Notify success
+                    }
+                }
+            } catch (e: Exception) {
+                _error.value = e.message
+                callback(false) // Notify failure
+            }
+        }
+    }
+
+
     private suspend fun getProductsInCart(cartId: String) {
         _cartProductsResponse.value = UiState.Loading
         try {
@@ -82,7 +114,6 @@ class CartViewModel @Inject constructor(
             _cartProductsResponse.value = UiState.Error(e)
         }
     }
-
 
     fun createCheckout(lineItems: List<CheckoutLineItemInput>) {
         _checkoutState.value = UiState.Loading

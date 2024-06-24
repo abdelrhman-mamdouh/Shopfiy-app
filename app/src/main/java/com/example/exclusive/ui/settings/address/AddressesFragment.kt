@@ -42,7 +42,6 @@ class AddressesFragment : Fragment() {
         binding.titleBar.tvTitle.text = getString(R.string.address)
         binding.titleBar.icBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack();
-
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -51,7 +50,10 @@ class AddressesFragment : Fragment() {
                 }
             })
 
-        addressesAdapter = AddressesAdapter()
+        addressesAdapter = AddressesAdapter { address ->
+            val action = AddressesFragmentDirections.actionAddressesFragmentToAddAddressFragment(address)
+            findNavController().navigate(action)
+        }
         binding.rvAddresses.adapter = addressesAdapter
 
         setListeners()

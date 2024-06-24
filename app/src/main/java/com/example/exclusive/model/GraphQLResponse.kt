@@ -174,7 +174,7 @@ data class Variant(
     val title: String,
     val price: PriceV2
 )
-
+@Parcelize
 
 data class AddressInput(
     val id: String?= null,
@@ -186,7 +186,7 @@ data class AddressInput(
     val country: String,
     val zip: String,
     val province : String =city,
-) {
+) : Parcelable {
     fun toInput(): MailingAddressInput {
         return MailingAddressInput(
             firstName = Optional.present(firstName),
