@@ -146,7 +146,7 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 ### Installation
 1. **Clone the repository for admin**:
    ```bash
-   git clone [https://github.com/your-username/your-repository.git](https://github.com/tasneem-ops/Shopify-Admin)
+   git clone https://github.com/tasneem-ops/Shopify-Admin.git
 2. **Clone the repository for client**:
    ```bash
-   git clone [https://github.com/your-username/your-repository.git](https://github.com/abdelrhman-mamdouh/Shopfiy-app.git)
+   git clone https://github.com/abdelrhman-mamdouh/Shopfiy-app.git
