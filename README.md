@@ -1,6 +1,6 @@
 ![Logo]
-![Exclusive](https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/c11b86d5-fed8-4b0d-a5c0-596ec2ae0496)
-
+![Exclusive]
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/c11b86d5-fed8-4b0d-a5c0-596ec2ae0496" alt="Exclusive" width="200" height="400"/>
 
 # Exclusive Mobile Android Application
 
