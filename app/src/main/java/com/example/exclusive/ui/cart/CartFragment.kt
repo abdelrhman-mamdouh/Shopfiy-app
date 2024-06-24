@@ -68,13 +68,13 @@ class CartFragment : Fragment(), CartProductAdapter.OnQuantityChangeListener {
         }
 
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack();
+            findNavController().navigateUp()
 
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().supportFragmentManager.popBackStack();
+                    findNavController().navigateUp()
                 }
             })
         viewLifecycleOwner.lifecycleScope.launch {

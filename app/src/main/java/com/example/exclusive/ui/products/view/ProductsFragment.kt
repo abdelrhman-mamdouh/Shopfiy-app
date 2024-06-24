@@ -44,13 +44,15 @@ class ProductsFragment : Fragment(), OnProductClickListener {
         binding.rvProducts.adapter = adapter
 
         binding.titleBar.icBack.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack();
+            findNavController().navigateUp()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().supportFragmentManager.popBackStack();
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().supportFragmentManager.popBackStack();
+                }
+            })
         binding.subCategoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             val selectedCategory = when (checkedId) {
                 R.id.radioBtnAccessories -> getString(R.string.accessories)
@@ -95,12 +97,15 @@ class ProductsFragment : Fragment(), OnProductClickListener {
                             adapter.updateProducts(products)
                         }
                     }
+
                     is UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                     }
+
                     UiState.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
                     }
+
                     UiState.Idle -> {
                         binding.progressBar.visibility = View.GONE
                     }

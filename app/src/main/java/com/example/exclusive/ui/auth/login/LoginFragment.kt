@@ -135,7 +135,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun startMainActivity() {
-       findNavController().navigate(R.id.action_loginFragment_to_homeNavGraph)
+        NavHostFragment.findNavController(this@LoginFragment)
+            .navigate(R.id.action_loginFragment_to_homeFragment)
+
     }
 
     fun Fragment.hideKeyboard() {

@@ -38,7 +38,9 @@
             app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_loginFragment_to_homeNavGraph"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment" />
@@ -131,7 +133,8 @@
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@anim/row_slide_in" />
+            app:popUpTo="@id/auth_nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_settingsFragment_to_productInfoFragment"
             app:destination="@id/productInfoFragment"
