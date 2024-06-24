@@ -60,7 +60,7 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 - **Admin CRUD Coupons**
 - **Settings**
 
-## Screenshots
+## Screenshots for client application
 <img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/3290cc61-ebab-499d-bb4c-0e74a693cf22.png" width="200" height="400">
 <img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/34582233-3587-4f7c-a2d2-e95bb3810f3f.png" width="200" height="400">
 <img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/f5255d66-5044-4c27-b7ad-235cf3e6266c.png" width="200" height="400">
@@ -91,8 +91,25 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 <img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/d6903bf9-1cf2-4dc7-a0fb-4dafe85bfd65.png" width="200" height="400">
 <img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/d0a8f2d3-2ead-494c-a906-53a16807c843.png" width="200" height="400">
 
-
-
+## Screenshots for admin application
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/15653514-30db-40bb-acd9-670cbbfca583" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/d2958238-cc4c-4a42-83a4-eb45a7fa4c08" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/8480a388-ebe7-4bda-8ec1-dd4197586671" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/52a1d872-dbc7-4157-88ef-955db589f912" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/db185a4a-430c-4cf8-bbda-957adf67b089" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/6526be7f-31b0-4dc7-a070-3576dfb1c75c" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/f7611f9f-239e-450c-b11b-0a4e6cff03ff" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/be06e63d-11d0-46b7-9713-fbd6d0f362b6" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/fbbb74f2-a1c6-4b69-adf3-22d4b4a987c3" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/2def22f9-ce0a-4259-ab07-a88db741cce5" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/6327d42b-b999-40ca-bafb-f48db132e01a" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/93005e18-ccaf-477f-a025-bbade645ad14" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/e6e15b89-65fb-480c-b3c4-eb6138475a2d" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/6f1adc0a-379a-41d5-84a4-142a9da525ad" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/fa60e351-2353-45dd-b208-4bd210f73a91" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/dcec904c-17e3-4fa2-a881-c2c2d5964921" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/e5d342fe-623c-4a22-b7f3-c502fb5c8b41" width="200" height="400">
+<img src="https://github.com/abdelrhman-mamdouh/Shopfiy-app/assets/63111171/cbf3b587-6f41-452f-bed4-2fdd470013ef" width="200" height="400">
 
 ## Technologies Used
 
@@ -127,6 +144,9 @@ Welcome to the Exclusive Mobile Android Application GitHub repository! This appl
 - **Paymob Account**: Set up a Paymob account and obtain API keys for payment processing.
 
 ### Installation
-1. **Clone the repository**:
+1. **Clone the repository for admin**:
    ```bash
-   git clone https://github.com/your-username/your-repository.git
+   git clone [https://github.com/your-username/your-repository.git](https://github.com/tasneem-ops/Shopify-Admin)
+2. **Clone the repository for client**:
+   ```bash
+   git clone [https://github.com/your-username/your-repository.git](https://github.com/abdelrhman-mamdouh/Shopfiy-app.git)
